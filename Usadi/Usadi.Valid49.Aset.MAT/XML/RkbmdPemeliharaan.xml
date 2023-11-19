@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdPemeliharaan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="RkbmdPemeliharaan" type="Usadi.Valid49.BO.RkbmdPemeliharaanControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="RkbmdPemeliharaan">
+      <result property="Id" column="ID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nmkegunit" column="NMKEGUNIT"/>
+      <result property="Nukeg" column="NUKEG"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Uraian" column="URAIAN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Statususulan" column="STATUSUSULAN"/>
+      <result property="Kdnmaset" column="KDNMASET"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Thang" column="THANG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      insert into RKBMD_PEMELIHARAAN(UNITKEY,KDKEGUNIT,IDPRGRM,ASETKEY,IDBRG,TAHUN,NOREG,KDKON,URAIAN,KET,TGLVALID,THANG)
+      values(#Unitkey#, #Kdkegunit#, #Idprgrm#, #Asetkey#, #Idbrg#, #Tahun#, #Noreg#, #Kdkon#, null, null, null, #Thang#)
+    </insert>
+    <update id="UpdateByRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      update RKBMD_PEMELIHARAAN set URAIAN=#Uraian#, KET=#Ket#
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and IDBRG=#Idbrg# and THANG=#Thang#
+    </update>
+    <update id="UpdateBySahRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      update RKBMD_PEMELIHARAAN set TGLVALID=#Tglvalid#
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and IDBRG=#Idbrg# and THANG=#Thang#
+    </update>
+    <update id="UpdateByDraftRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      update RKBMD_PEMELIHARAAN set TGLVALID=null
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and IDBRG=#Idbrg# and THANG=#Thang#
+    </update>
+    <update id="UpdateByValidRevRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      update RKBMD_PEMELIHARAAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan">
+      update RKBMD_PEMELIHARAAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByRkbmdPemeliharaan" parameterMap="delete-param">
+      <generate table="Rkbmd_pemeliharaan" by="UNITKEY,KDKEGUNIT,ASETKEY,IDBRG,THANG"/>
+    </delete>
+    <select id="BaseQueryRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan" resultMap="return-result">
+      select R.ID, R.UNITKEY, DU.KDUNIT, DU.NMUNIT, R.KDKEGUNIT, RK.NMKEGUNIT, RK.NUKEG, R.IDPRGRM, RM.NMPRGRM
+      , R.ASETKEY, DA.KDASET, DA.NMASET, R.IDBRG, R.TAHUN, R.NOREG, R.KDKON, K.NMKON, R.URAIAN, R.KET, R.TGLVALID, R.THANG
+      , case when R.TGLVALID is null then 'Diajukan' else 'Diterima' end as STATUSUSULAN
+      , ltrim(rtrim(DA.KDASET)) + ' - ' + ltrim(rtrim(DA.NMASET)) AS KDNMASET
+      , (DA.KDASET+' - '+DA.NMASET + CHAR(13) + 'Tahun : ' + R.TAHUN + CHAR(13) + 'Register : ' + R.NOREG + CHAR(13) + 'Kondisi : '+isnull(K.NMKON,'')) as SPESIFIKASI
+      from RKBMD_PEMELIHARAAN R
+      left join RKBMD_MPGRM RM on RM.UNITKEY = R.UNITKEY and RM.IDPRGRM = R.IDPRGRM and RM.THANG = R.THANG
+      left join RKBMD_MKEGIATAN RK on RK.IDPRGRM = RM.IDPRGRM and RK.THANG = RM.THANG
+      left join DAFTUNIT DU on DU.UNITKEY = R.UNITKEY
+      left join DAFTASET DA on DA.ASETKEY = R.ASETKEY
+      left join KONASET K on K.KDKON = R.KDKON
+    </select>
+    <select id="QueryByAllRkbmdPemeliharaan" extends="BaseQueryRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan" resultMap="return-result">
+      where 1=1
+      and R.UNITKEY=#Unitkey#
+      and R.KDKEGUNIT=#Kdkegunit#
+      order by DA.KDASET, R.TAHUN, R.NOREG
+    </select>
+    <select id="QueryByLookupRkbmdPemeliharaan" extends="BaseQueryRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKRkbmdPemeliharaan" extends="BaseQueryRkbmdPemeliharaan" parameterClass="RkbmdPemeliharaan" resultMap="return-result">
+      where R.UNITKEY=#Unitkey# and R.KDKEGUNIT=#Kdkegunit# and R.ASETKEY=#Asetkey# and R.IDBRG=#Idbrg# and R.THANG=#Thang#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="RkbmdPemeliharaan">
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Uraian" column="URAIAN"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Thang" column="THANG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="RkbmdPemeliharaan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="RkbmdPemeliharaan">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Thang" column="THANG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

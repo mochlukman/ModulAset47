@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="MapsusutAset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="MapsusutAset" type="Usadi.Valid49.BO.MapsusutAsetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="MapsusutAset">
+      <result property="Id" column="ID"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdasetsusut" column="KDASETSUSUT"/>
+      <result property="Nmasetsusut" column="NMASETSUSUT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Asetkeysusut" column="ASETKEYSUSUT"/>
+    </resultMap>
+    <resultMap id="return-rek" class="MapsusutAset">
+      <result property="Asetkeysusut" column="ASETKEYSUSUT"/>
+      <result property="Kdasetsusut" column="KDASETSUSUT"/>
+      <result property="Nmasetsusut" column="NMASETSUSUT"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMapsusutAset" parameterMap="insert-param">
+      <generate table="MapsusutAset"/>
+    </insert>
+    <update id="UpdateByMapsusutAset" parameterMap="update-param">
+      <generate table="MapsusutAset" by="ASETKEYSUSUT,ASETKEY"/>
+    </update>
+    <update id="UpdateByValidRevMapsusutAset" parameterClass="MapsusutAset">
+      update MAPSUSUTASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMapsusutAset" parameterClass="MapsusutAset">
+      update MAPSUSUTASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMapsusutAset" parameterMap="delete-param">
+      <generate table="MapsusutAset" by="ASETKEYSUSUT,ASETKEY"/>
+    </delete>
+    <select id="BaseQueryMapsusutAset" parameterClass="MapsusutAset" resultMap="return-result">
+      select M.ID, M.ASETKEY, D1.KDASET, D1.NMASET, M.ASETKEYSUSUT, D2.KDASET as KDASETSUSUT, D2.NMASET as NMASETSUSUT
+      from MAPSUSUTASET M
+      left join DAFTASET D1 on D1.ASETKEY = M.ASETKEY
+      left join DAFTASET D2 on D2.ASETKEY = M.ASETKEYSUSUT
+    </select>
+    <select id="QueryByAllMapsusutAset" extends="BaseQueryMapsusutAset" parameterClass="MapsusutAset" resultMap="return-result">
+      where 1=1
+      AND M.ASETKEYSUSUT = #Asetkeysusut#
+    </select>
+    <select id="QueryByPenyusutanMapsusutAset" parameterClass="MapsusutAset" resultMap="return-rek">
+      select D.ASETKEY as ASETKEYSUSUT, D.KDASET as KDASETSUSUT, D.NMASET as NMASETSUSUT
+      from DAFTASET D
+      where 1=1
+      and D.TYPE = 'D'
+      and (LEFT(D.KDASET,6)='1.3.7.' OR LEFT(D.KDASET,6)='1.5.5.')
+      order by D.KDASET
+    </select>
+    <select id="QueryByLookupMapsusutAset" extends="BaseQueryMapsusutAset" parameterClass="MapsusutAset" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKMapsusutAset" extends="BaseQueryMapsusutAset" parameterClass="MapsusutAset" resultMap="return-result">
+      where M.ASETKEY = #Asetkey# and M.ASETKEYSUSUT = #Asetkeysusut#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="MapsusutAset">
+      <parameter property="Asetkeysusut" column="ASETKEYSUSUT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="MapsusutAset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="MapsusutAset">
+      <parameter property="Asetkeysusut" column="ASETKEYSUSUT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

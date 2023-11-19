@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daskr" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+      <typeAlias alias="Daskr" type="Usadi.Valid49.BO.DaskrControl, Usadi.Valid49.Aset.DM" />
+    </alias>
+    <resultMaps>
+      <resultMap id="return-result" class="Daskr">
+			  <result property="Id" column="ID"/>
+        <result property="Nilai" column="NILAI"/>
+			  <result property="Kdunit" column="KDUNIT"/>
+			  <result property="Nmunit" column="NMUNIT"/>
+        <result property="Kdper" column="KDPER"/>
+        <result property="Nmper" column="NMPER"/>
+        <result property="Thang" column="THANG"/>
+        <result property="Mtgkey" column="MTGKEY"/>
+        <result property="Kdkegunit" column="KDKEGUNIT"/>
+        <result property="Idxdask" column="IDXDASK"/>
+        <result property="Idxkode" column="IDXKODE"/>
+			  <result property="Unitkey" column="UNITKEY"/>
+      </resultMap>
+    </resultMaps>
+    <statements>
+      <insert id="InsertDaskr" parameterMap="insert-param">
+        <generate table="DASKR"/>
+      </insert>
+      <update id="UpdateByDaskr" parameterMap="update-param">
+        <generate table="DASKR" by="THANG,MTGKEY,KDKEGUNIT,IDXDASK,IDXKODE,UNITKEY"/>
+      </update>
+      <update id="UpdateByValidRevDaskr" parameterClass="Daskr">
+        update DASKR set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+      </update>
+      <update id="UpdateByUnValidRevDaskr" parameterClass="Daskr">
+        update DASKR set REV_BY='' and REV_DATE=null
+      </update>
+      <delete id="DeleteByDaskr" parameterMap="delete-param">
+        <generate table="DASKR" by="THANG,MTGKEY,KDKEGUNIT,IDXDASK,IDXKODE,UNITKEY"/>
+      </delete>
+      <select id="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        select A.ID, A.UNITKEY, D.KDUNIT,D.NMUNIT, A.IDXDASK, A.IDXKODE
+        , A.KDKEGUNIT, A.MTGKEY, B.KDPER, B.NMPER, A.NILAI,A.THANG
+        from DASKR A
+        left join MATANGR B on A.MTGKEY=B.MTGKEY
+        left join SKDASK C on A.IDXDASK=C.IDXDASK and A.UNITKEY = C.UNITKEY
+        left join DAFTUNIT D on A.UNITKEY=D.UNITKEY
+      </select>
+      <select id="QueryByAllDaskr" extends="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        where 1=1
+        and A.IDXKODE=#Idxkode#
+        and A.UNITKEY=#Unitkey#
+        and A.IDXDASK=#Idxdask#
+        and A.KDKEGUNIT=#Kdkegunit#
+        and C.KDTAHAP=#Kdtahap#
+        and A.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByLookupDaskr" extends="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        where 1=1
+      </select>
+      <select id="QueryByPengadaanDaskr" extends="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        where A.UNITKEY=#Unitkey#
+        and C.KDTAHAP=#Kdtahap#
+        and A.KDKEGUNIT=#Kdkegunit#
+        and A.MTGKEY not in(select MTGKEY from ASET_BERITADETR where UNITKEY=#Unitkey# and NOBA=#Noba#)
+        and left(B.KDPER,2)='5.'
+        and A.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByRenovDaskr" extends="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        where A.UNITKEY=#Unitkey#
+        and C.KDTAHAP=#Kdtahap#
+        and A.KDKEGUNIT=#Kdkegunit#
+        and A.MTGKEY not in(select MTGKEY from ASET_BERITADETR where UNITKEY=#Unitkey# and NOBA=#Nobarenov#)
+        and A.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="LoadByPKDaskr" extends="BaseQueryDaskr" parameterClass="Daskr" resultMap="return-result">
+        where A.UNITKEY=#Unitkey# and A.IDXDASK=#Idxdask# and A.IDXKODE=#Idxkode# and A.KDKEGUNIT=#Kdkegunit# and A.MTGKEY=#Mtgkey#
+      </select>
+    </statements>
+    <parameterMaps>
+      <parameterMap id="insert-param" class="Daskr">
+        <parameter property="Nilai" column="NILAI"/>
+        <parameter property="Thang" column="THANG"/>
+        <parameter property="Mtgkey" column="MTGKEY"/>
+        <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+        <parameter property="Idxdask" column="IDXDASK"/>
+        <parameter property="Idxkode" column="IDXKODE"/>
+        <parameter property="Unitkey" column="UNITKEY"/>
+      </parameterMap>
+      <parameterMap id="update-param" extends="insert-param" class="Daskr">
+      </parameterMap>
+      <parameterMap id="delete-param" class="Daskr">
+        <parameter property="Thang" column="THANG"/>
+        <parameter property="Mtgkey" column="MTGKEY"/>
+        <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+        <parameter property="Idxdask" column="IDXDASK"/>
+        <parameter property="Idxkode" column="IDXKODE"/>
+        <parameter property="Unitkey" column="UNITKEY"/>
+      </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

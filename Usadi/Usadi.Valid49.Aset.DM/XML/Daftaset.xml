@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftaset" type="Usadi.Valid49.BO.DaftasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftaset">
+      <result property="Id" column="ID"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Nklas" column="NKLAS"/>
+      <result property="Kdkib" column="KDKIB"/>
+      <result property="Golkib" column="GOLKIB"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-kdlevelmin" class="Daftaset">
+      <result property="Kdlevelmin" column="KDLEVELMIN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftaset" parameterMap="insert-param">
+      <generate table="Daftaset"/>
+    </insert>
+    <update id="UpdateByDaftaset" parameterMap="update-param">
+      <generate table="Daftaset" by="ASETKEY"/>
+    </update>
+    <update id="UpdateByHeaderDaftaset" parameterClass="Daftaset">
+      update DAFTASET set NKLAS = #Nklas#, UMEKO = #Umeko# where KDASET like RTRIM(#Kdaset#)+'%'
+      update DAFTASET set MTGLEVEL = #Kdlevel#, KDASET = #Kdaset#, NMASET = #Nmaset#, TYPE = #Type# where ASETKEY = #Asetkey#
+    </update>
+    <update id="UpdateByValidRevDaftaset" parameterClass="Daftaset">
+      update DAFTASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftaset" parameterClass="Daftaset">
+      update DAFTASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftaset" parameterMap="delete-param">
+      <generate table="Daftaset" by="ASETKEY"/>
+    </delete>
+    <select id="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      select D.ID, D.ASETKEY, D.KDASET, D.NMASET, D.MTGLEVEL as KDLEVEL, rtrim(D.TYPE) as TYPE, D.UMEKO, D.NKLAS, J.KDKIB, JK.GOLKIB
+      from DAFTASET D
+      left join JNSKIBASET J on J.K_BRG = left(d.KDASET,9)
+      left join JNSKIB JK on JK.KDKIB = J.KDKIB
+    </select>
+    <select id="QueryByAllDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      order by D.KDASET
+    </select>
+    <select id="QueryByKibfilterDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9)=#Kdaset#
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByKibDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB=#Kdkib#)
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByKibhDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB=#Kdkib#)
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByObjekDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+       where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '4'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB<'08' and KDKIB<>'06')
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByObjeksusutDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+       where 1=1
+      and D.MTGLEVEL = '4'
+      and LEFT(D.KDASET,6) in('1.3.2.','1.3.3.','1.3.4.','1.3.5.','1.5.3.')
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByObjekAsetlainnyaDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+       where 1=1
+      and left(D.KDASET,6) = '1.5.4.'
+      and D.MTGLEVEL = '6'
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByObjekPersediaanDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+       where 1=1
+      and left(D.KDASET,6) = '1.1.7.'
+      and D.MTGLEVEL = '4'
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByObjekkibbDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '4'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB='02')
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByKelompokDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9)=#Kdaset#
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByKirDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '4'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB in('02','05'))
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByJnskibasetDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '4'
+      and D.ASETKEY not in(select ASETKEY from JNSKIBASET)
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByMapbljasetDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and (left(D.KDASET,4) <> '1.1.' OR left(D.KDASET,6) = '1.1.7.') 
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9)=#Kdaset# 
+      and D.ASETKEY not in(select ASETKEY from MAPBLJASET where KDDANA=#Kddana# 
+      and THANG = (select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang'))
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByMapsusutAsetDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and (left(D.KDASET,4) <> '1.1.') 
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9)=#Kdaset# 
+      and D.ASETKEY not in(select ASETKEY from MAPSUSUTASET)
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByMapnrcasetDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '7'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB=#Kdkib#)
+      and D.ASETKEY not in(select ASETKEY from MAPNRCASET)
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByBastDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and (left(D.KDASET,4) <> '1.1.' or left(D.KDASET,6) = '1.1.7.')
+      and D.MTGLEVEL = '7'
+      and D.ASETKEY in(select ASETKEY from MAPBLJASET where MTGKEY=#Mtgkey# and KDDANA=#Kddana# and THANG=(select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang'))
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByBosbludDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and (left(D.KDASET,4) <> '1.1.' or left(D.KDASET,6) = '1.1.7.')
+      and D.MTGLEVEL = '7'
+      and D.ASETKEY in(select ASETKEY from MAPBLJASET where MTGKEY=#Mtgkey# and KDDANA=#Kddana# and THANG=(select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang'))
+      and left(D.KDASET,9)=#Kdaset#
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByAsettetapDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and D.MTGLEVEL = '1'
+      union all
+      select D.ID, D.ASETKEY, D.KDASET, D.NMASET, D.MTGLEVEL as KDLEVEL, rtrim(D.TYPE) as TYPE, D.UMEKO, D.NKLAS, J.KDKIB       
+      from DAFTASET D
+      left join JNSKIBASET J on J.K_BRG = left(d.KDASET,9)       
+      where left(D.KDASET,4) = '1.3.' and left(D.KDASET,6) <> '1.3.6.'  order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryBySusutDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '4'
+      and left(D.KDASET,9) in(select K_BRG from JNSKIBASET where KDKIB in('02','03','04','07'))
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByPersediaanDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      and left(D.KDASET,4) = '1.1.'
+      and D.MTGLEVEL = '7'
+    </select>
+    <select id="QueryByRusakberatDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      and left(D.KDASET,15) = '1.5.4.01.01.01.'
+      and D.MTGLEVEL = '7'
+    </select>
+    <select id="QueryBySejarahDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      and left(D.KDASET,15) = '1.3.5.02.02.02.'
+      and D.MTGLEVEL = '7'
+    </select>
+    <select id="QueryByNonoperasionalDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      and left(D.KDASET,15) = '1.5.4.01.01.02.'
+      and D.MTGLEVEL = '7'
+    </select>
+    <select id="QueryByAsetlain2Daftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+      and left(D.KDASET,15) = '1.5.4.01.01.03.'
+      and D.MTGLEVEL = '7'
+    </select>
+    <select id="QueryByKdasetDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where D.KDASET=#Kdaset#
+    </select>
+    <select id="QueryByLookupDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
+      where D.ASETKEY = #Asetkey#
+    </select>
+    <select id="LoadByKdlevelminDaftaset" parameterClass="Daftaset" resultMap="return-kdlevelmin">
+      select min(MTGLEVEL) as KDLEVELMIN from DAFTASET
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftaset">
+      <parameter property="Kdlevel" column="MTGLEVEL"/>
+      <parameter property="Kdaset" column="KDASET"/>
+      <parameter property="Nmaset" column="NMASET"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Umeko" column="UMEKO"/>
+      <parameter property="Nklas" column="NKLAS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftaset">
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

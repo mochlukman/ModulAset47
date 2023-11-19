@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jnskibaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jnskibaset" type="Usadi.Valid49.BO.JnskibasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jnskibaset">
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdkib" column="KDKIB"/>
+      <result property="Nmkib" column="NMKIB"/>
+      <result property="K_brg" column="K_BRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJnskibaset" parameterMap="insert-param">
+      <generate table="Jnskibaset"/>
+    </insert>
+    <update id="UpdateByJnskibaset" parameterMap="update-param">
+      <generate table="Jnskibaset" by="K_BRG"/>
+    </update>
+    <update id="UpdateByValidRevJnskibaset" parameterClass="Jnskibaset">
+      update JNSKIBASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJnskibaset" parameterClass="Jnskibaset">
+      update JNSKIBASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJnskibaset" parameterMap="delete-param">
+      <generate table="Jnskibaset" by="K_BRG"/>
+    </delete>
+    <select id="BaseQueryJnskibaset" parameterClass="Jnskibaset" resultMap="return-result">
+      select J.K_BRG, J.ASETKEY, D.KDASET, D.NMASET, J.KDKIB, JK.NMKIB
+      from JNSKIBASET J
+      left join DAFTASET as D on D.ASETKEY = J.ASETKEY
+      left join JNSKIB as JK on JK.KDKIB = J.KDKIB
+    </select>
+    <select id="QueryByAllJnskibaset" extends="BaseQueryJnskibaset" parameterClass="Jnskibaset" resultMap="return-result">
+      where 1=1
+      and J.KDKIB = #Kdkib#
+      order by J.K_BRG
+    </select>
+    <select id="QueryByLookupJnskibaset" extends="BaseQueryJnskibaset" parameterClass="Jnskibaset" resultMap="return-result">
+      where 1=1
+      order by J.K_BRG
+    </select>
+    <select id="LoadByPKJnskibaset" extends="BaseQueryJnskibaset" parameterClass="Jnskibaset" resultMap="return-result">
+      where J.K_BRG = #K_brg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jnskibaset">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Kdkib" column="KDKIB"/>
+      <parameter property="K_brg" column="K_BRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jnskibaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jnskibaset">
+      <parameter property="K_brg" column="K_BRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

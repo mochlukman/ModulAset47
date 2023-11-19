@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdPgrmunit" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="RkbmdPgrmunit" type="Usadi.Valid49.BO.RkbmdPgrmunitControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="RkbmdPgrmunit">
+      <result property="Id" column="ID"/>
+      <result property="Target" column="TARGET"/>
+      <result property="Sasaran" column="SASARAN"/>
+      <result property="Noprio" column="NOPRIO"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Kdunit" column="NMUNIT"/>
+      <result property="Nuprgrm" column="NUPRGRM"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertRkbmdPgrmunit" parameterMap="insert-param">
+      <generate table="Rkbmd_pgrmunit"/>
+    </insert>
+    <update id="UpdateByRkbmdPgrmunit" parameterMap="update-param">
+      <generate table="Rkbmd_pgrmunit" by="THANG, UNITKEY, IDPRGRM"/>
+    </update>
+    <update id="UpdateByValidRevRkbmdPgrmunit" parameterClass="RkbmdPgrmunit">
+      update RKBMD_PGRMUNIT set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevRkbmdPgrmunit" parameterClass="RkbmdPgrmunit">
+      update RKBMD_PGRMUNIT set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByRkbmdPgrmunit" parameterMap="delete-param">
+      <generate table="Rkbmd_pgrmunit" by="THANG, UNITKEY, IDPRGRM"/>
+    </delete>
+    <select id="BaseQueryRkbmdPgrmunit" parameterClass="RkbmdPgrmunit" resultMap="return-result">
+      select P.ID, P.UNITKEY, P.IDPRGRM, P.TARGET, P.SASARAN, P.NOPRIO, P.THANG
+      , rtrim(isnull(D.KDUNIT,(select rtrim(numdigit) from struunit where kdlevel='1')))+rtrim(C.NUPRGRM) as NUPRGRM, C.NMPRGRM,
+      B.KDUNIT, B.NMUNIT
+      from RKBMD_PGRMUNIT P
+      left outer join DAFTUNIT B on P.UNITKEY=B.UNITKEY
+      left outer join RKBMD_MPGRM C on P.IDPRGRM=C.IDPRGRM
+      left outer join DAFTUNIT D on C.UNITKEY=D.UNITKEY
+    </select>
+    <select id="QueryByAllRkbmdPgrmunit" extends="BaseQueryRkbmdPgrmunit" parameterClass="RkbmdPgrmunit" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      and P.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by P.IDPRGRM
+    </select>
+    <select id="QueryByLookupRkbmdPgrmunit" extends="BaseQueryRkbmdPgrmunit" parameterClass="RkbmdPgrmunit" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      order by P.IDPRGRM
+    </select>
+    <select id="LoadByPKRkbmdPgrmunit" extends="BaseQueryRkbmdPgrmunit" parameterClass="RkbmdPgrmunit" resultMap="return-result">
+      where P.IDPRGRM = #Idprgrm#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="RkbmdPgrmunit">
+      <parameter property="Target" column="TARGET"/>
+      <parameter property="Sasaran" column="SASARAN"/>
+      <parameter property="Noprio" column="NOPRIO"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="RkbmdPgrmunit">
+    </parameterMap>
+    <parameterMap id="delete-param" class="RkbmdPgrmunit">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

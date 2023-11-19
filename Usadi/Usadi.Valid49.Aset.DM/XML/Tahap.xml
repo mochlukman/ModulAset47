@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Tahap" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Tahap" type="Usadi.Valid49.BO.TahapControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Tahap">
+      <result property="Id" column="ID"/>
+      <result property="Uraian" column="URAIAN"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertTahap" parameterMap="insert-param">
+      <generate table="Tahap"/>
+    </insert>
+    <update id="UpdateByTahap" parameterMap="update-param">
+      <generate table="Tahap" by="KDTAHAP"/>
+    </update>
+    <update id="UpdateByValidRevTahap" parameterClass="Tahap">
+      update TAHAP set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevTahap" parameterClass="Tahap">
+      update TAHAP set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByTahap" parameterMap="delete-param">
+      <generate table="Tahap" by="KDTAHAP"/>
+    </delete>
+    <select id="BaseQueryTahap" parameterClass="Tahap" resultMap="return-result">
+      select D.ID, D.KDTAHAP, D.URAIAN
+      from TAHAP D
+    </select>
+    <select id="QueryByAllTahap" extends="BaseQueryTahap" parameterClass="Tahap" resultMap="return-result">
+      where 1=1
+      order by D.KDTAHAP
+    </select>
+    <select id="QueryByPerdaTahap" extends="BaseQueryTahap" parameterClass="Tahap" resultMap="return-result">
+      where 1=1
+      and D.KDTAHAP in('2','4')
+      order by D.KDTAHAP
+    </select>
+    <select id="QueryByLookupTahap" extends="BaseQueryTahap" parameterClass="Tahap" resultMap="return-result">
+      where 1=1
+      order by D.KDTAHAP
+    </select>
+    <select id="LoadByPKTahap" extends="BaseQueryTahap" parameterClass="Tahap" resultMap="return-result">
+      where D.KDTAHAP = #Kdtahap#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Tahap">
+      <parameter property="Uraian" column="URAIAN"/>
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Tahap">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Tahap">
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

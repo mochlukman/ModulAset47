@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+***********************************************************************************************
+website.publishproj
+
+WARNING: DO NOT MODIFY this file, it is used for the web publish process.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+***********************************************************************************************
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.30319</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4624d800-ee11-49b0-81fd-250bf64903e8}</ProjectGuid>
+    <SourceWebPhysicalPath>$(MSBuildThisFileDirectory)</SourceWebPhysicalPath>
+    <SourceWebVirtualPath>/WebCMS</SourceWebVirtualPath>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SourceWebProject>
+    </SourceWebProject>
+    <SourceWebMetabasePath>
+    </SourceWebMetabasePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- for VS2010 we need to use 10.5 but for VS2012+ we should use VisualStudioVersion -->
+    <WebPublishTargetsVersion Condition=" '$(WebPublishTargetsVersion)' =='' and '$(VisualStudioVersion)' == 10.0 ">10.5</WebPublishTargetsVersion>
+    <WebPublishTargetsVersion Condition=" '$(WebPublishTargetsVersion)'=='' ">$(VisualStudioVersion)</WebPublishTargetsVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(WebPublishTargetsVersion)</VSToolsPath>
+    <_WebPublishTargetsPath Condition=" '$(_WebPublishTargetsPath)'=='' ">$(VSToolsPath)</_WebPublishTargetsPath>
+    <AssemblyFileVersion Condition="'$(AssemblyFileVersion)' == ''">1.0.0.0</AssemblyFileVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyAttributes Include="AssemblyFileVersion">
+      <Value>$(AssemblyFileVersion)</Value>
+    </AssemblyAttributes>
+    <AssemblyAttributes Include="AssemblyVersion">
+      <Value>$(AssemblyVersion)</Value>
+    </AssemblyAttributes>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Usadi\CoreNET.Common.CR\CoreNET.Common.CR.csproj">
+      <Project>{C46F4FE0-300A-4F84-9396-3C3C93A48111}</Project>
+      <Name>CoreNET.Common.CR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Usadi\Usadi.Valid49.Aset.DM\Usadi.Valid49.Aset.DM.csproj">
+      <Project>{19C88DEC-8B1C-4927-A37D-171833734797}</Project>
+      <Name>Usadi.Valid49.Aset.DM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Usadi\Usadi.Valid49.Aset.MAT\Usadi.Valid49.Aset.MAT.csproj">
+      <Project>{FF796F92-908D-4014-848E-F5B1A23E9E06}</Project>
+      <Name>Usadi.Valid49.Aset.MAT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Usadi\Usadi.Valid49.Aset.Rpt\Usadi.Valid49.Aset.Rpt.csproj">
+      <Project>{113D7F7C-22ED-4929-96A4-72BBCCBF0F1C}</Project>
+      <Name>Usadi.Valid49.Aset.Rpt</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Usadi\Usadi.Valid49.Aset.Sys\Usadi.Valid49.Aset.Sys.csproj">
+      <Project>{46C0DB41-0FC9-4ED9-977C-67AEC99EDE8D}</Project>
+      <Name>Usadi.Valid49.Aset.Sys</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(_WebPublishTargetsPath)\Web\Microsoft.WebSite.Publishing.targets" />
+</Project>

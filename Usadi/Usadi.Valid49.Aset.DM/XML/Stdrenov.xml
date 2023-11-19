@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Stdrenov" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Stdrenov" type="Usadi.Valid49.BO.StdrenovControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Stdrenov">
+      <result property="Id" column="ID"/>
+      <result property="Prosen2" column="PROSEN2"/>
+      <result property="Umekotbh" column="UMEKOTBH"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Prosen1" column="PROSEN1"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-aset" class="Stdrenov">
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-umekotbh" class="Stdrenov">
+      <result property="Umekotbh" column="UMEKOTBH"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertStdrenov" parameterClass="Stdrenov">
+      insert into STDRENOV(ASETKEY,PROSEN1,PROSEN2,UMEKOTBH)
+      select ASETKEY, #Prosen1#, #Prosen2#, #Umekotbh# from DAFTASET
+      where rtrim(KDASET) like (select rtrim(KDASET) from DAFTASET where ASETKEY = #Asetkey#)+'%'
+    </insert>
+    <update id="UpdateByStdrenov" parameterClass="Stdrenov">
+      update STDRENOV set PROSEN2 = #Prosen2#, UMEKOTBH = #Umekotbh#
+      from STDRENOV a
+      left join DAFTASET b on b.ASETKEY = #Asetkey#
+      where a.ASETKEY in (select c.ASETKEY from DAFTASET c where rtrim(c.KDASET) like rtrim(b.KDASET)+'%')
+      and PROSEN1 = #Prosen1#
+    </update>
+    <update id="UpdateByValidRevStdrenov" parameterClass="Stdrenov">
+      update STDRENOV set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevStdrenov" parameterClass="Stdrenov">
+      update STDRENOV set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByStdrenov" parameterClass="Stdrenov">
+      delete a
+      from STDRENOV a
+      left join DAFTASET b on b.ASETKEY = #Asetkey#
+      where a.ASETKEY in (select c.ASETKEY from DAFTASET c where rtrim(c.KDASET) like rtrim(b.KDASET)+'%')
+      and a.PROSEN1 = #Prosen1#
+    </delete>
+    <select id="BaseQueryStdrenov" parameterClass="Stdrenov" resultMap="return-result">
+      select S.ID, S.ASETKEY, D.KDASET, D.NMASET, D.UMEKO, S.PROSEN1, S.PROSEN2, S.UMEKOTBH
+      from STDRENOV S
+      left join DAFTASET D on D.ASETKEY=S.ASETKEY
+    </select>
+    <select id="QueryByAllStdrenov" extends="BaseQueryStdrenov" parameterClass="Stdrenov" resultMap="return-result">
+      where 1=1
+      and S.ASETKEY = #Asetkey#
+      order by S.PROSEN1
+    </select>
+    <select id="QueryByAsetStdrenov" parameterClass="Stdrenov" resultMap="return-aset">
+      <![CDATA[
+      select D.ASETKEY, D.KDASET, D.NMASET, D.UMEKO
+      from DAFTASET D
+      where 1=1
+      and left(D.KDASET,4) <> '1.1.'
+      and D.MTGLEVEL = '5'
+      order by D.KDASET
+      ]]>
+    </select>
+    <select id="QueryByLookupStdrenov" extends="BaseQueryStdrenov" parameterClass="Stdrenov" resultMap="return-result">
+      where 1=1
+      order by S.PROSEN1
+    </select>
+    <select id="LoadByPKStdrenov" extends="BaseQueryStdrenov" parameterClass="Stdrenov" resultMap="return-result">
+      where S.ASETKEY = #Asetkey#
+    </select>
+    <select id="LoadByUmekotbhStdrenov" resultMap="return-umekotbh">
+      select UMEKOTBH from STDRENOV
+      where ASETKEY = #Asetkey# and #Prosen# between PROSEN1 and PROSEN2
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Stdrenov">
+      <parameter property="Prosen2" column="PROSEN2"/>
+      <parameter property="Umekotbh" column="UMEKOTBH"/>
+      <parameter property="Prosen1" column="PROSEN1"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Stdrenov">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Stdrenov">
+      <parameter property="Prosen1" column="PROSEN1"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Tahun" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Tahun" type="Usadi.Valid49.BO.TahunControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Tahun">
+      <result property="Id" column="ID"/>
+      <result property="Nmtahun" column="NMTAHUN"/>
+      <result property="Kdtahun" column="KDTAHUN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertTahun" parameterMap="insert-param">
+      <generate table="Tahun"/>
+    </insert>
+    <update id="UpdateByTahun" parameterMap="update-param">
+      <generate table="Tahun" by="KDTAHUN"/>
+    </update>
+    <update id="UpdateByValidRevTahun" parameterClass="Tahun">
+      update JDANA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevTahun" parameterClass="Tahun">
+      update JDANA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByTahun" parameterMap="delete-param">
+      <generate table="Tahun" by="KDTAHUN"/>
+    </delete>
+    <select id="BaseQueryTahun" parameterClass="Tahun" resultMap="return-result">
+      select T.ID, T.KDTAHUN, T.NMTAHUN
+      from TAHUN T
+    </select>
+    <select id="QueryByAllTahun" extends="BaseQueryTahun" parameterClass="Tahun" resultMap="return-result">
+      where 1=1
+      order by T.KDTAHUN
+    </select>
+    <select id="QueryByEntryTahun" parameterClass="Tahun" resultMap="return-result">
+      <![CDATA[
+      select T.ID, T.KDTAHUN, T.NMTAHUN
+      from TAHUN T
+      where cast(T.KDTAHUN as int) <= (select cast(CONFIGVAL as int) CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      order by T.KDTAHUN
+      ]]>
+    </select>
+    <select id="QueryBySusutTahun" parameterClass="Tahun" resultMap="return-result">
+      <![CDATA[
+      select T.ID, T.KDTAHUN, T.NMTAHUN
+      from TAHUN T
+      where cast(T.KDTAHUN as int) > '2014'
+      order by T.KDTAHUN
+      ]]>
+    </select>
+    <select id="QueryByLookupTahun" extends="BaseQueryTahun" parameterClass="Tahun" resultMap="return-result">
+      where 1=1
+      order by T.KDTAHUN
+    </select>
+    <select id="LoadByPKTahun" extends="BaseQueryTahun" parameterClass="Tahun" resultMap="return-result">
+      <!--where T.KDTAHUN = #Tahun#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Tahun">
+      <parameter property="Nmtahun" column="NMTAHUN"/>
+      <parameter property="Kdtahun" column="KDTAHUN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Tahun">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Tahun">
+      <parameter property="Kdtahun" column="KDTAHUN"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

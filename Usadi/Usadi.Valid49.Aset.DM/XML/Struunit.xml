@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Struunit" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Struunit" type="Usadi.Valid49.BO.StruunitControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Struunit">
+      <result property="Nmlevel" column="NMLEVEL"/>
+      <result property="Numdigit" column="NUMDIGIT"/>
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+    <resultMap id="return-result-level" class="Struunit">
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertStruunit" parameterMap="insert-param">
+      <generate table="Struunit"/>
+    </insert>
+    <update id="UpdateByStruunit" parameterMap="update-param">
+      <generate table="Struunit" by="KDLEVEL"/>
+    </update>
+    <update id="UpdateByValidRevStruunit" parameterClass="Struunit">
+      update STRUUNIT set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevStruunit" parameterClass="Struunit">
+      update STRUUNIT set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByStruunit" parameterMap="delete-param">
+      <generate table="Struunit" by="KDLEVEL"/>
+    </delete>
+    <select id="BaseQueryStruunit" parameterClass="Struunit" resultMap="return-result">
+      select S.NMLEVEL, S.NUMDIGIT, rtrim(S.KDLEVEL) KDLEVEL
+      from STRUUNIT S
+    </select>
+    <select id="QueryByAllStruunit" extends="BaseQueryStruunit" parameterClass="Struunit" resultMap="return-result">
+      where 1=1
+      order by S.KDLEVEL
+    </select>
+    <select id="QueryByLevelStruunit" parameterClass="Struunit" resultMap="return-result-level">
+      select cast(isnull(max(S.KDLEVEL),0) as varchar) KDLEVEL from STRUUNIT as S
+    </select>
+    <select id="QueryByLookupStruunit" extends="BaseQueryStruunit" parameterClass="Struunit" resultMap="return-result">
+      where 1=1
+      order by S.KDLEVEL
+    </select>
+    <select id="LoadByPKStruunit" extends="BaseQueryStruunit" parameterClass="Struunit" resultMap="return-result">
+      <!--where S.KDLEVEL = #Kdlevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Struunit">
+      <parameter property="Nmlevel" column="NMLEVEL"/>
+      <parameter property="Numdigit" column="NUMDIGIT"/>
+      <parameter property="Level" column="KDLEVEL"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Struunit">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Struunit">
+      <parameter property="Level" column="KDLEVEL"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

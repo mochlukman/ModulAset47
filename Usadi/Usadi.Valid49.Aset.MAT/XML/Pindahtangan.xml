@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Pindahtangan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Pindahtangan" type="Usadi.Valid49.BO.PindahtanganControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Pindahtangan">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nopindahtangan" column="NOPINDAHTANGAN"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Tglpindahtangan" column="TGLPINDAHTANGAN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Pindahtangan">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPindahtangan" parameterClass="Pindahtangan">
+      insert into ASET_PINDAHTANGAN(UNITKEY,NOPINDAHTANGAN,KDTANS,TGLPINDAHTANGAN,KET,TGLVALID)
+      values(#Unitkey#,#Nopindahtangan#,#Kdtans#,#Tglpindahtangan#,#Ket#,null)
+    </insert>
+    <update id="UpdateByPindahtangan" parameterClass="Pindahtangan">
+      update ASET_PINDAHTANGAN set TGLPINDAHTANGAN=#Tglpindahtangan#,KET=#Ket#
+      where UNITKEY=#Unitkey# and NOPINDAHTANGAN=#Nopindahtangan# and KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateBySahPindahtangan" parameterClass="Pindahtangan">
+      update ASET_PINDAHTANGAN set TGLVALID = TGLPINDAHTANGAN,TGLPINDAHTANGAN=#Tglpindahtangan#,KET=#Ket#
+      where UNITKEY=#Unitkey# and NOPINDAHTANGAN=#Nopindahtangan# and KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateByDraftPindahtangan" parameterClass="Pindahtangan">
+      update ASET_PINDAHTANGAN set TGLVALID = NULL
+      where UNITKEY=#Unitkey# and NOPINDAHTANGAN=#Nopindahtangan# and KDTANS=#Kdtans#
+    </update>
+    <delete id="DeleteByPindahtangan" parameterMap="delete-param">
+      <generate table="Aset_pindahtangan" by="UNITKEY,NOPINDAHTANGAN,KDTANS"/>
+    </delete>
+    <select id="BaseQueryPindahtangan" parameterClass="Pindahtangan" resultMap="return-result">
+      select AH.ID, AH.UNITKEY, AH.NOPINDAHTANGAN, AH.KDTANS, J.NMTRANS, AH.TGLPINDAHTANGAN, AH.KET, AH.TGLVALID
+      from ASET_PINDAHTANGAN AH
+      left join JTRANS J ON J.KDTANS = AH.KDTANS
+    </select>
+    <select id="QueryByAllPindahtangan" extends="BaseQueryPindahtangan" parameterClass="Pindahtangan" resultMap="return-result">
+      where 1=1
+      and AH.UNITKEY = #Unitkey#
+      and AH.KDTANS = #Kdtans#
+      and year(AH.TGLPINDAHTANGAN) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByCekjmldataPindahtangan" parameterClass="Pindahtangan" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PINDAHTANGANDET A
+      WHERE A.UNITKEY=#Unitkey# and A.NOPINDAHTANGAN=#Nopindahtangan# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="LoadByHapusPindahtangan" parameterClass="Pindahtangan" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PINDAHTANGAN AP
+      inner join ASET_HAPUSSKDET AH ON AH.KDTANS = AP.KDTANS and AH.UNITKEY = AP.UNITKEY and AH.NOPINDAHTANGAN = AP.NOPINDAHTANGAN
+      where AP.UNITKEY=#Unitkey# and AP.NOPINDAHTANGAN=#Nopindahtangan# and AP.KDTANS=#Kdtans#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Pindahtangan">
+      <parameter property="Id" column="ID"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nopindahtangan" column="NOPINDAHTANGAN"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Tglpindahtangan" column="TGLPINDAHTANGAN"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Pindahtangan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Pindahtangan">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nopindahtangan" column="NOPINDAHTANGAN"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

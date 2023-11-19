@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Satwaktu" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Satwaktu" type="Usadi.Valid49.BO.SatwaktuControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Satwaktu">
+      <result property="Id" column="ID"/>
+      <result property="Nmsatwaktu" column="NMSATWAKTU"/>
+      <result property="Kdsatwaktu" column="KDSATWAKTU"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSatwaktu" parameterMap="insert-param">
+      <generate table="Satwaktu"/>
+    </insert>
+    <update id="UpdateBySatwaktu" parameterMap="update-param">
+      <generate table="Satwaktu" by="KDSATWAKTU"/>
+    </update>
+    <update id="UpdateByValidRevSatwaktu" parameterClass="Satwaktu">
+      update SATWAKTU set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSatwaktu" parameterClass="Satwaktu">
+      update SATWAKTU set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteBySatwaktu" parameterMap="delete-param">
+      <generate table="Satwaktu" by="KDSATWAKTU"/>
+    </delete>
+    <select id="BaseQuerySatwaktu" parameterClass="Satwaktu" resultMap="return-result">
+      select S.ID, S.KDSATWAKTU, S.NMSATWAKTU
+      from SATWAKTU S
+    </select>
+    <select id="QueryByAllSatwaktu" extends="BaseQuerySatwaktu" parameterClass="Satwaktu" resultMap="return-result">
+      where 1=1
+      order by S.KDSATWAKTU
+    </select>
+    <select id="QueryByLookupSatwaktu" extends="BaseQuerySatwaktu" parameterClass="Satwaktu" resultMap="return-result">
+      where 1=1
+      order by S.KDSATWAKTU
+    </select>
+    <select id="LoadByPKSatwaktu" extends="BaseQuerySatwaktu" parameterClass="Satwaktu" resultMap="return-result">
+      where S.KDSATWAKTU = #Kdsatwaktu#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Satwaktu">
+      <parameter property="Nmsatwaktu" column="NMSATWAKTU"/>
+      <parameter property="Kdsatwaktu" column="KDSATWAKTU"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Satwaktu">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Satwaktu">
+      <parameter property="Kdsatwaktu" column="KDSATWAKTU"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

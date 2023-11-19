@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Pegawai" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Pegawai" type="Usadi.Valid49.BO.PegawaiControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Pegawai">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdgol" column="KDGOL"/>
+      <result property="Nmgol" column="NMGOL"/>
+      <result property="Pangkat" column="PANGKAT"/>
+      <result property="Nama" column="NAMA"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Jabatan" column="JABATAN"/>
+      <result property="Pddk" column="PDDK"/>
+      <result property="Npwp" column="NPWP"/>
+      <result property="Status" column="STATUS"/>
+      <result property="Nip" column="NIP"/>
+      <result property="Kdjbt" column="KDJBT"/>
+      <result property="Nmjbt" column="NMJBT"/>
+     </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPegawai" parameterMap="insert-param">
+      <generate table="Pegawai"/>
+    </insert>
+    <update id="UpdateByPegawai" parameterMap="update-param">
+      <generate table="Pegawai" by="NIP"/>
+    </update>
+    <update id="UpdateByValidRevPegawai" parameterClass="Pegawai">
+      update PEGAWAI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPegawai" parameterClass="Pegawai">
+      update PEGAWAI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPegawai" parameterMap="delete-param">
+      <generate table="Pegawai" by="NIP"/>
+    </delete>
+    <select id="BaseQueryPegawai" parameterClass="Pegawai" resultMap="return-result">
+      select P.ID, P.NIP, P.UNITKEY, P.KDGOL, G.NMGOL,P.KDJBT,D.NMJBT, G.PANGKAT, P.NAMA, P.ALAMAT, P.JABATAN
+      , P.PDDK, P.NPWP, P.STAKTIF as STATUS
+      from PEGAWAI P
+      left join GOLONGAN as G on G.KDGOL = P.KDGOL
+      left join DAFTJABATAN D on D.Kdjbt = P.Kdjbt
+    </select>
+    <select id="QueryByAllPegawai" extends="BaseQueryPegawai" parameterClass="Pegawai" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      order by P.NIP
+    </select>
+    <select id="QueryByLookupPegawai" extends="BaseQueryPegawai" parameterClass="Pegawai" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      order by P.NIP
+    </select>
+    <select id="LoadByPKPegawai" extends="BaseQueryPegawai" parameterClass="Pegawai" resultMap="return-result">
+      <!--where P.NIP = #Nip#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Pegawai">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdgol" column="KDGOL"/>
+      <parameter property="Nama" column="NAMA"/>
+      <parameter property="Alamat" column="ALAMAT"/>
+      <parameter property="Jabatan" column="JABATAN"/>
+      <parameter property="Pddk" column="PDDK"/>
+      <parameter property="Npwp" column="NPWP"/>
+      <parameter property="Nip" column="NIP"/>
+      <parameter property="Kdjbt" column="KDJBT"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Pegawai">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Pegawai">
+      <parameter property="Nip" column="NIP"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jbank" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jbank" type="Usadi.Valid49.BO.JbankControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jbank">
+      <result property="Id" column="ID"/>
+      <result property="Nmbank" column="NMBANK"/>
+      <result property="Uraian" column="URAIAN"/>
+      <result property="Akronim" column="AKRONIM"/>
+      <result property="Idbank" column="IDBANK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJbank" parameterMap="insert-param">
+      <generate table="Jbank"/>
+    </insert>
+    <update id="UpdateByJbank" parameterMap="update-param">
+      <generate table="Jbank" by="IDBANK"/>
+    </update>
+    <update id="UpdateByValidRevJbank" parameterClass="Jbank">
+      update JBANK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJbank" parameterClass="Jbank">
+      update JBANK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJbank" parameterMap="delete-param">
+      <generate table="Jbank" by="IDBANK"/>
+    </delete>
+    <select id="BaseQueryJbank" parameterClass="Jbank" resultMap="return-result">
+      select J.ID, J.IDBANK, J.NMBANK, J.URAIAN, J.AKRONIM
+      from JBANK J
+    </select>
+    <select id="QueryByAllJbank" extends="BaseQueryJbank" parameterClass="Jbank" resultMap="return-result">
+      where 1=1
+      order by J.IDBANK
+    </select>
+    <select id="QueryByLookupJbank" extends="BaseQueryJbank" parameterClass="Jbank" resultMap="return-result">
+      where 1=1
+      order by J.IDBANK
+    </select>
+    <select id="LoadByPKJbank" extends="BaseQueryJbank" parameterClass="Jbank" resultMap="return-result">
+      <!--where J.IDBANK = #Idbank#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jbank">
+      <parameter property="Nmbank" column="NMBANK"/>
+      <parameter property="Uraian" column="URAIAN"/>
+      <parameter property="Akronim" column="AKRONIM"/>
+      <parameter property="Idbank" column="IDBANK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jbank">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jbank">
+      <parameter property="Idbank" column="IDBANK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdKegunit" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+      <typeAlias alias="RkbmdKegunit" type="Usadi.Valid49.BO.RkbmdKegunitControl" />
+    </alias>
+    <resultMaps>
+      <resultMap id="return-result" class="RkbmdKegunit">
+        <result property="Id" column="ID"/>
+        <result property="Idprgrm" column="IDPRGRM"/>
+        <result property="Noprior" column="NOPRIOR"/>
+        <result property="Kdsifat" column="KDSIFAT"/>
+        <result property="Nip" column="NIP"/>
+        <result property="Tglakhir" column="TGLAKHIR"/>
+        <result property="Tglawal" column="TGLAWAL"/>
+        <result property="Targetp" column="TARGETP"/>
+        <result property="Lokasi" column="LOKASI"/>
+        <result property="Jumlahmin1" column="JUMLAHMIN1"/>
+        <result property="Pagu" column="PAGU"/>
+        <result property="Jumlahpls1" column="JUMLAHPLS1"/>
+        <result property="Sasaran" column="SASARAN"/>
+        <result property="Ketkeg" column="KETKEG"/>
+        <result property="Kdunit" column="KDUNIT"/>
+        <result property="Nmunit" column="NMUNIT"/>
+        <result property="Nukeg" column="NUKEG"/>
+        <result property="Nmkegunit" column="NMKEGUNIT"/>
+        <result property="Nuprgrm" column="NUPRGRM"/>
+        <result property="Nmprgrm" column="NMPRGRM"/>
+        <result property="Thang" column="THANG"/>
+        <result property="Unitkey" column="UNITKEY"/>
+        <result property="Kdkegunit" column="KDKEGUNIT"/>
+      </resultMap>
+    </resultMaps>
+    <statements>
+      <insert id="InsertRkbmdKegunit" parameterMap="insert-param">
+        <generate table="Rkbmd_kegunit"/>
+      </insert>
+      <update id="UpdateByRkbmdKegunit" parameterMap="update-param">
+        <generate table="Rkbmd_kegunit" by="UNITKEY,THANG,KDKEGUNIT"/>
+      </update>
+      <update id="UpdateByValidRevRkbmdKegunit" parameterClass="RkbmdKegunit">
+        update RKBMD_KEGUNIT set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+      </update>
+      <update id="UpdateByUnValidRevRkbmdKegunit" parameterClass="RkbmdKegunit">
+        update RKBMD_KEGUNIT set REV_BY='' and REV_DATE=null
+      </update>
+      <delete id="DeleteByRkbmdKegunit" parameterMap="delete-param">
+        <generate table="Rkbmd_kegunit" by="UNITKEY,THANG,KDKEGUNIT"/>
+      </delete>
+      <select id="BaseQueryRkbmdKegunit" parameterClass="RkbmdKegunit" resultMap="return-result">
+        select  A.ID, A.UNITKEY,  A.KDKEGUNIT, A.IDPRGRM, A.NOPRIOR, A.KDSIFAT, A.NIP
+        , A.TGLAKHIR, A.TGLAWAL, A.TARGETP, A.LOKASI, A.JUMLAHMIN1, A.PAGU, A.JUMLAHPLS1
+        , A.SASARAN, A.KETKEG, A.THANG, B.NUPRGRM, B.NMPRGRM, C.NMKEGUNIT, C.NUKEG, E.KDUNIT, E.NMUNIT
+        from RKBMD_KEGUNIT A
+        left outer join RKBMD_MPGRM B ON A.IDPRGRM=B.IDPRGRM
+        left outer join RKBMD_MKEGIATAN C ON A.KDKEGUNIT=C.KDKEGUNIT
+        left outer join DAFTUNIT E ON A.UNITKEY=E.UNITKEY
+      </select>
+      <select id="QueryByAllRkbmdKegunit" extends="BaseQueryRkbmdKegunit" parameterClass="RkbmdKegunit" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey# 
+        and A.IDPRGRM=#Idprgrm#
+        and A.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+        order by C.NUKEG
+      </select>
+      <select id="QueryByLookupRkbmdKegunit" extends="BaseQueryRkbmdKegunit" parameterClass="RkbmdKegunit" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+        order by C.NUKEG
+      </select>
+      <select id="LoadByPKRkbmdKegunit" extends="BaseQueryRkbmdKegunit" parameterClass="RkbmdKegunit" resultMap="return-result">
+        where A.UNITKEY = #Unitkey# and A.KDKEGUNIT = #Kdkegunit# and A.THANG = #Thang#
+      </select>
+    </statements>
+    <parameterMaps>
+      <parameterMap id="insert-param" class="RkbmdKegunit">
+        <parameter property="Idprgrm" column="IDPRGRM"/>
+        <parameter property="Noprior" column="NOPRIOR"/>
+        <parameter property="Kdsifat" column="KDSIFAT"/>
+        <parameter property="Nip" column="NIP"/>
+        <parameter property="Tglakhir" column="TGLAKHIR"/>
+        <parameter property="Tglawal" column="TGLAWAL"/>
+        <parameter property="Targetp" column="TARGETP"/>
+        <parameter property="Lokasi" column="LOKASI"/>
+        <parameter property="Jumlahmin1" column="JUMLAHMIN1"/>
+        <parameter property="Pagu" column="PAGU"/>
+        <parameter property="Jumlahpls1" column="JUMLAHPLS1"/>
+        <parameter property="Sasaran" column="SASARAN"/>
+        <parameter property="Ketkeg" column="KETKEG"/>
+        <parameter property="Thang" column="THANG"/>
+        <parameter property="Unitkey" column="UNITKEY"/>
+        <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      </parameterMap>
+      <parameterMap id="update-param" extends="insert-param" class="RkbmdKegunit">
+      </parameterMap>
+      <parameterMap id="delete-param" class="RkbmdKegunit">
+        <parameter property="Thang" column="THANG"/>
+        <parameter property="Unitkey" column="UNITKEY"/>
+        <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

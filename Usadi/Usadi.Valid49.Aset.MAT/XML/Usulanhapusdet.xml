@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Usulanhapusdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Usulanhapusdet" type="Usadi.Valid49.BO.UsulanhapusdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Usulanhapusdet">
+      <result property="Id" column="ID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nousulan" column="NOUSULAN"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertUsulanhapusdet" parameterMap="insert-param">
+      <generate table="Aset_usulanhapusdet"/>
+    </insert>
+    <update id="UpdateByUsulanhapusdet" parameterMap="update-param">
+      <generate table="Aset_usulanhapusdet" by="UNITKEY,NOUSULAN,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevUsulanhapusdet" parameterClass="Usulanhapusdet">
+      update ASET_USULANHAPUSDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevUsulanhapusdet" parameterClass="Usulanhapusdet">
+      update ASET_USULANHAPUSDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByUsulanhapusdet" parameterMap="delete-param">
+      <generate table="Aset_usulanhapusdet" by="UNITKEY,NOUSULAN,IDBRG"/>
+    </delete>
+    <select id="BaseQueryUsulanhapusdet" parameterClass="Usulanhapusdet" resultMap="return-result">
+      select A.ID, A.UNITKEY, DU.KDUNIT, DU.NMUNIT, A.NOUSULAN, A.IDBRG, A.ASETKEY, DA.KDASET, DA.NMASET, A.TAHUN, A.NOREG, A.KDKON, K.NMKON, A.NILAI
+      , AU.TGLVALID
+      from ASET_USULANHAPUSDET A
+      left join ASET_USULANHAPUS AU ON AU.UNITKEY = A.UNITKEY AND AU.NOUSULAN = A.NOUSULAN
+      left join DAFTASET DA ON DA.ASETKEY = A.ASETKEY
+      left join DAFTUNIT DU ON DU.UNITKEY = AU.UNITKEY
+      left join KONASET K ON K.KDKON = A.KDKON
+    </select>
+    <select id="QueryByAllUsulanhapusdet" extends="BaseQueryUsulanhapusdet" parameterClass="Usulanhapusdet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOUSULAN=#Nousulan#
+    </select>
+    <select id="QueryByLookupUsulanhapusdet" extends="BaseQueryUsulanhapusdet" parameterClass="Usulanhapusdet" resultMap="return-result">
+      where 1=1 
+      and A.UNITKEY=#Unitkey#
+      and A.NOUSULAN=#Nousulan#
+    </select>
+    <select id="LoadByPKUsulanhapusdet" extends="BaseQueryUsulanhapusdet" parameterClass="Usulanhapusdet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOUSULAN=#Nousulan#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Usulanhapusdet">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nousulan" column="NOUSULAN"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Usulanhapusdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Usulanhapusdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nousulan" column="NOUSULAN"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

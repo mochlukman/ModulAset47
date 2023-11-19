@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Penilaian" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Penilaian" type="Usadi.Valid49.BO.PenilaianControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Penilaian">
+      <result property="Id" column="ID"/>
+      <result property="Tglpenilaian" column="TGLPENILAIAN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nopenilaian" column="NOPENILAIAN"/>
+      <result property="Unitkey" column="UNITKEY"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Penilaian">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPenilaian" parameterClass="Penilaian">
+      insert into ASET_PENILAIAN(UNITKEY,NOPENILAIAN,KDTANS,TGLPENILAIAN,KET,TGLVALID)
+      values(#Unitkey#,#Nopenilaian#,#Kdtans#,#Tglpenilaian#,#Ket#,null)
+    </insert>
+    <update id="UpdateByPenilaian" parameterClass="Penilaian">
+      update ASET_PENILAIAN set TGLPENILAIAN=#Tglpenilaian#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOPENILAIAN=#Nopenilaian# and KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateBySahPenilaian" parameterClass="Penilaian">
+      update ASET_PENILAIAN set TGLVALID = #Tglvalid#
+      where UNITKEY=#Unitkey# and NOPENILAIAN=#Nopenilaian# and KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateByDraftPenilaian" parameterClass="Penilaian">
+      update ASET_PENILAIAN set TGLVALID = null
+      where UNITKEY=#Unitkey# and NOPENILAIAN=#Nopenilaian# and KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateByValidRevPenilaian" parameterClass="Penilaian">
+      update ASET_PENILAIAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPenilaian" parameterClass="Penilaian">
+      update ASET_PENILAIAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPenilaian" parameterMap="delete-param">
+      <generate table="Aset_penilaian" by="UNITKEY,NOPENILAIAN,KDTANS"/>
+    </delete>
+    <select id="BaseQueryPenilaian" parameterClass="Penilaian" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOPENILAIAN, A.KDTANS, J.NMTRANS, A.TGLPENILAIAN, A.KET, A.TGLVALID
+      from ASET_PENILAIAN A
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      left join JTRANS J ON J.KDTANS = A.KDTANS
+    </select>
+    <select id="QueryByAllPenilaian" extends="BaseQueryPenilaian" parameterClass="Penilaian" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.KDTANS=#Kdtans#
+      and year(A.TGLPENILAIAN) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupPenilaian" extends="BaseQueryPenilaian" parameterClass="Penilaian" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.KDTANS=#Kdtans#
+      and year(A.TGLPENILAIAN) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByPKPenilaian" extends="BaseQueryPenilaian" parameterClass="Penilaian" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="LoadByCekjmldataPenilaian" parameterClass="Penilaian" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PENILAIANDET A
+      where A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="LoadByKemitraanPenilaian" parameterClass="Penilaian" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_KEMITRAANDET A
+      where A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="LoadByPindahtanganPenilaian" parameterClass="Penilaian" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PINDAHTANGANDET A
+      where A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Penilaian">
+      <parameter property="Tglpenilaian" column="TGLPENILAIAN"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nopenilaian" column="NOPENILAIAN"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Penilaian">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Penilaian">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nopenilaian" column="NOPENILAIAN"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

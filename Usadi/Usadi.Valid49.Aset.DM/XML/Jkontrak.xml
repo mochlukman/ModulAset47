@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jkontrak" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jkontrak" type="Usadi.Valid49.BO.JkontrakControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jkontrak">
+      <result property="Id" column="ID"/>
+      <result property="Nmjenis" column="NMJENIS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdjenis" column="KDJENIS"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJkontrak" parameterMap="insert-param">
+      <generate table="Jkontrak"/>
+    </insert>
+    <update id="UpdateByJkontrak" parameterMap="update-param">
+      <generate table="Jkontrak" by="KDJENIS"/>
+    </update>
+    <update id="UpdateByValidRevJkontrak" parameterClass="Jkontrak">
+      update JKONTRAK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJkontrak" parameterClass="Jkontrak">
+      update JKONTRAK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJkontrak" parameterMap="delete-param">
+      <generate table="Jkontrak" by="KDJENIS"/>
+    </delete>
+    <select id="BaseQueryJkontrak" parameterClass="Jkontrak" resultMap="return-result">
+      select J.ID, J.KDJENIS, J.NMJENIS, J.KET
+      from JKONTRAK J
+    </select>
+    <select id="QueryByAllJkontrak" extends="BaseQueryJkontrak" parameterClass="Jkontrak" resultMap="return-result">
+      where 1=1
+      order by J.KDJENIS
+    </select>
+    <select id="QueryByLookupJkontrak" extends="BaseQueryJkontrak" parameterClass="Jkontrak" resultMap="return-result">
+      where 1=1
+      order by J.KDJENIS
+    </select>
+    <select id="LoadByPKJkontrak" extends="BaseQueryJkontrak" parameterClass="Jkontrak" resultMap="return-result">
+      where J.KDJENIS = #Kdjenis#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jkontrak">
+      <parameter property="Nmjenis" column="NMJENIS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdjenis" column="KDJENIS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jkontrak">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jkontrak">
+      <parameter property="Kdjenis" column="KDJENIS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

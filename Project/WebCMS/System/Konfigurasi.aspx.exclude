@@ -1,0 +1,59 @@
+<%@ Page Language="C#" AutoEventWireup="True" ValidateRequest="false" Inherits="pSistem_Konfigurasi"
+  Title="Konfigurasi Pengguna" CodeFile="Konfigurasi.aspx.cs" %>
+
+<%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+  <title>Ubah Sandi</title>
+  <script type="text/javascript">
+    var home = function () {
+      parent.home();
+    }
+  </script>
+</head>
+<body>
+  <form id="Form1" runat="server">
+  <ext:ResourceManager ID="ResourceManager1" runat="server" />
+  <ext:Viewport ID="Viewport1" runat="server" Layout="Fit">
+    <Items>
+      <ext:FormPanel ID="FormPanel1" runat="server" Title="Ubah Password" Icon="UserEdit"
+        Padding="15" MonitorValid="true" Layout="Form" Border="false" Frame="true">
+        <Items>
+          <ext:CompositeField ID="CompositeField1" runat="server" MaxWidth="400">
+            <Items>
+              <ext:TextField ID="textFilterUserid" runat="server" FieldLabel="User Id" DataIndex="Userid" />
+              <ext:Button ID="ubtn_Lookup" runat="server" Icon="Magnifier" OnDirectClick="ubtn_Lookup_Click">
+              </ext:Button>
+              <ext:TextField ID="textFilterNama" runat="server" Flex="1" DataIndex="Nama" />
+            </Items>
+          </ext:CompositeField>
+<%--          <ext:TextField ID="TextField1" runat="server" FieldLabel="Password lama" InputType="Password"
+            AnchorHorizontal="95%" IsRemoteValidation="true" MsgTarget="Side" MinWidth="150" MaxWidth="400">
+            <RemoteValidation OnValidation="CheckField" />
+          </ext:TextField>--%>
+          <ext:TextField ID="TextField2" runat="server" FieldLabel="Password baru" InputType="Password"
+            AnchorHorizontal="95%" MinWidth="150" MaxWidth="400" />
+          <ext:TextField ID="TextField3" runat="server" Vtype="password" FieldLabel="Konfirmasi password"
+            InputType="Password" MsgTarget="Side" AnchorHorizontal="95%" MinWidth="150" MaxWidth="400">
+            <CustomConfig>
+              <ext:ConfigItem Name="initialPassField" Value="TextField2" Mode="Value" />
+            </CustomConfig>
+          </ext:TextField>
+          <ext:CompositeField ID="CompositeField4" runat="server">
+            <Items>
+              <ext:Button ID="Button2" runat="server" FormBind="true" Icon="Accept" Text="OK" Margins="10 0" MinWidth="100" OnDirectClick="ubtn_ok_Click">
+              </ext:Button>
+            </Items>
+          </ext:CompositeField>
+          <ext:Label ID="Label1" runat="server" />
+        </Items>
+        <Listeners>
+          <ClientValidation Handler="#{Button2}.setDisabled(!valid);" />
+        </Listeners>
+      </ext:FormPanel>
+    </Items>
+  </ext:Viewport>
+  </form>
+</body>
+</html>

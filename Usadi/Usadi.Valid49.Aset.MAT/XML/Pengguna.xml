@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Pengguna" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Pengguna" type="Usadi.Valid49.BO.PenggunaControl, Usadi.Valid49.Aset.MAT" />
+    </alias>
+    <resultMaps>
+        <resultMap id="return-result" class="Pengguna">
+            <result property="Id" column="ID"/>
+            <result property="Kdpengguna" column="KDPENGGUNA"/>
+            <result property="Unitkeypengguna" column="UNITKEYPENGGUNA"/>
+            <result property="Tgldokpengguna" column="TGLDOKPENGGUNA"/>
+            <result property="Tglmulai" column="TGLMULAI"/>
+            <result property="Tglselesai" column="TGLSELESAI"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Statuspenggunaan" column="STATUSPENGGUNAAN"/>
+            <result property="Ket" column="KET"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Kdunitpengguna" column="KDUNITPENGGUNA"/>
+            <result property="Nmunitpengguna" column="NMUNITPENGGUNA"/>
+            <result property="Kdnmunitpengguna" column="KDNMUNITPENGGUNA"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Nmpengguna" column="NMPENGGUNA"/>
+            <result property="Nminst" column="NMINST"/>
+            <result property="Unitkey" column="UNITKEY"/>
+            <result property="Nodokpengguna" column="NODOKPENGGUNA"/>
+            <result property="Kdtans" column="KDTANS"/>
+        </resultMap>
+        <resultMap id="return-jmlbrg" class="Pengguna">
+            <result property="Jmlbrg" column="JMLBRG"/>
+        </resultMap>
+        <resultMap id="return-nodok" class="Pengguna">
+            <result property="Nodokpengguna" column="NODOKPENGGUNA"/>
+        </resultMap>
+    </resultMaps>
+    <statements>
+        <insert id="InsertPengguna" parameterClass="Pengguna">
+            insert into ASET_PENGGUNA(UNITKEY,NODOKPENGGUNA,KDTANS,KDPENGGUNA,UNITKEYPENGGUNA,TGLDOKPENGGUNA,TGLMULAI,TGLSELESAI,TGLVALID,KET)
+            values(#Unitkey#, #Nodokpengguna#, #Kdtans#, #Kdpengguna#, #Unitkeypengguna#, #Tgldokpengguna#, #Tglmulai#, #Tglselesai#, null, #Ket#)
+        </insert>
+        <update id="UpdateByPengguna" parameterClass="Pengguna">
+            update ASET_PENGGUNA set TGLDOKPENGGUNA=#Tgldokpengguna#, TGLMULAI=#Tglmulai#, TGLSELESAI=#Tglselesai#, KET=#Ket#
+            where UNITKEY=#Unitkey# and NODOKPENGGUNA=#Nodokpengguna# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateBySahPengguna" parameterClass="Pengguna">
+            update ASET_PENGGUNA set TGLVALID=#Tglvalid#
+            where UNITKEY=#Unitkey# and NODOKPENGGUNA=#Nodokpengguna# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByDraftPengguna" parameterClass="Pengguna">
+            update ASET_PENGGUNA set TGLVALID=null
+            where UNITKEY=#Unitkey# and NODOKPENGGUNA=#Nodokpengguna# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByValidRevPengguna" parameterClass="Pengguna">
+            update ASET_PENGGUNA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+        </update>
+        <update id="UpdateByUnValidRevPengguna" parameterClass="Pengguna">
+            update ASET_PENGGUNA set REV_BY='' and REV_DATE=null
+        </update>
+        <delete id="DeleteByPengguna" parameterMap="delete-param">
+            <generate table="Aset_pengguna" by="UNITKEY,NODOKPENGGUNA,KDTANS"/>
+        </delete>
+        <select id="BaseQueryPengguna" parameterClass="Pengguna" resultMap="return-result">
+            select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NODOKPENGGUNA, A.KDTANS, J.NMTRANS, A.KDPENGGUNA, DP.NMPENGGUNA, DP.NMINST, A.UNITKEYPENGGUNA
+            , DU.KDUNIT as KDUNITPENGGUNA, DU.NMUNIT as NMUNITPENGGUNA, A.TGLDOKPENGGUNA, A.TGLMULAI, A.TGLSELESAI, A.TGLVALID, A.KET
+            , ltrim(rtrim(DU.KDUNIT))+' - '+ltrim(rtrim(DU.NMUNIT)) as KDNMUNITPENGGUNA
+            , case when A.TGLVALID is null then 'Digunakan' else 'Selesai' END as STATUSPENGGUNAAN
+            from ASET_PENGGUNA A
+            left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+            left join DAFTUNIT DU ON DU.UNITKEY = A.UNITKEYPENGGUNA
+            left join DAFTPENGGUNA DP ON DP.KDPENGGUNA = A.KDPENGGUNA
+            left join JTRANS J ON J.KDTANS = A.KDTANS
+        </select>
+        <select id="QueryByAllPengguna" extends="BaseQueryPengguna" parameterClass="Pengguna" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+        </select>
+        <select id="QueryByLookupPengguna" extends="BaseQueryPengguna" parameterClass="Pengguna" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+        </select>
+        <select id="QueryByNodokPengguna" parameterClass="Pengguna" resultMap="return-nodok">
+            select NODOKPENGGUNA
+            from ASET_PENGGUNA A
+            where 1=1
+            and A.NODOKPENGGUNA=#Nodokpengguna#
+        </select>
+        <select id="LoadByPKPengguna" extends="BaseQueryPengguna" parameterClass="Pengguna" resultMap="return-result">
+            where and A.UNITKEY=#Unitkey# and A.NODOKPENGGUNA=#Nodokpengguna# and A.KDTANS=#Kdtans#
+        </select>
+        <select id="LoadByJmlbrgPengguna" parameterClass="Pengguna" resultMap="return-jmlbrg">
+            select COUNT(A.ASETKEY) JMLBRG from ASET_PENGGUNADET A
+            where A.UNITKEY=#Unitkey# and NODOKPENGGUNA=#Nodokpengguna# and KDTANS=#Kdtans#
+        </select>
+    </statements>
+    <parameterMaps>
+        <parameterMap id="insert-param" class="Pengguna">
+            <parameter property="Kdpengguna" column="KDPENGGUNA"/>
+            <parameter property="Unitkeypengguna" column="UNITKEYPENGGUNA"/>
+            <parameter property="Tgldokpengguna" column="TGLDOKPENGGUNA"/>
+            <parameter property="Tglmulai" column="TGLMULAI"/>
+            <parameter property="Tglselesai" column="TGLSELESAI"/>
+            <parameter property="Tglvalid" column="TGLVALID"/>
+            <parameter property="Ket" column="KET"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Nodokpengguna" column="NODOKPENGGUNA"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+        </parameterMap>
+        <parameterMap id="update-param" extends="insert-param" class="Pengguna">
+        </parameterMap>
+        <parameterMap id="delete-param" class="Pengguna">
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Nodokpengguna" column="NODOKPENGGUNA"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

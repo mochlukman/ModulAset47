@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Histrenov" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Histrenov" type="Usadi.Valid49.BO.HistrenovControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Histrenov">
+      <result property="Id" column="ID"/>
+      <result property="Tglbarenov" column="TGLBARENOV"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+      <result property="Nokontrak" column="NOKONTRAK"/>
+      <result property="Uraibarenov" column="URAIBARENOV"/>
+      <result property="Kdbukti" column="KDBUKTI"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nmkegunit" column="NMKEGUNIT"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Uraian" column="URAIAN"/>
+      <result property="Kdp3" column="KDP3"/>
+      <result property="Nminst" column="NMINST"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Nmbukti" column="NMBUKTI"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobarenov" column="NOBARENOV"/>
+    </resultMap>
+    <resultMap id="return-jmlbast" class="Histrenov">
+      <result property="Jmlbast" column="JMLBAST"/>
+    </resultMap>
+    <resultMap id="return-jmlbrg" class="Histrenov">
+      <result property="Jmlbrg" column="JMLBRG"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Histrenov">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertHistrenov" parameterClass="Histrenov">
+      insert into ASET_HISTRENOV(UNITKEY,NOBARENOV,TGLBARENOV,KDKEGUNIT,KDTAHAP,IDPRGRM,NOKONTRAK,URAIBARENOV,KDBUKTI,KDTANS,TGLVALID)
+      values(#Unitkey#,#Nobarenov#,#Tglbarenov#,#Kdkegunit#,#Kdtahap#,#Idprgrm#,#Nokontrak#,#Uraibarenov#,#Kdbukti#,#Kdtans#, null)
+    </insert>
+    <update id="UpdateByHistrenov" parameterClass="Histrenov">
+      update ASET_HISTRENOV set TGLBARENOV=#Tglbarenov#, URAIBARENOV=#Uraibarenov#
+      where UNITKEY=#Unitkey# and NOBARENOV=#Nobarenov#
+    </update>
+    <update id="UpdateBySahHistrenov" parameterClass="Histrenov">
+      update ASET_HISTRENOV set TGLVALID=#Tglvalid#
+      where UNITKEY=#Unitkey# and NOBARENOV=#Nobarenov#
+    </update>
+    <update id="UpdateByDraftHistrenov" parameterClass="Histrenov">
+      update ASET_HISTRENOV set TGLVALID=null
+      where UNITKEY=#Unitkey# and NOBARENOV=#Nobarenov#
+    </update>
+    <update id="UpdateByValidRevHistrenov" parameterClass="Histrenov">
+      update ASET_HISTRENOV set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevHistrenov" parameterClass="Histrenov">
+      update ASET_HISTRENOV set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByHistrenov" parameterMap="delete-param">
+      <generate table="Aset_histrenov" by="UNITKEY,NOBARENOV"/>
+    </delete>
+    <select id="BaseQueryHistrenov" parameterClass="Histrenov" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOBARENOV, A.TGLBARENOV, A.KDKEGUNIT, M.NMKEGUNIT, A.KDTAHAP
+      , A.IDPRGRM, M2.NMPRGRM, A.NOKONTRAK, K.URAIAN, K.KDP3, DP.NMINST, K.NILAI, A.URAIBARENOV, A.KDBUKTI
+      , JB.NMBUKTI, A.KDTANS, JT.NMTRANS, A.TGLVALID
+      from ASET_HISTRENOV A
+      left join KONTRAK K ON K.UNITKEY = A.UNITKEY AND K.NOKONTRAK = A.NOKONTRAK
+      left join DAFTPHK3 DP ON DP.KDP3 = K.KDP3
+      left join MKEGIATAN M ON M.KDKEGUNIT = A.KDKEGUNIT AND M.THANG = YEAR(A.TGLBARENOV)
+      left join MPGRM M2 ON M2.IDPRGRM = A.IDPRGRM AND M2.THANG = YEAR(A.TGLBARENOV)
+      left join JBUKTI JB ON JB.KDBUKTI = A.KDBUKTI
+      left join JTRANS JT ON JT.KDTANS = A.KDTANS
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+    </select>
+    <select id="QueryByAllHistrenov" extends="BaseQueryHistrenov" parameterClass="Histrenov" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      <!--and A.KDKEGUNIT=#Kdkegunit#-->
+	  and (A.KDKEGUNIT=#Kdkegunit# or isnull(#Kdkegunit#,'')='')
+      and A.KDTANS=#Kdtans#
+      and year(A.TGLBARENOV) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupHistrenov" extends="BaseQueryHistrenov" parameterClass="Histrenov" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and year(A.TGLVALID) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByPKHistrenov" extends="BaseQueryHistrenov" parameterClass="Histrenov" resultMap="return-result">
+      where A.UNITKEY = #Unitkey# and A.NOBARENOV = #Nobarenov#
+    </select>
+    <select id="LoadByJmlbastHistrenov" parameterClass="Histrenov" resultMap="return-jmlbast">
+      select COUNT(A.NOBARENOV) JMLBAST from ASET_HISTRENOV A
+      where A.UNITKEY=#Unitkey# and A.NOBARENOV=#Nobarenov#
+    </select>
+    <select id="LoadByJmlbrgHistrenov" parameterClass="Histrenov" resultMap="return-jmlbrg">
+      select COUNT(A.ASETKEY) JMLBRG from ASET_HISTRENOVDET A
+      where A.UNITKEY=#Unitkey# and A.NOBARENOV=#Nobarenov#
+    </select>
+    <select id="LoadByJmlkibHistrenov" parameterClass="Histrenov" resultMap="return-jmlkib">
+      select sum(x.NOBARENOV) as JMLKIB from (
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#
+      union all
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#
+      union all
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#
+      union all
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#
+      union all
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#
+      union all
+      select count(NODOKUMEN) as NOBARENOV from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobarenov# and KDTANS=#Kdtans#) x
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Histrenov">
+      <parameter property="Tglbarenov" column="TGLBARENOV"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+      <parameter property="Nokontrak" column="NOKONTRAK"/>
+      <parameter property="Uraibarenov" column="URAIBARENOV"/>
+      <parameter property="Kdbukti" column="KDBUKTI"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobarenov" column="NOBARENOV"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Histrenov">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Histrenov">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobarenov" column="NOBARENOV"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

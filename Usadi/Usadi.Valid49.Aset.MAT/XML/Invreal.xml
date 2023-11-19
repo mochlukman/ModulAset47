@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invreal" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invreal" type="Usadi.Valid49.BO.InvrealControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invreal">
+      <result property="Id" column="ID"/>
+      <result property="Tglbhp" column="TGLBHP"/>
+      <result property="Idxttd" column="IDXTTD"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdgudang" column="KDGUDANG"/>
+      <result property="Nmgudang" column="NMGUDANG"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Untuk" column="UNTUK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobhp" column="NOBHP"/>
+      <result property="Nobast" column="NOBAST"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <!--<insert id="InsertInvreal" parameterMap="insert-param">
+      <generate table="INV_REAL"/>
+    </insert>-->
+    <insert id="InsertInvreal" parameterClass="Invreal">
+      INSERT INTO INV_REAL(NOBHP,TGLBHP,IDXTTD,KDGUDANG,KDTANS,UNTUK,KET,UNITKEY,NOBAST)
+      VALUES (#Nobhp#,#Tglbhp#,#Idxttd#,#Kdgudang#,#Kdtans#,#Untuk#,#Ket#,#Unitkey#,#Nobast#)
+
+      INSERT INTO INV_REALDET(UNITKEY, NOBHP, IDBRG,NUSP,SPESIFIKASI, KDSATUAN,MERK,NILAI)
+      SELECT UNITKEY, #Nobhp#, IDBRG,NUSP,SPESIFIKASI, KDSATUAN,MERK,NILAI FROM INV_PENYALURANDET
+      WHERE UNITKEY=#Unitkey# AND NOSPPB IN(SELECT NOSPPB FROM INV_BAST WHERE NOBAST=#Nobast# AND UNITKEY=#Unitkey#)
+    </insert>
+    <update id="UpdateByInvreal" parameterMap="update-param">
+      <generate table="INV_REAL" by="UNITKEY,NOBHP"/>
+    </update>
+    <update id="UpdateByValidRevInvreal" parameterClass="Invreal">
+      update INV_REAL set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvreal" parameterClass="Invreal">
+      update INV_REAL set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvreal" parameterMap="delete-param">
+      <generate table="INV_REAL" by="UNITKEY,NOBHP"/>
+    </delete>
+    <select id="BaseQueryInvreal" parameterClass="Invreal" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOBHP) as NOBHP,rtrim(I.NOBAST) as NOBAST,I.TGLBHP,I1.TGLBAST,
+      rtrim(I.IDXTTD) as IDXTTD,I.TGLVALID,rtrim(I.KDGUDANG) as KDGUDANG,rtrim(D.NMGUDANG) as NMGUDANG,rtrim(I.KDTANS) as KDTANS,
+      rtrim(I.UNTUK) as UNTUK,rtrim(I.KET) as KET,I.DATECREATE,I.DATEUPDATE
+      from INV_REAL I
+      LEFT OUTER JOIN INV_BAST I1 ON I.UNITKEY=I1.UNITKEY AND I.NOBAST=I1.NOBAST
+      LEFT OUTER JOIN DAFTGUDANG D ON I.UNITKEY=D.UNITKEY AND I.KDGUDANG=D.KDGUDANG
+    </select>
+    <select id="QueryByAllInvreal" extends="BaseQueryInvreal" parameterClass="Invreal" resultMap="return-result">
+      where 1=1
+      and I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOBHP
+    </select>
+    <select id="QueryByLookupInvreal" extends="BaseQueryInvreal" parameterClass="Invreal" resultMap="return-result">
+      where 1=1
+      and I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOBHP
+    </select>
+    <select id="LoadByPKInvreal" extends="BaseQueryInvreal" parameterClass="Invreal" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBHP = #Nobhp#
+    </select>
+    <select id="LoadByIDInvreal" extends="BaseQueryInvreal" parameterClass="Invreal" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBHP = #Nobhp#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invreal">
+      <parameter property="Tglbhp" column="TGLBHP"/>
+      <parameter property="Idxttd" column="IDXTTD"/>
+      <parameter property="Kdgudang" column="KDGUDANG"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Untuk" column="UNTUK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobhp" column="NOBHP"/>
+      <parameter property="Nobast" column="NOBAST"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invreal">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invreal">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobhp" column="NOBHP"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

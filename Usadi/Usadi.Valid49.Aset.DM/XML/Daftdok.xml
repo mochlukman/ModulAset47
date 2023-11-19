@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftdok" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftdok" type="Usadi.Valid49.BO.DaftdokControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftdok">
+      <result property="Id" column="ID"/>
+      <result property="Nmdok" column="NMDOK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kddok" column="KDDOK"/>
+    </resultMap>
+    <resultMap id="return-result-kddok" class="Daftdok">
+      <result property="Kddok" column="KDDOK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftdok" parameterMap="insert-param">
+      <generate table="Daftdok"/>
+    </insert>
+    <update id="UpdateByDaftdok" parameterMap="update-param">
+      <generate table="Daftdok" by="KDDOK"/>
+    </update>
+    <update id="UpdateByValidRevDaftdok" parameterClass="Daftdok">
+      update DAFTDOK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftdok" parameterClass="Daftdok">
+      update DAFTDOK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftdok" parameterMap="delete-param">
+      <generate table="Daftdok" by="KDDOK"/>
+    </delete>
+    <select id="BaseQueryDaftdok" parameterClass="Daftdok" resultMap="return-result">
+      select D.ID, D.KDDOK, D.NMDOK, D.KET
+      from DAFTDOK D
+    </select>
+    <select id="QueryByAllDaftdok" extends="BaseQueryDaftdok" parameterClass="Daftdok" resultMap="return-result">
+      where 1=1
+      order by D.KDDOK
+    </select>
+    <select id="QueryByKddokDaftdok" parameterClass="Daftdok" resultMap="return-result-kddok">
+      select cast(isnull(max(D.KDDOK),0) as varchar) KDDOK from DAFTDOK as D
+    </select>
+    <select id="QueryByJabttdDaftdok" extends="BaseQueryDaftdok" parameterClass="Daftdok" resultMap="return-result">
+      where 1=1
+      and D.KDDOK not in(select KDDOK from JABTTD where UNITKEY=#Unitkey# and NIP=#Nip#)
+      order by D.KDDOK
+    </select>
+    <select id="QueryByLookupDaftdok" extends="BaseQueryDaftdok" parameterClass="Daftdok" resultMap="return-result">
+      where 1=1
+      order by D.KDDOK
+    </select>
+    <select id="LoadByPKDaftdok" extends="BaseQueryDaftdok" parameterClass="Daftdok" resultMap="return-result">
+      <!--where S.KDLEVEL = #Kdlevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftdok">
+      <parameter property="Nmdok" column="NMDOK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kddok" column="KDDOK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftdok">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftdok">
+      <parameter property="Kddok" column="KDDOK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,98 @@
+﻿#status
+{
+  position: absolute;
+  display: none;
+  right: 2px;
+  top: 64px;
+  background: #fff;
+  border: 1px solid #999;
+  width: 400px;
+  height: 188px;
+  font-size: 12px;
+}
+#avatar
+{
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: url('../Img/avatar.png');
+  border: 1px solid #999;
+  width: 96px;
+  height: 96px;
+}
+#about
+{
+  position: absolute;
+  left: 128px;
+  top: 16px;
+}
+#userid {
+  height: 16px;
+  font-weight: bold;
+  overflow: hidden;
+}
+#nama
+{
+  height: 16px;
+  font-weight: bold;
+  overflow: hidden;
+}
+#uraian {
+  height: 32px;
+  font-weight: bold;
+  overflow: hidden;
+}
+#nost, #role 
+{
+  height: 16px;
+}
+#ipaddr
+{
+  height: 16px;
+  overflow: hidden;
+  color: #777;
+  font-style: italic;
+}
+#divbuttons
+{
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  border-top: 0px;
+  width: 400px;
+  padding: 1px 0;
+}
+#buttons
+{
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  background: #eee;
+  border-top: 0px;
+  width: 100px;
+  height: 30px;
+  padding: 0px 0;
+}
+#logout
+{
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid #999;
+  width: 38px;
+  height: 20px;
+  text-align: center;
+  padding: 4px 32px;
+}
+.logouthidden
+{
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid #999;
+  width: 38px;
+  height: 20px;
+  text-align: center;
+  padding: 4px 32px;
+  visibility:hidden;
+}

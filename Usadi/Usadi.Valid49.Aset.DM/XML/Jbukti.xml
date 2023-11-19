@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jbukti" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jbukti" type="Usadi.Valid49.BO.JbuktiControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jbukti">
+      <result property="Id" column="ID"/>
+      <result property="Nmbukti" column="NMBUKTI"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdbukti" column="KDBUKTI"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJbukti" parameterMap="insert-param">
+      <generate table="Jbukti"/>
+    </insert>
+    <update id="UpdateByJbukti" parameterMap="update-param">
+      <generate table="Jbukti" by="KDBUKTI"/>
+    </update>
+    <update id="UpdateByValidRevJbukti" parameterClass="Jbukti">
+      update JBUKTI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJbukti" parameterClass="Jbukti">
+      update JBUKTI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJbukti" parameterMap="delete-param">
+      <generate table="Jbukti" by="KDBUKTI"/>
+    </delete>
+    <select id="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      select J.ID, J.KDBUKTI, J.NMBUKTI, J.KET
+      from JBUKTI J
+    </select>
+    <select id="QueryByAllJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByBastJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      and J.KDBUKTI in('01','02')
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByBatalJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      and J.KDBUKTI in('09','10','11','12','13','14')
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByLainnyaJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      and J.KDBUKTI in('04','05','06','07','08')
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByTukarJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      and J.KDBUKTI in('05','06','07')
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByJanjikontrakJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      and J.KDBUKTI in('09')
+      order by J.KDBUKTI
+    </select>
+    <select id="QueryByLookupJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where 1=1
+      order by J.KDBUKTI
+    </select>
+    <select id="LoadByPKJbukti" extends="BaseQueryJbukti" parameterClass="Jbukti" resultMap="return-result">
+      where J.KDBUKTI = #Kdbukti#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jbukti">
+      <parameter property="Nmbukti" column="NMBUKTI"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdbukti" column="KDBUKTI"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jbukti">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jbukti">
+      <parameter property="Kdbukti" column="KDBUKTI"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

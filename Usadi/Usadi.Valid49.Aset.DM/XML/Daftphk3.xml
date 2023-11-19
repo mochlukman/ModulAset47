@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftphk3" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftphk3" type="Usadi.Valid49.BO.Daftphk3Control, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftphk3">
+      <result property="Id" column="ID"/>
+      <result property="Nmp3" column="NMP3"/>
+      <result property="Nminst" column="NMINST"/>
+      <result property="Idbank" column="IDBANK"/>
+      <result property="Nmbank" column="NMBANK"/>
+      <result property="Cabangbank" column="CABANGBANK"/>
+      <result property="Alamatbank" column="ALAMATBANK"/>
+      <result property="Norekbank" column="NOREKBANK"/>
+      <result property="Kdjenis" column="KDJENIS"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Telepon" column="TELEPON"/>
+      <result property="Npwp" column="NPWP"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Stvalid" column="STVALID"/>
+      <result property="Kdp3" column="KDP3"/>
+    </resultMap>
+    <resultMap id="return-result-kdp3" class="Daftphk3">
+      <result property="Kdp3" column="KDP3"/>
+    </resultMap>
+    <resultMap id="return-cekjmlkontrak" class="Daftphk3">
+      <result property="Jmlkontrak" column="JMLKONTRAK"/>
+    </resultMap>
+    <resultMap id="return-cekjmlkemitraan" class="Daftphk3">
+      <result property="Jmlkemitraan" column="JMLKEMITRAAN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftphk3" parameterMap="insert-param">
+      <generate table="Daftphk3"/>
+    </insert>
+    <update id="UpdateByDaftphk3" parameterMap="update-param">
+      <generate table="Daftphk3" by="KDP3"/>
+    </update>
+    <update id="UpdateByValidRevDaftphk3" parameterClass="Daftphk3">
+      update DAFTPHK3 set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftphk3" parameterClass="Daftphk3">
+      update DAFTPHK3 set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftphk3" parameterMap="delete-param">
+      <generate table="Daftphk3" by="KDP3"/>
+    </delete>
+    <select id="BaseQueryDaftphk3" parameterClass="Daftphk3" resultMap="return-result">
+      select D.ID, D.KDP3, D.NMP3, D.NMINST, D.IDBANK, D2.NMBANK, D.CABANGBANK, D.ALAMATBANK, D.NOREKBANK
+      , rtrim(D.KDJENIS) KDJENIS, D.ALAMAT, D.TELEPON, D.NPWP, D.UNITKEY, DU.KDUNIT, DU.NMUNIT, D.STVALID
+      from DAFTPHK3 D
+      left join JBANK D2 on D.IDBANK = D2.IDBANK
+      left join DAFTUNIT DU on DU.UNITKEY = D.UNITKEY
+    </select>
+    <select id="QueryByAllDaftphk3" extends="BaseQueryDaftphk3" parameterClass="Daftphk3" resultMap="return-result">
+      where 1=1
+      and D.UNITKEY=#Unitkey#
+    </select>
+    <select id="QueryByKdp3Daftphk3" parameterClass="Daftphk3" resultMap="return-result-kdp3">
+      select cast(isnull(max(cast(d.KDP3 as INT)),0) as varchar) KDP3 from DAFTPHK3 AS d
+    </select>
+    <select id="QueryByLookupDaftphk3" extends="BaseQueryDaftphk3" parameterClass="Daftphk3" resultMap="return-result">
+      where 1=1
+      and D.UNITKEY=#Unitkey#
+    </select>
+    <select id="LoadByPKDaftphk3" extends="BaseQueryDaftphk3" parameterClass="Daftphk3" resultMap="return-result">
+      where D.KDP3 = #Kdp3#
+    </select>
+    <select id="LoadByCekkontrakDaftphk3" parameterClass="Daftphk3" resultMap="return-cekjmlkontrak">
+      select isnull(count(*),0) JMLKONTRAK from DAFTPHK3 D
+      inner join ASET_KEMITRAAN AK on AK.KDP3 = D.KDP3
+      where D.KDP3 = #Kdp3#
+    </select>
+    <select id="LoadByCekkemitraanDaftphk3" parameterClass="Daftphk3" resultMap="return-cekjmlkemitraan">
+      select isnull(count(*),0) JMLKEMITRAAN from DAFTPHK3 D
+      inner join KONTRAK K on K.KDP3 = D.KDP3
+      where d.KDP3 = #Kdp3#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftphk3">
+      <parameter property="Nmp3" column="NMP3"/>
+      <parameter property="Nminst" column="NMINST"/>
+      <parameter property="Idbank" column="IDBANK"/>
+      <parameter property="Cabangbank" column="CABANGBANK"/>
+      <parameter property="Alamatbank" column="ALAMATBANK"/>
+      <parameter property="Norekbank" column="NOREKBANK"/>
+      <parameter property="Kdjenis" column="KDJENIS"/>
+      <parameter property="Alamat" column="ALAMAT"/>
+      <parameter property="Telepon" column="TELEPON"/>
+      <parameter property="Npwp" column="NPWP"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Stvalid" column="STVALID"/>
+      <parameter property="Kdp3" column="KDP3"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftphk3">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftphk3">
+      <parameter property="Kdp3" column="KDP3"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

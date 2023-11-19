@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invrealdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invrealdet" type="Usadi.Valid49.BO.InvrealdetControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invrealdet">
+      <result property="Id" column="ID"/>
+      <result property="Nobapnb" column="NOBAPNB"/>
+      <result property="Nusp" column="NUSP"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merk" column="MERK"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobhp" column="NOBHP"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvrealdet" parameterMap="insert-param">
+      <generate table="INV_REALDET"/>
+    </insert>
+    <update id="UpdateByInvrealdet" parameterMap="update-param">
+      <generate table="INV_REALDET" by="UNITKEY,NOBHP,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevInvrealdet" parameterClass="Invrealdet">
+      update INV_REALDET set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvrealdet" parameterClass="Invrealdet">
+      update INV_REALDET set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvrealdet" parameterMap="delete-param">
+      <generate table="INV_REALDET" by="UNITKEY,NOBHP,IDBRG"/>
+    </delete>
+    <select id="BaseQueryInvrealdet" parameterClass="Invrealdet" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOBHP) as NOBHP,rtrim(I.IDBRG) as IDBRG,rtrim(I.NOBAPNB) as NOBAPNB,rtrim(I.NUSP) as NUSP,
+      rtrim(A.ASETKEY) as ASETKEY,rtrim(D.KDASET) as KDASET,rtrim(D.NMASET) as NMASET,
+      rtrim(I.SPESIFIKASI) as SPESIFIKASI,rtrim(I.KDSATUAN) as KDSATUAN,rtrim(S.NMSATUAN) as NMSATUAN,
+      rtrim(I.MERK) as MERK,I.NILAI,I.DATECREATE,I.DATEUPDATE
+      from INV_REALDET I
+      LEFT OUTER JOIN ASET_KIBSPESIFIKASI A ON I.UNITKEY=A.UNITKEY AND I.IDBRG=A.IDBRG AND A.KDKIB='00'
+      LEFT OUTER JOIN DAFTASET D ON A.ASETKEY=D.ASETKEY
+      LEFT OUTER JOIN SATUAN S ON I.KDSATUAN=S.KDSATUAN
+    </select>
+    <select id="QueryByAllInvrealdet" extends="BaseQueryInvrealdet" parameterClass="Invrealdet" resultMap="return-result">
+      where 1=1
+      and I.UNITKEY = #Unitkey# and I.NOBHP = #Nobhp#
+      order by I.UNITKEY,I.NOBHP,I.IDBRG
+    </select>
+    <select id="QueryByLookupInvrealdet" extends="BaseQueryInvrealdet" parameterClass="Invrealdet" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NOBHP,I.IDBRG
+    </select>
+    <select id="LoadByPKInvrealdet" extends="BaseQueryInvrealdet" parameterClass="Invrealdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBHP = #Nobhp# and I.IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByIDInvrealdet" extends="BaseQueryInvrealdet" parameterClass="Invrealdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBHP = #Nobhp# and I.IDBRG = #Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invrealdet">
+      <parameter property="Nobapnb" column="NOBAPNB"/>
+      <parameter property="Nusp" column="NUSP"/>
+      <parameter property="Spesifikasi" column="SPESIFIKASI"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Merk" column="MERK"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobhp" column="NOBHP"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invrealdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invrealdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobhp" column="NOBHP"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

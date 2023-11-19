@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Mpgrm" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Mpgrm" type="Usadi.Valid49.BO.MpgrmControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Mpgrm">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Uruskey" column="URUSKEY"/>
+      <result property="Kdurus" column="KDURUS"/>
+      <result property="Nmurus" column="NMURUS"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Nuprgrm" column="NUPRGRM"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+    </resultMap>
+    <resultMap id="return-kdgroup" class="Mpgrm">
+      <result property="Kdgroup" column="KDGROUP"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMpgrm" parameterMap="insert-param">
+      <generate table="Mpgrm"/>
+    </insert>
+    <update id="UpdateByMpgrm" parameterMap="update-param">
+      <generate table="Mpgrm" by="THANG,IDPRGRM"/>
+    </update>
+    <update id="UpdateByValidRevMpgrm" parameterClass="Mpgrm">
+      update MPGRM set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMpgrm" parameterClass="Mpgrm">
+      update MPGRM set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMpgrm" parameterMap="delete-param">
+      <generate table="Mpgrm" by="THANG,IDPRGRM"/>
+    </delete>
+    <select id="BaseQueryMpgrm" parameterClass="Mpgrm" resultMap="return-result">
+      select M.ID, M.IDPRGRM, M.UNITKEY, M.NMPRGRM, M.NUPRGRM, UR.UNITKEY as URUSKEY
+      , UR.KDUNIT as KDURUS, UR.NMUNIT as NMURUS, M.THANG
+      from MPGRM M
+      left join DAFTUNIT UR on M.UNITKEY=UR.UNITKEY
+    </select>
+    <select id="QueryByAllMpgrm" extends="BaseQueryMpgrm" parameterClass="Mpgrm" resultMap="return-result">
+      where 1=1
+      and (isnull(M.UNITKEY,'')= isnull(#Uruskey#,''))
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.NUPRGRM desc
+    </select>
+    <select id="QueryByLookupMpgrm" extends="BaseQueryMpgrm" parameterClass="Mpgrm" resultMap="return-result">
+      where 1=1
+      and (isnull(M.UNITKEY,'')= isnull(#Unitkey#,''))
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.NUPRGRM
+    </select>
+    <select id="LoadByPKMpgrm" extends="BaseQueryMpgrm" parameterClass="Mpgrm" resultMap="return-result">
+      where M.IDPRGRM = #Idprgrm#
+    </select>
+    <select id="LoadByGetkdgroupMpgrm" parameterClass="Mpgrm" resultMap="return-kdgroup">
+      select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Mpgrm">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nmprgrm" column="NMPRGRM"/>
+      <parameter property="Nuprgrm" column="NUPRGRM"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Mpgrm">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Mpgrm">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

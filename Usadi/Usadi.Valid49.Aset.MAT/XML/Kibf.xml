@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibf" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibf" type="Usadi.Valid49.BO.KibfControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibf">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tglperolehan" column="TGLPEROLEHAN"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Jumlah" column="JUMLAH"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+      <result property="Nmpemilik" column="NMPEMILIK"/>
+      <result property="Asalusul" column="ASALUSUL"/>
+      <result property="Kdhak" column="KDHAK"/>
+      <result property="Nmhak" column="NMHAK"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Bertingkat" column="BERTINGKAT"/>
+      <result property="Beton" column="BETON"/>
+      <result property="Luaslt" column="LUASLT"/>
+      <result property="Nodokkdp" column="NODOKKDP"/>
+      <result property="Tgdokkdp" column="TGDOKKDP"/>
+      <result property="Tgmulai" column="TGMULAI"/>
+      <result property="Kdfisik" column="KDFISIK"/>
+      <result property="Nmfisik" column="NMFISIK"/>
+      <result property="Nokdtanah" column="NOKDTANAH"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdlokpo" column="KDLOKPO"/>
+      <result property="Kdbrgpo" column="KDBRGPO"/>
+      <result property="Uruttrans" column="URUTTRANS"/>
+      <result property="Uruthist" column="URUTHIST"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+    <resultMap id="return-kdtanah" class="Kibf">
+      <result property="Nmkdtanah" column="NMKDTANAH"/>
+    </resultMap>
+    <resultMap id="return-minuruthist" class="Kibf">
+      <result property="Minuruthist" column="MINURUTHIST"/>
+    </resultMap>
+    <resultMap id="return-jmlkibdet" class="Kibf">
+      <result property="Jmlkibdet" column="JMLKIBDET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibf" parameterMap="insert-param">
+      <generate table="Aset_kibf"/>
+    </insert>
+    <update id="UpdateByKibf" parameterClass="Kibf">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDHAK=#Kdhak#, KDFISIK=#Kdfisik#
+      , BERTINGKAT=#Bertingkat#, BETON=#Beton#, LUASLT=#Luaslt#, ALAMAT=#Alamat#, NODOKKDP=#Nodokkdp#
+      , TGDOKKDP=#Tgdokkdp#, TGMULAI=#Tgmulai#, NOKDTANAH=#Nokdtanah#, KDSATUAN=#Kdsatuan#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByValidRevKibf" parameterClass="Kibf">
+      update ASET_KIBF set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibf" parameterClass="Kibf">
+      update ASET_KIBF set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibf" parameterMap="delete-param">
+      <generate table="Aset_kib" by="IDBRG"/>
+    </delete>
+    <delete id="DeleteBySpesifikasiKibf" parameterClass="Kibf">
+      delete from ASET_KIBSPESIFIKASI where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </delete>
+    <delete id="DeleteByKibKibf" parameterClass="Kibf">
+      delete from ASET_KIB where IDBRG=#Idbrg# and UNITKEY=#Unitkey# and ASETKEY=#Asetkey#
+    </delete>
+    <select id="BaseQueryKibf" parameterClass="Kibf" resultMap="return-result">
+      <!--SELECT AK.ID, X.IDBRG, X.UNITKEY, DU.KDUNIT, DU.NMUNIT, X.ASETKEY, DA.KDASET, DA.NMASET, A.TGLPEROLEHAN, AK.TAHUN, AK.NOREG, AK.JUMLAH,
+      ISNULL(X.NILAI,0) NILAI, AA.KDPEMILIK, JM.NMPEMILIK, AA.ASALUSUL, AA.KDHAK, JH.NMHAK, AA.KDSATUAN, S.NMSATUAN,
+      (case when AA.BERTINGKAT='true' then '1' else '0' end) as BERTINGKAT,
+      (case when AA.BETON='true' then '1' else '0' end) as BETON,
+      AA.LUASLT, AA.NODOKKDP, AA.TGDOKKDP, AA.TGMULAI, AA.KDFISIK, JF.NMFISIK, AA.NOKDTANAH, AA.ALAMAT, AK.KET, AK.KDLOKPO, AK.KDBRGPO, X.URUTTRANS, AA.URUTHIST
+      FROM (
+      SELECT A.IDBRG, A.UNITKEY, A.ASETKEY, MIN(cast(A.URUTTRANS as INT)) URUTTRANS, SUM((CASE WHEN LEFT(A.KDTANS,1)=2 THEN -1*A.NILAI ELSE NILAI END)) NILAI
+      FROM ASET_KIBFDET A
+      WHERE A.UNITKEY = #Unitkey# AND (A.ASETKEY=#Asetkey# or isnull(#Asetkey#,'')='')
+      GROUP BY A.IDBRG, A.UNITKEY, A.ASETKEY) X
+      LEFT JOIN ASET_KIBFDET AK ON AK.IDBRG = X.IDBRG AND AK.UNITKEY = X.UNITKEY AND AK.ASETKEY = X.ASETKEY AND AK.URUTTRANS = X.URUTTRANS
+      LEFT JOIN ASET_KIBSPESIFIKASI AA ON AA.IDBRG = X.IDBRG AND AA.UNITKEY = X.UNITKEY AND AA.ASETKEY = X.ASETKEY
+      LEFT JOIN ASET_KIB A ON A.IDBRG = X.IDBRG
+      LEFT JOIN DAFTUNIT DU ON DU.UNITKEY = X.UNITKEY
+      LEFT JOIN DAFTASET DA ON DA.ASETKEY = X.ASETKEY
+      LEFT JOIN JMILIK JM ON JM.KDPEMILIK = AA.KDPEMILIK
+      LEFT JOIN JHAK JH ON JH.KDHAK = AA.KDHAK
+      LEFT JOIN JFISIK JF ON JF.KDFISIK = AA.KDFISIK
+      LEFT JOIN SATUAN S ON S.KDSATUAN = AA.KDSATUAN
+      WHERE X.UNITKEY = @UNITKEY AND (X.ASETKEY=@ASETKEY or isnull(@ASETKEY,'')='')-->
+    </select>
+    <select id="QueryByAllKibf" parameterClass="Kibf" resultMap="return-result">
+      exec REGISTER_KIBF #Asetkey#, #Unitkey#, #Kdkib#
+    </select>
+    <select id="LoadByKdtanahKibf" parameterClass="Kibf" resultMap="return-kdtanah">
+      select A.ALAMAT as NMKDTANAH
+      from ASET_KIBSPESIFIKASI A
+      where A.IDBRG=#Nokdtanah# and A.URUTHIST = (select max(URUTHIST) from ASET_KIBSPESIFIKASI where IDBRG=#Nokdtanah#)
+    </select>
+    <select id="LoadByMinuruthistKibf" parameterClass="Kibf" resultMap="return-minuruthist">
+      select min(cast(URUTHIST as INT)) MINURUTHIST from ASET_KIBSPESIFIKASI where IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByJmlkibdetKibf" parameterClass="Kibf" resultMap="return-jmlkibdet">
+      select COUNT(*) JMLKIBDET from ASET_KIBFDET where IDBRG=#Idbrg# and URUTTRANS=#Uruthist#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibf">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Jumlah" column="JUMLAH"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdlokpo" column="KDLOKPO"/>
+      <parameter property="Kdbrgpo" column="KDBRGPO"/>
+      <parameter property="Tglperolehan" column="TGLPEROLEHAN"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" class="Kibf">
+      <parameter property="Kdpemilik" column="KDPEMILIK"/>
+      <parameter property="Asalusul" column="ASALUSUL"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdhak" column="KDHAK"/>
+      <parameter property="Kdfisik" column="KDFISIK"/>
+      <parameter property="Bertingkat" column="BERTINGKAT"/>
+      <parameter property="Beton" column="BETON"/>
+      <parameter property="Luaslt" column="LUASLT"/>
+      <parameter property="Alamat" column="ALAMAT"/>
+      <parameter property="Nodokkdp" column="NODOKKDP"/>
+      <parameter property="Tgdokkdp" column="TGDOKKDP"/>
+      <parameter property="Tgmulai" column="TGMULAI"/>
+      <parameter property="Nokdtanah" column="NOKDTANAH"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibf">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+      <parameter property="Uruthist" column="URUTHIST"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

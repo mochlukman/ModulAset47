@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Histrenovdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Histrenovdet" type="Usadi.Valid49.BO.HistrenovdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Histrenovdet">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Nilairenov" column="NILAIRENOV"/>
+      <result property="Umekorenov" column="UMEKORENOV"/>
+      <result property="Kdunit2" column="KDUNIT2"/>
+      <result property="Nmunit2" column="NMUNIT2"/>
+      <result property="Nmkdunit2" column="NMKDUNIT2"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Tglbarenov" column="TGLBARENOV"/>
+      <result property="Nokontrak" column="NOKONTRAK"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobarenov" column="NOBARENOV"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertHistrenovdet" parameterMap="insert-param">
+      <generate table="Aset_histrenovdet"/>
+    </insert>
+    <update id="UpdateByHistrenovdet" parameterClass="Histrenovdet">
+      update ASET_HISTRENOVDET set NILAIRENOV=#Nilairenov#, UMEKORENOV=#Umekorenov#
+      where UNITKEY=#Unitkey# and NOBARENOV=#Nobarenov# and MTGKEY=#Mtgkey# and UNITKEY2=#Unitkey2# and IDBRG=#Idbrg#
+    </update>
+    <update id="UpdateByValidRevHistrenovdet" parameterClass="Histrenovdet">
+      update ASET_HISTRENOVDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevHistrenovdet" parameterClass="Histrenovdet">
+      update ASET_HISTRENOVDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByHistrenovdet" parameterMap="delete-param">
+      <generate table="Aset_histrenovdet" by="UNITKEY,NOBARENOV,MTGKEY,UNITKEY2,IDBRG"/>
+    </delete>
+    <select id="BaseQueryHistrenovdet" parameterClass="Histrenovdet" resultMap="return-result">
+      select A.ID, A.UNITKEY, DT.KDUNIT, DT.NMUNIT, A.NOBARENOV, A.UNITKEY2, DU.KDUNIT AS KDUNIT2, DU.NMUNIT AS NMUNIT2, rtrim(DU.KDUNIT)+ ' - ' + rtrim(DU.NMUNIT) as NMKDUNIT2
+      , A.IDBRG, A.ASETKEY, DA.KDASET, DA.NMASET, A.NILAI, A.UMEKO, A.MTGKEY, M.KDPER, M.NMPER, A.NILAIRENOV, A.UMEKORENOV, AH.KDTAHAP
+      , AH.KDKEGUNIT, AH.KDTANS, AH.TGLBARENOV, AH.NOKONTRAK, AH.TGLVALID
+      from ASET_HISTRENOVDET A
+      inner join ASET_HISTRENOV AH ON AH.UNITKEY = A.UNITKEY AND AH.NOBARENOV = A.NOBARENOV
+      inner join SKDASK S ON S.UNITKEY = A.UNITKEY and S.KDTAHAP = AH.KDTAHAP and S.THANG = YEAR(AH.TGLBARENOV)
+      inner join DASKR D ON D.UNITKEY = S.UNITKEY and D.IDXDASK = S.IDXDASK and D.THANG = S.THANG and D.MTGKEY = A.MTGKEY and D.KDKEGUNIT = AH.KDKEGUNIT
+      inner join MATANGR M ON M.MTGKEY = A.MTGKEY AND M.THANG = D.THANG
+      inner join DAFTUNIT DT ON DT.UNITKEY = A.UNITKEY
+      inner join DAFTUNIT DU ON DU.UNITKEY = A.UNITKEY2
+      inner join DAFTASET DA ON DA.ASETKEY = A.ASETKEY
+    </select>
+    <select id="QueryByAllHistrenovdet" extends="BaseQueryHistrenovdet" parameterClass="Histrenovdet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOBARENOV=#Nobarenov#
+      and AH.KDTAHAP=#Kdtahap#
+      and AH.KDKEGUNIT=#Kdkegunit#
+    </select>
+    <select id="QueryByLookupHistrenovdet" extends="BaseQueryHistrenovdet" parameterClass="Histrenovdet" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKHistrenovdet" extends="BaseQueryHistrenovdet" parameterClass="Histrenovdet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOBARENOV=#Nobarenov# and A.MTGKEY=#Mtgkey# and A.UNITKEY2=#Unitkey2# and A.IDBRG=#Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Histrenovdet">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Umeko" column="UMEKO"/>
+      <parameter property="Nilairenov" column="NILAIRENOV"/>
+      <parameter property="Umekorenov" column="UMEKORENOV"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobarenov" column="NOBARENOV"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Histrenovdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Histrenovdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobarenov" column="NOBARENOV"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

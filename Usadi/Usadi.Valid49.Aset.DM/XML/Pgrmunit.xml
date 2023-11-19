@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Pgrmunit" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Pgrmunit" type="Usadi.Valid49.BO.PgrmunitControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Pgrmunit">
+      <result property="Id" column="ID"/>
+      <result property="Target" column="TARGET"/>
+      <result property="Sasaran" column="SASARAN"/>
+      <result property="Noprio" column="NOPRIO"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Kdunit" column="NMUNIT"/>
+      <result property="Nuprgrm" column="NUPRGRM"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+    </resultMap>
+    <resultMap id="return-kdgroup" class="Pgrmunit">
+      <result property="Kdgroup" column="KDGROUP"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPgrmunit" parameterMap="insert-param">
+      <generate table="Pgrmunit"/>
+    </insert>
+    <update id="UpdateByPgrmunit" parameterMap="update-param">
+      <generate table="Pgrmunit" by="THANG, UNITKEY, KDTAHAP, IDPRGRM"/>
+    </update>
+    <update id="UpdateByValidRevPgrmunit" parameterClass="Pgrmunit">
+      update PGRMUNIT set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPgrmunit" parameterClass="Pgrmunit">
+      update PGRMUNIT set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPgrmunit" parameterMap="delete-param">
+      <generate table="Pgrmunit" by="THANG, UNITKEY, KDTAHAP, IDPRGRM"/>
+    </delete>
+    <select id="BaseQueryPgrmunit" parameterClass="Pgrmunit" resultMap="return-result">
+      select P.ID, P.UNITKEY, P.KDTAHAP, P.IDPRGRM, P.TARGET, P.SASARAN, P.NOPRIO, P.THANG
+      , rtrim(isnull(D.KDUNIT,(select rtrim(numdigit) from struunit where kdlevel='1')))+rtrim(C.NUPRGRM) as NUPRGRM, C.NMPRGRM,
+      B.KDUNIT, B.NMUNIT
+      from PGRMUNIT P
+      left outer join DAFTUNIT B on P.UNITKEY=B.UNITKEY
+      left outer join MPGRM C on P.IDPRGRM=C.IDPRGRM
+      left outer join DAFTUNIT D on C.UNITKEY=D.UNITKEY
+    </select>
+    <select id="QueryByAllPgrmunit" extends="BaseQueryPgrmunit" parameterClass="Pgrmunit" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      and P.KDTAHAP=#Kdtahap#
+      and P.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by P.IDPRGRM
+    </select>
+    <select id="QueryByLookupPgrmunit" extends="BaseQueryPgrmunit" parameterClass="Pgrmunit" resultMap="return-result">
+      where 1=1
+      and P.UNITKEY = #Unitkey#
+      and P.KDTAHAP=#Kdtahap#
+      and P.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by P.IDPRGRM
+    </select>
+    <select id="LoadByPKPgrmunit" extends="BaseQueryPgrmunit" parameterClass="Pgrmunit" resultMap="return-result">
+      where P.IDPRGRM = #Idprgrm#
+    </select>
+    <select id="LoadByGetkdgroupPgrmunit" parameterClass="Pgrmunit" resultMap="return-kdgroup">
+      select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Pgrmunit">
+      <parameter property="Target" column="TARGET"/>
+      <parameter property="Sasaran" column="SASARAN"/>
+      <parameter property="Noprio" column="NOPRIO"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Pgrmunit">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Pgrmunit">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

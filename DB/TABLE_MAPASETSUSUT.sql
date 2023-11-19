@@ -1,0 +1,7 @@
+
+CREATE TABLE [dbo].[MAPSUSUTASET](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[ASETKEYSUSUT] [nchar](15) NOT NULL,
+	[ASETKEY] [nchar](15) NOT NULL,
+	[DATECREATE] [datetime] NULL,
+	[DATEUPDATE] [datetime] NULL)

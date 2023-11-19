@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftgudang" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftgudang" type="Usadi.Valid49.BO.DaftgudangControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftgudang">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdgudang" column="KDGUDANG"/>
+      <result property="Nmgudang" column="NMGUDANG"/>
+      <result property="Nip" column="NIP"/>
+      <result property="Nama" column="NAMA"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Ket" column="KET"/>
+      <result property="Type" column="TYPE"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftgudang" parameterMap="insert-param">
+      <generate table="Daftgudang"/>
+    </insert>
+    <update id="UpdateByDaftgudang" parameterMap="update-param">
+      <generate table="Daftgudang" by="UNITKEY, KDGUDANG"/>
+    </update>
+    <update id="UpdateByValidRevDaftgudang" parameterClass="Daftgudang">
+      update DAFTGUDANG set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftgudang" parameterClass="Daftgudang">
+      update DAFTGUDANG set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftgudang" parameterMap="delete-param">
+      <generate table="Daftgudang" by="UNITKEY, KDGUDANG"/>
+    </delete>
+    <select id="BaseQueryDaftgudang" parameterClass="Daftgudang" resultMap="return-result">
+      select D.ID,  D.UNITKEY, D.KDGUDANG, D.NMGUDANG, D.NIP, D.NAMA, D.KDLEVEL as KDLEVEL, D.KET, rtrim(D.TYPE) as TYPE
+      from DAFTGUDANG D
+    </select>
+    <select id="QueryByAllDaftgudang" extends="BaseQueryDaftgudang" parameterClass="Daftgudang" resultMap="return-result">
+      where 1=1
+      AND UNITKEY=#Unitkey#
+      order by D.KDGUDANG
+    </select>
+    <select id="QueryByLookupDaftgudang" extends="BaseQueryDaftgudang" parameterClass="Daftgudang" resultMap="return-result">
+      where 1=1
+      AND UNITKEY=#Unitkey#
+      order by D.KDGUDANG
+    </select>
+    <select id="LoadByPKDaftgudang" extends="BaseQueryDaftgudang" parameterClass="Daftgudang" resultMap="return-result">
+      where D.UNITKEY=#Unitkey# AND D.KDGUDANG=#Kdgudang#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftgudang">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdgudang" column="KDGUDANG"/>
+      <parameter property="Nmgudang" column="NMGUDANG"/>
+      <parameter property="Nip" column="NIP"/>
+      <parameter property="Nama" column="NAMA"/>
+      <parameter property="Kdlevel" column="KDLEVEL"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Type" column="TYPE"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftgudang">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftgudang">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdgudang" column="KDGUDANG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

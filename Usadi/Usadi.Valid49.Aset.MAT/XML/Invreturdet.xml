@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invreturdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invreturdet" type="Usadi.Valid49.BO.InvreturdetControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invreturdet">
+      <result property="Id" column="ID"/>
+      <result property="Nospb" column="NOSPB"/>
+      <result property="Nusp" column="NUSP"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merk" column="MERK"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Tglexpr" column="TGLEXPR"/>
+      <result property="Stexpr" column="STEXPR"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noretur" column="NORETUR"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvreturdet" parameterMap="insert-param">
+      <generate table="INV_RETURDET"/>
+    </insert>
+    <update id="UpdateByInvreturdet" parameterMap="update-param">
+      <generate table="INV_RETURDET" by="UNITKEY,NORETUR,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevInvreturdet" parameterClass="Invreturdet">
+      update INV_RETURDET set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvreturdet" parameterClass="Invreturdet">
+      update INV_RETURDET set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvreturdet" parameterMap="delete-param">
+      <generate table="INV_RETURDET" by="UNITKEY,NORETUR,IDBRG"/>
+    </delete>
+    <select id="BaseQueryInvreturdet" parameterClass="Invreturdet" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NORETUR) as NORETUR,rtrim(I.IDBRG) as IDBRG,
+      rtrim(A.ASETKEY) as ASETKEY,rtrim(D.KDASET) as KDASET,rtrim(D.NMASET) as NMASET,
+      rtrim(I.NOSPB) as NOSPB,rtrim(I.NUSP) as NUSP,rtrim(I.SPESIFIKASI) as SPESIFIKASI,
+      rtrim(I.UNITKEY2) as UNITKEY2,rtrim(I.KDSATUAN) as KDSATUAN,rtrim(S.NMSATUAN) as NMSATUAN,
+      rtrim(I.MERK) as MERK,I.NILAI,I.TGLEXPR,I.STEXPR,I.DATECREATE,I.DATEUPDATE
+      from INV_RETURDET I
+      LEFT OUTER JOIN ASET_KIBSPESIFIKASI A ON I.UNITKEY=A.UNITKEY AND I.IDBRG=A.IDBRG AND A.KDKIB='00'
+      LEFT OUTER JOIN DAFTASET D ON A.ASETKEY=D.ASETKEY
+      LEFT OUTER JOIN SATUAN S ON I.KDSATUAN=S.KDSATUAN
+    </select>
+    <select id="QueryByAllInvreturdet" extends="BaseQueryInvreturdet" parameterClass="Invreturdet" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NORETUR,I.IDBRG
+    </select>
+    <select id="QueryByLookupInvreturdet" extends="BaseQueryInvreturdet" parameterClass="Invreturdet" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NORETUR,I.IDBRG
+    </select>
+    <select id="LoadByPKInvreturdet" extends="BaseQueryInvreturdet" parameterClass="Invreturdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NORETUR = #Noretur# and I.IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByIDInvreturdet" extends="BaseQueryInvreturdet" parameterClass="Invreturdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NORETUR = #Noretur# and I.IDBRG = #Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invreturdet">
+      <parameter property="Id" column="ID"/>
+      <parameter property="Nospb" column="NOSPB"/>
+      <parameter property="Nusp" column="NUSP"/>
+      <parameter property="Spesifikasi" column="SPESIFIKASI"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Merk" column="MERK"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Tglexpr" column="TGLEXPR"/>
+      <parameter property="Stexpr" column="STEXPR"/>
+      <parameter property="Datecreate" column="DATECREATE"/>
+      <parameter property="Dateupdate" column="DATEUPDATE"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noretur" column="NORETUR"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invreturdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invreturdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noretur" column="NORETUR"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

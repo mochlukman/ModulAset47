@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibfdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibfdet" type="Usadi.Valid49.BO.KibfdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibfdet">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Nodokumen" column="NODOKUMEN"/>
+      <result property="Tgldokumen" column="TGLDOKUMEN"/>
+      <result property="Idtermin" column="IDTERMIN"/>
+      <result property="Jumlah" column="JUMLAH"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Prosenfisik" column="PROSENFISIK"/>
+      <result property="Prosenbiaya" column="PROSENBIAYA"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdlokpo" column="KDLOKPO"/>
+      <result property="Kdbrgpo" column="KDBRGPO"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Uraitrans" column="URAITRANS"/>
+      <result property="Nilaitrans" column="NILAITRANS"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Uruttrans" column="URUTTRANS"/>
+    </resultMap>
+    <resultMap id="return-maxuruttrans" class="Kibfdet">
+      <result property="Maxuruttrans" column="MAXURUTTRANS"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibfdet" parameterClass="Kibfdet">
+      insert into ASET_KIBFDET(IDBRG,URUTTRANS,UNITKEY,ASETKEY,TAHUN,NOREG,KDTANS,NODOKUMEN,TGLDOKUMEN
+      ,IDTERMIN,JUMLAH,NILAI,PROSENFISIK,PROSENBIAYA,KDLOKPO,KDBRGPO,KET,THANG)
+      values(#Idbrg#, #Uruttrans#, #Unitkey#, #Asetkey#, #Tahun#, #Noreg#, #Kdtans#, #Nodokumen#, #Tgldokumen#, #Idtermin#, #Jumlah#, #Nilai#
+      , #Prosenfisik#, #Prosenbiaya#, #Kdlokpo#, #Kdbrgpo#, #Ket#, #Thang#)
+    </insert>
+    <update id="UpdateByKibfdet" parameterMap="update-param">
+      <generate table="Aset_kibfdet" by="IDBRG,URUTTRANS"/>
+    </update>
+    <update id="UpdateByValidRevKibfdet" parameterClass="Kibfdet">
+      update ASET_KIBFDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibfdet" parameterClass="Kibfdet">
+      update ASET_KIBFDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibfdet" parameterMap="delete-param">
+      <generate table="Aset_kibfdet" by="IDBRG,URUTTRANS"/>
+    </delete>
+    <select id="BaseQueryKibfdet" parameterClass="Kibfdet" resultMap="return-result">
+      select A.ID, A.IDBRG, A.URUTTRANS, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.ASETKEY, A.TAHUN, A.NOREG, A.NODOKUMEN, A.TGLDOKUMEN, A.IDTERMIN
+      , A.JUMLAH, A.NILAI, A.PROSENFISIK, A.PROSENBIAYA, A.KDTANS, J.NMTRANS, A.KET, A.KDLOKPO, A.KDBRGPO, A.THANG
+      , case when LEFT(A.KDTANS,1) IN('0','1') then J.NMTRANS+' (+)' when LEFT(A.KDTANS,1)='2' then J.NMTRANS+' (-)' else J.NMTRANS  end as URAITRANS
+      , case when LEFT(A.KDTANS,1) IN('0','1','3') then A.NILAI when LEFT(A.KDTANS,1)='2' then -1*A.NILAI end AS NILAITRANS
+      from ASET_KIBFDET A
+      left join DAFTUNIT D on D.UNITKEY=A.UNITKEY
+      left join JTRANS J on J.KDTANS=A.KDTANS
+    </select>
+    <select id="QueryByAllKibfdet" extends="BaseQueryKibfdet" parameterClass="Kibfdet" resultMap="return-result">
+      where 1=1
+      and A.IDBRG=#Idbrg# 
+      and A.UNITKEY=#Unitkey# 
+      and A.ASETKEY=#Asetkey#
+    </select>
+    <select id="LoadByMaxuruttransKibfdet" parameterClass="Kibfdet" resultMap="return-maxuruttrans">
+      select max(cast(URUTTRANS as INT)) MAXURUTTRANS from ASET_KIBFDET where IDBRG=#Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibfdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Tgldokumen" column="TGLDOKUMEN"/>
+      <parameter property="Idtermin" column="IDTERMIN"/>
+      <parameter property="Jumlah" column="JUMLAH"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Prosenfisik" column="PROSENFISIK"/>
+      <parameter property="Prosenbiaya" column="PROSENBIAYA"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdlokpo" column="KDLOKPO"/>
+      <parameter property="Kdbrgpo" column="KDBRGPO"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Kibfdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibfdet">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

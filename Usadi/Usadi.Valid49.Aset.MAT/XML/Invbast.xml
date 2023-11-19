@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invbast" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invbast" type="Usadi.Valid49.BO.InvbastControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invbast">
+      <result property="Id" column="ID"/>
+      <result property="Tglbast" column="TGLBAST"/>
+      <result property="Unitkeyuk" column="UNITKEYUK"/>
+      <result property="Nosppb" column="NOSPPB"/>
+      <result property="Tglsppb" column="TGLSPPB"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobast" column="NOBAST"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvbast" parameterMap="insert-param">
+      <generate table="INV_BAST"/>
+    </insert>
+    <update id="UpdateByInvbast" parameterMap="update-param">
+      <generate table="INV_BAST" by="UNITKEY,NOBAST"/>
+    </update>
+    <update id="UpdateByValidRevInvbast" parameterClass="Invbast">
+      update INV_BAST set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvbast" parameterClass="Invbast">
+      update INV_BAST set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvbast" parameterMap="delete-param">
+      <generate table="INV_BAST" by="UNITKEY,NOBAST"/>
+    </delete>
+    <select id="BaseQueryInvbast" parameterClass="Invbast" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOBAST) as NOBAST,I.TGLBAST,rtrim(I.UNITKEYUK) as UNITKEYUK,rtrim(I.NOSPPB) as NOSPPB,I1.TGLSPPB,I.DATECREATE,I.DATEUPDATE
+      from INV_BAST I
+      LEFT OUTER JOIN INV_PENYALURAN I1 ON I.UNITKEY=I1.UNITKEY AND I.NOSPPB=I1.NOSPPB
+    </select>
+    <select id="QueryByAllInvbast" extends="BaseQueryInvbast" parameterClass="Invbast" resultMap="return-result">
+      where 1=1 and I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOBAST
+    </select>
+    <select id="QueryByLookupInvbast" extends="BaseQueryInvbast" parameterClass="Invbast" resultMap="return-result">
+      where 1=1 and I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOBAST
+    </select>
+    <select id="LoadByPKInvbast" extends="BaseQueryInvbast" parameterClass="Invbast" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBAST = #Nobast#
+    </select>
+    <select id="LoadByIDInvbast" extends="BaseQueryInvbast" parameterClass="Invbast" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOBAST = #Nobast#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invbast">
+      <parameter property="Tglbast" column="TGLBAST"/>
+      <parameter property="Unitkeyuk" column="UNITKEYUK"/>
+      <parameter property="Nosppb" column="NOSPPB"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobast" column="NOBAST"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invbast">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invbast">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobast" column="NOBAST"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

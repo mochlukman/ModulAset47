@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftlokasi" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftlokasi" type="Usadi.Valid49.BO.DaftlokasiControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftlokasi">
+      <result property="Id" column="ID"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Kdlokasi" column="KDLOKASI"/>
+      <result property="Nmlokasi" column="NMLOKASI"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Lokasikey" column="LOKASIKEY"/>
+      <result property="Uraijlok" column="URAIJLOK"/>
+    </resultMap>
+    <resultMap id="return-kdlevelmin" class="Daftlokasi">
+      <result property="Kdjlokmin" column="KDJLOKMIN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftlokasi" parameterMap="insert-param">
+      <generate table="DAFTLOKASI"/>
+    </insert>
+    <!--<insert id="InsertDaftlokasi" parameterClass="Daftlokasi">
+      INSERT INTO DAFTLOKASI(LOKASIKEY,KDJLOK,KDLOKASI,NMLOKASI,TYPE)
+      VALUES (#Lokasikey#,#Kdjlok#,#Kdlokasi#,#Nmlokasi#,#Type#)
+    </insert>-->
+    <update id="UpdateByDaftlokasi" parameterMap="update-param">
+      <generate table="DAFTLOKASI" by="LOKASIKEY"/>
+    </update>
+    <update id="UpdateByHeaderDaftlokasi" parameterClass="Daftlokasi">
+      update DAFTLOKASI set KDJLOK = #Kdjlok#, KDLOKASI = #Kdlokasi#, NMLOKASI = #Nmlokasi#, TYPE = #Type# where LOKASIKEY = #Lokasikey#
+    </update>
+    <update id="UpdateByValidRevDaftlokasi" parameterClass="Daftlokasi">
+      update DAFTLOKASI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftlokasi" parameterClass="Daftlokasi">
+      update DAFTLOKASI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftlokasi" parameterMap="delete-param">
+      <generate table="DAFTLOKASI" by="LOKASIKEY"/>
+    </delete>
+    <select id="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      select D.ID, D.LOKASIKEY, D.KDLOKASI, D.NMLOKASI, ISNULL(D.KDJLOK,'') as KDLEVEL, ISNULL(J.URAIJLOK,'') as URAIJLOK,
+      rtrim(D.TYPE) as TYPE
+      from DAFTLOKASI D
+      left join JLOKASI J ON D.KDJLOK=J.KDJLOK
+    </select>
+    <select id="QueryByAllDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      where 1=1
+      order by D.KDLOKASI
+    </select>
+    <select id="QueryByKibfilterDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and left(D.KDLOKASI,4) <> '1.1.'
+      and D.KDJLOK = '7'
+      and left(D.KDLOKASI,9)=#Kdlokasi#
+      order by D.KDLOKASI
+      ]]>
+    </select>
+    <select id="QueryByObjekDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and D.KDJLOK = '4'
+      order by D.KDLOKASI
+      ]]>
+    </select>
+    <select id="QueryByKelompokDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      <![CDATA[
+      where 1=1
+      and D.KDJLOK = '7'
+      order by D.KDLOKASI
+      ]]>
+    </select>
+    <select id="QueryByKdlokasiDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      where D.KDLOKASI=#Kdlokasi#
+    </select>
+    <select id="QueryByLookupDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKDaftlokasi" extends="BaseQueryDaftlokasi" parameterClass="Daftlokasi" resultMap="return-result">
+      where D.LOKASIKEY = #Lokasikey#
+    </select>
+    <select id="LoadByKdjlokminDaftlokasi" parameterClass="Daftlokasi" resultMap="return-kdlevelmin">
+      select min(KDJLOK) as KDJLOKMIN from DAFTLOKASI
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftlokasi">
+      <parameter property="Kdlevel" column="KDJLOK"/>
+      <parameter property="Kdlokasi" column="KDLOKASI"/>
+      <parameter property="Nmlokasi" column="NMLOKASI"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Lokasikey" column="LOKASIKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftlokasi">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftlokasi">
+      <parameter property="Lokasikey" column="LOKASIKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

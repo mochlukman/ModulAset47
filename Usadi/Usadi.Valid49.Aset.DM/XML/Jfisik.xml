@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jfisik" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jfisik" type="Usadi.Valid49.BO.JfisikControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jfisik">
+      <result property="Id" column="ID"/>
+      <result property="Nmfisik" column="NMFISIK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdfisik" column="KDFISIK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJfisik" parameterMap="insert-param">
+      <generate table="Jfisik"/>
+    </insert>
+    <update id="UpdateByJfisik" parameterMap="update-param">
+      <generate table="Jfisik" by="KDFISIK"/>
+    </update>
+    <update id="UpdateByValidRevJfisik" parameterClass="Jfisik">
+      update JFISIK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJfisik" parameterClass="Jfisik">
+      update JFISIK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJfisik" parameterMap="delete-param">
+      <generate table="Jfisik" by="KDFISIK"/>
+    </delete>
+    <select id="BaseQueryJfisik" parameterClass="Jfisik" resultMap="return-result">
+      select J.ID, J.KDFISIK, J.NMFISIK, J.KET
+      from JFISIK J
+    </select>
+    <select id="QueryByAllJfisik" extends="BaseQueryJfisik" parameterClass="Jfisik" resultMap="return-result">
+      where 1=1
+      order by J.KDFISIK
+    </select>
+    <select id="QueryByLookupJfisik" extends="BaseQueryJfisik" parameterClass="Jfisik" resultMap="return-result">
+      where 1=1
+      order by J.KDFISIK
+    </select>
+    <select id="LoadByPKJfisik" extends="BaseQueryJfisik" parameterClass="Jfisik" resultMap="return-result">
+      <!--where J.KDFISIK = #Kdfisik#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jfisik">
+      <parameter property="Nmfisik" column="NMFISIK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdfisik" column="KDFISIK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jfisik">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jfisik">
+      <parameter property="Kdfisik" column="KDFISIK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

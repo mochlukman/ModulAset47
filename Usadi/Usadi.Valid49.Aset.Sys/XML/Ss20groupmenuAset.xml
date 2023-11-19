@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Ss20groupmenu" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Ss20groupmenu" type="CoreNET.Common.BO.Ss20groupmenuAsetControl, CoreNET.Common.Sys " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Ss20groupmenu">
+      <result property="Kdmenu" column="KDMENU"/>
+      <result property="Nmmenu" column="NMMENU"/>
+      <result property="Stinsert" column="STINSERT"/>
+      <result property="Stupdate" column="STUPDATE"/>
+      <result property="Stdelete" column="STDELETE"/>
+      <result property="Stload" column="STLOAD"/>
+      <result property="Stfilter" column="STFILTER"/>
+      <result property="Status" column="STATUS"/>
+      <result property="Last_by" column="LAST_BY"/>
+      <result property="Last_date" column="LAST_DATE"/>
+      <result property="Kdgroup" column="KDGROUP"/>
+      <result property="Idmenu" column="IDMENU"/>
+    </resultMap>
+    <resultMap id="return-result-lookup" class="Ss20groupmenu">
+      <result property="Kdmenu" column="KDMENU"/>
+      <result property="Nmmenu" column="NMMENU"/>
+      <result property="Idmenu" column="IDMENU"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Type" column="TYPE"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSs20groupmenu" parameterMap="insert-param">
+      <generate table="SS20GROUPMENU"/>
+    </insert>
+    <update id="UpdateBySs20groupmenu" parameterMap="update-param">
+      <generate table="SS20GROUPMENU" by="KDGROUP,IDMENU"/>
+    </update>
+    <update id="UpdateByValidRevSs20groupmenu" parameterClass="Ss20groupmenu">
+      update SS20GROUPMENU set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevSs20groupmenu" parameterClass="Ss20groupmenu">
+      update SS20GROUPMENU set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteBySs20groupmenu" parameterMap="delete-param">
+      <generate table="SS20GROUPMENU" by="KDGROUP,IDMENU"/>
+    </delete>
+    <select id="BaseQuerySs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result">
+      select rtrim(S.KDGROUP) as KDGROUP
+      ,rtrim(S.IDMENU) as IDMENU,rtrim(M.KDMENU) as KDMENU,rtrim(M.NMMENU) as NMMENU
+      ,S.STINSERT,S.STUPDATE,S.STDELETE,S.STLOAD,S.STFILTER
+      ,S.STATUS,rtrim(isnull(S.LAST_BY,'')) as LAST_BY,S.LAST_DATE
+      from SS20GROUPMENU S
+      left outer join SS01APPMENU M on S.IDMENU=M.IDMENU
+    </select>
+    <select id="QueryByAllSs20groupmenu" extends="BaseQuerySs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result">
+      where 1=1
+      and S.KDGROUP=#Kdgroup# and M.IDAPP=#Idapp#
+      order by S.KDGROUP,M.KDMENU
+    </select>
+    <select id="QueryByLookupSs20groupmenu" extends="BaseQuerySs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result">
+      where 1=1
+      order by S.KDGROUP,S.IDMENU
+    </select>
+    <select id="QueryByLookupForSelfSs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result-lookup">
+      select rtrim(S.IDMENU) as IDMENU,rtrim(S.KDMENU) as KDMENU,rtrim(S.NMMENU) as NMMENU,
+      S.KDLEVEL,rtrim(S.TYPE) as TYPE
+      from SS01APPMENU S
+      where 1=1
+      and S.IDAPP=#Idapp#
+      and S.IDMENU not in (select IDMENU from SS20GROUPMENU where KDGROUP=#Kdgroup#)
+    </select>
+    <select id="LoadByPKSs20groupmenu" extends="BaseQuerySs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result">
+      where S.KDGROUP = #Kdgroup# and S.IDMENU = #Idmenu#
+    </select>
+    <select id="LoadByIDSs20groupmenu" extends="BaseQuerySs20groupmenu" parameterClass="Ss20groupmenu" resultMap="return-result">
+      where S.KDGROUP = #Kdgroup# and S.IDMENU = #Idmenu#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Ss20groupmenu">
+      <parameter property="Stinsert" column="STINSERT"/>
+      <parameter property="Stupdate" column="STUPDATE"/>
+      <parameter property="Stdelete" column="STDELETE"/>
+      <parameter property="Stload" column="STLOAD"/>
+      <parameter property="Stfilter" column="STFILTER"/>
+      <parameter property="Status" column="STATUS"/>
+      <parameter property="Last_by" column="LAST_BY"/>
+      <parameter property="Last_date" column="LAST_DATE"/>
+      <parameter property="Kdgroup" column="KDGROUP"/>
+      <parameter property="Idmenu" column="IDMENU"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Ss20groupmenu">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Ss20groupmenu">
+      <parameter property="Kdgroup" column="KDGROUP"/>
+      <parameter property="Idmenu" column="IDMENU"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

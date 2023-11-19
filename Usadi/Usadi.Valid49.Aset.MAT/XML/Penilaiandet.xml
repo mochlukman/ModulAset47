@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Penilaiandet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Penilaiandet" type="Usadi.Valid49.BO.PenilaiandetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Penilaiandet">
+      <result property="Id" column="ID"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Ket" column="KET"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nopenilaian" column="NOPENILAIAN"/>
+      <result property="Unitkey" column="UNITKEY"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPenilaiandet" parameterClass="Penilaiandet">
+      insert into ASET_PENILAIANDET(UNITKEY,NOPENILAIAN,KDTANS,ASETKEY,TAHUN,NOREG,IDBRG,NILAI,KDKON,KET)
+      values(#Unitkey#, #Nopenilaian#, #Kdtans#, #Asetkey#, #Tahun#, #Noreg#, #Idbrg#, 0, #Kdkon#, null)
+    </insert>
+    <update id="UpdateByPenilaiandet" parameterClass="Penilaiandet">
+      update ASET_PENILAIANDET set NILAI=#Nilai#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOPENILAIAN=#Nopenilaian# and KDTANS=#Kdtans# and ASETKEY=#Asetkey# and TAHUN=#Tahun# and NOREG=#Noreg#
+    </update>
+    <update id="UpdateByValidRevPenilaiandet" parameterClass="Penilaiandet">
+      update ASET_PENILAIANDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPenilaiandet" parameterClass="Penilaiandet">
+      update ASET_PENILAIANDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPenilaiandet" parameterMap="delete-param">
+      <generate table="Aset_penilaiandet" by="UNITKEY,NOPENILAIAN,KDTANS,ASETKEY,TAHUN,NOREG"/>
+    </delete>
+    <select id="BaseQueryPenilaiandet" parameterClass="Penilaiandet" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOPENILAIAN, A.KDTANS, J.NMTRANS, A.ASETKEY, D2.KDASET, D2.NMASET
+      , A.TAHUN, A.NOREG, A.IDBRG, A.NILAI, A.KDKON, K.NMKON, A.KET
+      , (D2.KDASET+' - '+D2.NMASET + CHAR(13) + 'Tahun : ' + A.TAHUN + CHAR(13) + 'Register : ' + A.NOREG + CHAR(13) + 'Kondisi : '+isnull(K.NMKON,'')) as SPESIFIKASI
+      from ASET_PENILAIANDET A
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      left join DAFTASET D2 ON D2.ASETKEY = A.ASETKEY
+      left join JTRANS J ON J.KDTANS = A.KDTANS
+      left join KONASET K ON K.KDKON = A.KDKON
+    </select>
+    <select id="QueryByAllPenilaiandet" extends="BaseQueryPenilaiandet" parameterClass="Penilaiandet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="QueryByLookupPenilaiandet" extends="BaseQueryPenilaiandet" parameterClass="Penilaiandet" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKPenilaiandet" extends="BaseQueryPenilaiandet" parameterClass="Penilaiandet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOPENILAIAN=#Nopenilaian# and A.KDTANS=#Kdtans# and A.ASETKEY=#Asetkey# and A.TAHUN=#Tahun# and A.NOREG=#Noreg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Penilaiandet">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Nopenilaian" column="NOPENILAIAN"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Penilaiandet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Penilaiandet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nopenilaian" column="NOPENILAIAN"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

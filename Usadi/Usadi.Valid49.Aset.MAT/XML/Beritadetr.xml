@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Beritadetr" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Beritadetr" type="Usadi.Valid49.BO.BeritadetrControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Beritadetr">
+      <result property="Id" column="ID"/>
+      <result property="Nokontrak" column="NOKONTRAK"/>
+      <result property="Blokid" column="BLOKID"/>
+      <result property="Tglba" column="TGLBA"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kddana" column="KDDANA"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Nilairek" column="NILAIREK"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noba" column="NOBA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertBeritadetr" parameterMap="insert-param">
+      <generate table="Aset_beritadetr"/>
+    </insert>
+    <update id="UpdateByBeritadetr" parameterMap="update-param">
+      <generate table="Aset_beritadetr" by="UNITKEY,NOBA,MTGKEY"/>
+    </update>
+    <update id="UpdateByTerminBeritadetr" parameterClass="Beritadetr">
+      update ASET_BERITADETR set NILAI=#Nilai#
+      where UNITKEY=#Unitkey# and NOBA=#Noba# and MTGKEY=#Mtgkey#
+    </update>
+    <update id="UpdateByValidRevBeritadetr" parameterClass="Beritadetr">
+      update ASET_BERITADETR set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevBeritadetr" parameterClass="Beritadetr">
+      update ASET_BERITADETR set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByBeritadetr" parameterMap="delete-param">
+      <generate table="Aset_beritadetr" by="UNITKEY,NOBA,MTGKEY"/>
+    </delete>
+    <select id="BaseQueryBeritadetr" parameterClass="Beritadetr" resultMap="return-result">
+      select A.ID, A.UNITKEY, DU.KDUNIT, DU.NMUNIT, A.NOBA, A.MTGKEY, M.KDPER, M.NMPER, A.NILAI, D.NILAI AS NILAIREK
+      , AB.KDTAHAP, AB.KDKEGUNIT, AB.KDTANS, AB.KDDANA, AB.TGLBA, AB.TGLVALID, AB.NOKONTRAK, #Blokid# BLOKID
+      from ASET_BERITADETR A
+      inner join ASET_BERITA AB ON AB.UNITKEY = A.UNITKEY and AB.NOBA = A.NOBA
+      inner join SKDASK S ON S.UNITKEY = A.UNITKEY and S.KDTAHAP = AB.KDTAHAP and S.THANG = YEAR(AB.TGLBA)
+      inner join DASKR D ON D.UNITKEY = S.UNITKEY and D.IDXDASK = S.IDXDASK and D.THANG = S.THANG and D.MTGKEY = A.MTGKEY and D.KDKEGUNIT = AB.KDKEGUNIT
+      inner join MATANGR M ON M.MTGKEY = A.MTGKEY AND M.THANG = D.THANG
+      inner join DAFTUNIT DU ON DU.UNITKEY = AB.UNITKEY
+    </select>
+    <select id="QueryByAllBeritadetr" extends="BaseQueryBeritadetr" parameterClass="Beritadetr" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOBA=#Noba#
+      and AB.KDTAHAP=#Kdtahap#
+      and AB.KDKEGUNIT=#Kdkegunit#
+      and AB.KDDANA=#Kddana#
+    </select>
+    <select id="QueryByLookupBeritadetr" extends="BaseQueryBeritadetr" parameterClass="Beritadetr" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKBeritadetr" extends="BaseQueryBeritadetr" parameterClass="Beritadetr" resultMap="return-result">
+      where and A.UNITKEY=#Unitkey# and A.NOBA=#Noba#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Beritadetr">
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noba" column="NOBA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Beritadetr">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Beritadetr">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noba" column="NOBA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

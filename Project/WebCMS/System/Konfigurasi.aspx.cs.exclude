@@ -1,0 +1,113 @@
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using Ext.Net;
+#region Using Ibatis
+using CoreNET.Common.Base;
+using CoreNET.Common.UI;
+using CoreNET.Common.BO;
+using IBatisNet.DataAccess;
+using IBatisNet.DataAccess.Configuration;
+#endregion
+
+public partial class pSistem_Konfigurasi : System.Web.UI.Page
+{
+  private Window WindowLookup1 = new Window
+  {
+    ID = "FilterUserid",
+    Title= ConstantLang.TxtLblSelectUserId,
+    Width = Unit.Pixel(ExtWindows.DEFAULT_WIDTH),
+    Height = Unit.Pixel(ExtWindows.DEFAULT_HEIGHT),
+    Modal = true,
+    Resizable = false,
+    Maximizable = false,
+    Hidden = true,
+    AutoLoad =
+    {
+      Url = "~/System/FilterUserid.aspx",
+      Mode = LoadMode.IFrame
+    }
+  };
+
+  protected void Page_Load(object sender, EventArgs e)
+  {
+    Utility.CekSession();
+    if (!Page.IsPostBack)
+    {
+      //ubtn_Lookup.Hidden = !ConstantUI.StatusAdmin;
+      Title = ConstantLang.TxtLblUserReset;
+      FormPanel1.Title = Title;
+    }
+  }
+
+  protected void ubtn_Lookup_Click(object sender, DirectEventArgs e)
+  {
+    WindowLookup1.Render(this.Form);
+    WindowLookup1.Show();
+  }
+  protected void ubtn_ok_Click(object sender, DirectEventArgs e)
+  {
+    //AppuserControl cUser = (AppuserControl)Session[ConstantUI.SESSION_DATA_USER];
+    AppuserControl cUser1 = new AppuserControl();
+    cUser1.Userid = textFilterUserid.Text;
+
+    cUser1 = (AppuserControl)cUser1.Load(BaseDataControl.PK);
+    if (cUser1 == null)
+    {
+      UtilityUI.AddMessage(Page, ConstantLang.TxtLblUndifinedUser);
+      return;
+    }
+
+    try
+    {
+      cUser1.SetPageKey(HttpContext.Current);
+      cUser1.Blokid = "0";
+      cUser1.Update("Blok");
+
+      string pwd = UtilityUI.Encode(TextField2.Text);
+      //string pwd = UtilityUI.Encode(TextField1.Text);
+      //if (!cUser.Pwd.Equals(pwd) && !pwd.Contains(cUser.Pwd.Trim()))
+      //{
+      //  UtilityExt.AddMessage(FormPanel1, "Password lama salah!");
+      //  return;
+      //}
+
+      string msgvalid = AppuserControl.IsValidPwd(cUser1.Userid.Trim(), TextField2.Text.Trim(), TextField3.Text);
+      if (msgvalid != "")
+      {
+        UtilityExt.AddMessage(FormPanel1, msgvalid);
+        return;
+      }
+      else
+      {
+        pwd = UtilityUI.Encode(TextField2.Text);
+        cUser1.SetPageKey(HttpContext.Current);
+        cUser1.Pwd = pwd;
+        try
+        {
+          cUser1.Update("Pwd");
+          UtilityExt.AddMessage(FormPanel1, ConstantLang.TxtLblChangePwdIsSucces);
+        }
+        catch (Exception ex)
+        {
+          UtilityExt.AddMessage(FormPanel1, ex);
+        }
+      }
+    }
+    catch (Exception ex)
+    {
+      string newmsg = UtilityUI.GetExceptionMessage(ex).Replace("\r", "").Replace("\n", "").Replace("\"", "'"); ;
+      Label1.Text = newmsg;
+      return;
+    }
+  }
+
+}

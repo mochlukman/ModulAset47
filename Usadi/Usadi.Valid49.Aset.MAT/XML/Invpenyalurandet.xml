@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invpenyalurandet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invpenyalurandet" type="Usadi.Valid49.BO.InvpenyalurandetControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invpenyalurandet">
+      <result property="Id" column="ID"/>
+      <result property="Nusp" column="NUSP"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merk" column="MERK"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nosppb" column="NOSPPB"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+    </resultMap>
+    <resultMap id="return-jmlbrg" class="Invpenyalurandet">
+      <result property="Jmlbrg" column="JMLBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvpenyalurandet" parameterMap="insert-param">
+      <generate table="INV_PENYALURANDET"/>
+    </insert>
+    <update id="UpdateByInvpenyalurandet" parameterMap="update-param">
+      <generate table="INV_PENYALURANDET" by="UNITKEY,NOSPPB,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevInvpenyalurandet" parameterClass="Invpenyalurandet">
+      update INV_PENYALURANDET set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvpenyalurandet" parameterClass="Invpenyalurandet">
+      update INV_PENYALURANDET set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvpenyalurandet" parameterMap="delete-param">
+      <generate table="INV_PENYALURANDET" by="UNITKEY,NOSPPB,IDBRG"/>
+    </delete>
+    <select id="BaseQueryInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOSPPB) as NOSPPB,rtrim(I.IDBRG) as IDBRG,
+      rtrim(A.ASETKEY) as ASETKEY,rtrim(D.KDASET) as KDASET,rtrim(D.NMASET) as NMASET,
+      rtrim(I.NUSP) as NUSP,rtrim(I.SPESIFIKASI) as SPESIFIKASI,
+      rtrim(I.KDSATUAN) as KDSATUAN,rtrim(S.NMSATUAN) as NMSATUAN,
+      rtrim(I.MERK) as MERK,I.NILAI,I.DATECREATE,I.DATEUPDATE
+      from INV_PENYALURANDET I
+      LEFT OUTER JOIN ASET_KIBSPESIFIKASI A ON I.UNITKEY=A.UNITKEY AND I.IDBRG=A.IDBRG AND A.KDKIB='00'
+      LEFT OUTER JOIN DAFTASET D ON A.ASETKEY=D.ASETKEY
+      LEFT OUTER JOIN SATUAN S ON I.KDSATUAN=S.KDSATUAN
+    </select>
+    <select id="QueryByAllInvpenyalurandet" extends="BaseQueryInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY=#Unitkey# and I.NOSPPB=#Nosppb#
+      order by I.UNITKEY,I.NOSPPB,I.IDBRG
+    </select>
+    <select id="QueryByLookupInvpenyalurandet" extends="BaseQueryInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NOSPPB,I.IDBRG
+    </select>
+    <select id="LoadByPKInvpenyalurandet" extends="BaseQueryInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPPB = #Nosppb# and I.IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByJmlbrgInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-jmlbrg">
+      select count(IDBRG) as JMLBRG from INV_PENYALURANDET I
+      where I.UNITKEY = #Unitkey# and I.NOSPPB = #Nosppb#
+    </select>
+    <select id="LoadByIDInvpenyalurandet" extends="BaseQueryInvpenyalurandet" parameterClass="Invpenyalurandet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPPB = #Nosppb# and I.IDBRG = #Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invpenyalurandet">
+      <parameter property="Nusp" column="NUSP"/>
+      <parameter property="Spesifikasi" column="SPESIFIKASI"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Merk" column="MERK"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Datecreate" column="DATECREATE"/>
+      <parameter property="Dateupdate" column="DATEUPDATE"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nosppb" column="NOSPPB"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invpenyalurandet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invpenyalurandet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nosppb" column="NOSPPB"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

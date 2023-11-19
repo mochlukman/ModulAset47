@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invpenyaluran" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invpenyaluran" type="Usadi.Valid49.BO.InvpenyaluranControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invpenyaluran">
+      <result property="Id" column="ID"/>
+      <result property="Nospb" column="NOSPB"/>
+      <result property="Tglspb" column="TGLSPB"/>
+      <result property="Tglsppb" column="TGLSPPB"/>
+      <result property="Idxttd" column="IDXTTD"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdgudang" column="KDGUDANG"/>
+      <result property="Nmgudang" column="NMGUDANG"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Untuk" column="UNTUK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nosppb" column="NOSPPB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <!--<insert id="InsertInvpenyaluran" parameterMap="insert-param">
+      <generate table="INV_PENYALURAN"/>
+    </insert>-->
+    <insert id="InsertInvpenyaluran" parameterClass="Invpenyaluran">
+      INSERT INTO INV_PENYALURAN(NOSPB,TGLSPPB,IDXTTD,KDGUDANG,KDTANS,UNTUK,KET,UNITKEY,NOSPPB)
+      VALUES (#Nospb#,#Tglsppb#,#Idxttd#,#Kdgudang#,#Kdtans#,#Untuk#,#Ket#,#Unitkey#,#Nosppb#)
+
+      INSERT INTO INV_PENYALURANDET(UNITKEY, NOSPPB, IDBRG,NUSP,SPESIFIKASI, KDSATUAN,MERK,NILAI)
+      SELECT UNITKEY, #Nosppb#, IDBRG,NUSP,SPESIFIKASI, KDSATUAN,MERK,NILAI FROM INV_SPBDET
+      WHERE UNITKEY=#Unitkey# AND NOSPB=#Nospb#
+    </insert>
+    <update id="UpdateByInvpenyaluran" parameterMap="update-param">
+      <generate table="INV_PENYALURAN" by="UNITKEY,NOSPPB"/>
+    </update>
+    <update id="UpdateByValidRevInvpenyaluran" parameterClass="Invpenyaluran">
+      update INV_PENYALURAN set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+     <update id="UpdateByValidInvpenyaluran" parameterClass="Invpenyaluran">
+      update INV_PENYALURAN set TGLVALID=#Tglvalid#
+      where UNITKEY = #Unitkey# and NOSPPB = #Nosppb#
+    </update>
+     <update id="UpdateByDraftInvpenyaluran" parameterClass="Invpenyaluran">
+      update INV_PENYALURAN set TGLVALID=null
+      where UNITKEY = #Unitkey# and NOSPPB = #Nosppb#
+    </update>
+    <update id="UpdateByUnValidRevInvpenyaluran" parameterClass="Invpenyaluran">
+      update INV_PENYALURAN set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvpenyaluran" parameterMap="delete-param">
+      <generate table="INV_PENYALURAN" by="UNITKEY,NOSPPB"/>
+    </delete>
+    <select id="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOSPPB) as NOSPPB,rtrim(I.NOSPB) as NOSPB,I1.TGLSPB,
+      I.TGLSPPB,rtrim(I.IDXTTD) as IDXTTD,I.TGLVALID,rtrim(I.KDGUDANG) as KDGUDANG,rtrim(D.NMGUDANG) as NMGUDANG,
+      rtrim(I.KDTANS) as KDTANS,rtrim(I.UNTUK) as UNTUK,rtrim(I.KET) as KET,I.DATECREATE,I.DATEUPDATE
+      from INV_PENYALURAN I
+      LEFT OUTER JOIN INV_SPB I1 ON I.UNITKEY=I1.UNITKEY AND I.NOSPB=I1.NOSPB
+      LEFT OUTER JOIN DAFTGUDANG D ON I.UNITKEY=D.UNITKEY AND I.KDGUDANG=D.KDGUDANG
+    </select>
+    <select id="QueryByAllInvpenyaluran" extends="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOSPPB
+    </select>
+     <select id="QueryByValidInvpenyaluran" extends="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY = #Unitkey#
+      AND I.NOSPPB IN(SELECT I2.NOSPPB FROM INV_BAST I2 WHERE I2.UNITKEY=#Unitkey#)
+      order by I.UNITKEY,I.NOSPPB
+    </select>
+    <select id="QueryByLookupInvpenyaluran" extends="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NOSPPB
+    </select>
+    <select id="LoadByPKInvpenyaluran" extends="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPPB = #Nosppb#
+    </select>
+    <select id="LoadByIDInvpenyaluran" extends="BaseQueryInvpenyaluran" parameterClass="Invpenyaluran" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPPB = #Nosppb#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invpenyaluran">
+      <parameter property="Nospb" column="NOSPB"/>
+      <parameter property="Tglsppb" column="TGLSPPB"/>
+      <parameter property="Idxttd" column="IDXTTD"/>
+      <!--<parameter property="Tglvalid" column="TGLVALID"/>-->
+      <parameter property="Kdgudang" column="KDGUDANG"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Untuk" column="UNTUK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nosppb" column="NOSPPB"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invpenyaluran">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invpenyaluran">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nosppb" column="NOSPPB"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

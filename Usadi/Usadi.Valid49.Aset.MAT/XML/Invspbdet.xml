@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invspbdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invspbdet" type="Usadi.Valid49.BO.InvspbdetControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invspbdet">
+      <result property="Id" column="ID"/>
+      <result property="Nusp" column="NUSP"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merk" column="MERK"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nospb" column="NOSPB"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvspbdet" parameterMap="insert-param">
+      <generate table="INV_SPBDET"/>
+    </insert>
+    <update id="UpdateByInvspbdet" parameterMap="update-param">
+      <generate table="INV_SPBDET" by="UNITKEY,NOSPB,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevInvspbdet" parameterClass="Invspbdet">
+      update INV_SPBDET set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvspbdet" parameterClass="Invspbdet">
+      update INV_SPBDET set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvspbdet" parameterMap="delete-param">
+      <generate table="INV_SPBDET" by="UNITKEY,NOSPB,IDBRG"/>
+    </delete>
+    <select id="BaseQueryInvspbdet" parameterClass="Invspbdet" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.NOSPB) as NOSPB,rtrim(I.IDBRG) as IDBRG,
+      rtrim(A.ASETKEY) as ASETKEY,rtrim(D.KDASET) as KDASET,rtrim(D.NMASET) as NMASET,
+      rtrim(I.NUSP) as NUSP,rtrim(I.SPESIFIKASI) as SPESIFIKASI,rtrim(I.UNITKEY2) as UNITKEY2,
+      rtrim(I.KDSATUAN) as KDSATUAN,rtrim(S.NMSATUAN) as NMSATUAN,
+      rtrim(I.MERK) as MERK,I.NILAI,I.DATECREATE,I.DATEUPDATE
+      from INV_SPBDET I
+      LEFT OUTER JOIN ASET_KIBSPESIFIKASI A ON I.UNITKEY=A.UNITKEY AND I.IDBRG=A.IDBRG AND A.KDKIB='00'
+      LEFT OUTER JOIN DAFTASET D ON A.ASETKEY=D.ASETKEY
+      LEFT OUTER JOIN SATUAN S ON I.KDSATUAN=S.KDSATUAN
+    </select>
+    <select id="QueryByAllInvspbdet" extends="BaseQueryInvspbdet" parameterClass="Invspbdet" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY=#Unitkey# and I.NOSPB=#Nospb# and I.UNITKEY2=#Unitkey2#
+      order by I.UNITKEY,I.NOSPB,I.IDBRG
+    </select>
+    <select id="QueryByLookupInvspbdet" extends="BaseQueryInvspbdet" parameterClass="Invspbdet" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NOSPB,I.IDBRG
+    </select>
+    <select id="LoadByPKInvspbdet" extends="BaseQueryInvspbdet" parameterClass="Invspbdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPB = #Nospb# and I.IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByIDInvspbdet" extends="BaseQueryInvspbdet" parameterClass="Invspbdet" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPB = #Nospb# and I.IDBRG = #Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invspbdet">
+      <parameter property="Nusp" column="NUSP"/>
+      <parameter property="Spesifikasi" column="SPESIFIKASI"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Merk" column="MERK"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nospb" column="NOSPB"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invspbdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invspbdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nospb" column="NOSPB"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

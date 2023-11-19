@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Mapnrcaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Mapnrcaset" type="Usadi.Valid49.BO.MapnrcasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Mapnrcaset">
+      <result property="Id" column="ID"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Kddana" column="KDDANA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-rek" class="Mapnrcaset">
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMapnrcaset" parameterMap="insert-param">
+      <generate table="Mapnrcaset"/>
+    </insert>
+    <update id="UpdateByMapnrcaset" parameterMap="update-param">
+      <generate table="Mapnrcaset" by="THANG,KDDANA,MTGKEY,ASETKEY"/>
+    </update>
+    <update id="UpdateByValidRevMapnrcaset" parameterClass="Mapnrcaset">
+      update MAPNRCASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMapnrcaset" parameterClass="Mapnrcaset">
+      update MAPNRCASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMapnrcaset" parameterMap="delete-param">
+      <generate table="Mapnrcaset" by="THANG,KDDANA,MTGKEY,ASETKEY"/>
+    </delete>
+    <select id="BaseQueryMapnrcaset" parameterClass="Mapnrcaset" resultMap="return-result">
+      select M.ID, M.KDDANA, M.MTGKEY, M.ASETKEY, D.KDASET, D.NMASET, M.THANG
+      from MAPNRCASET M
+      left join DAFTASET as D on D.ASETKEY = M.ASETKEY
+    </select>
+    <select id="QueryByAllMapnrcaset" extends="BaseQueryMapnrcaset" parameterClass="Mapnrcaset" resultMap="return-result">
+      where 1=1
+      and M.MTGKEY = #Mtgkey#
+      and M.THANG = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA p WHERE p.CONFIGID = 'cur_thang')
+      order by D.KDASET
+    </select>
+    <select id="QueryByRekMapnrcaset" parameterClass="Mapnrcaset" resultMap="return-rek">
+      select M.MTGKEY, M.KDPER, M.NMPER
+      from MATANGNRC M
+      where 1=1
+      and M.MTGLEVEL='5'
+      and M.THANG = (select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="QueryByLookupMapnrcaset" extends="BaseQueryMapnrcaset" parameterClass="Mapnrcaset" resultMap="return-result">
+      where 1=1
+      order by D.KDASET
+    </select>
+    <select id="LoadByPKMapnrcaset" extends="BaseQueryMapnrcaset" parameterClass="Mapnrcaset" resultMap="return-result">
+      <!--where M.ASETKEY = #Asetkey#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Mapnrcaset">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kddana" column="KDDANA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Mapnrcaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Mapnrcaset">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kddana" column="KDDANA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

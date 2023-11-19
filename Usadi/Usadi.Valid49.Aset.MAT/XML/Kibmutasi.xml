@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibmutasi" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibmutasi" type="Usadi.Valid49.BO.KibmutasiControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibmutasi">
+      <result property="Id" column="ID"/>
+      <result property="Tglmutasikel" column="TGLMUTASIKEL"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdunit2" column="KDUNIT2"/>
+      <result property="Nmunit2" column="NMUNIT2"/>
+      <result property="Kdnmunit" column="KDNMUNIT"/>
+      <result property="Kdnmunit2" column="KDNMUNIT2"/>
+      <result property="Tglmutasiter" column="TGLMUTASITER"/>
+      <result property="Unitkey" column="UNITKEY"/>      
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Nomutasikel" column="NOMUTASIKEL"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Kibmutasi">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibmutasi" parameterClass="Kibmutasi">
+      insert into ASET_KIBMUTASI(UNITKEY,UNITKEY2,NOMUTASIKEL,TGLMUTASIKEL,KDTANS,KET,TGLMUTASITER)
+      values(#Unitkey#,#Unitkey2#,#Nomutasikel#,#Tglmutasikel#,#Kdtans#,#Ket#,null)
+    </insert>
+    <update id="UpdateByKibmutasi" parameterClass="Kibmutasi">
+      update ASET_KIBMUTASI set TGLMUTASIKEL=#Tglmutasikel#,KET=#Ket#
+      where UNITKEY=#Unitkey# and UNITKEY2=#Unitkey2# and NOMUTASIKEL=#Nomutasikel#
+    </update>
+    <update id="UpdateByTerimaKibmutasi" parameterClass="Kibmutasi">
+      update ASET_KIBMUTASI set TGLMUTASITER=#Tglmutasiter#
+      where UNITKEY=#Unitkey# and UNITKEY2=#Unitkey2# and NOMUTASIKEL=#Nomutasikel#
+    </update>
+    <update id="UpdateByDraftKibmutasi" parameterClass="Kibmutasi">
+      update ASET_KIBMUTASI set TGLMUTASITER = null
+      where UNITKEY=#Unitkey# and UNITKEY2=#Unitkey2# and NOMUTASIKEL=#Nomutasikel#
+      update ASET_KIBMUTASIDET set STATUS = 0
+      where UNITKEY=#Unitkey# and UNITKEY2=#Unitkey2# and NOMUTASIKEL=#Nomutasikel#
+    </update>
+    <update id="UpdateByValidRevKibmutasi" parameterClass="Kibmutasi">
+      update ASET_KIBMUTASI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibmutasi" parameterClass="Kibmutasi">
+      update ASET_KIBMUTASI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibmutasi" parameterMap="delete-param">
+      <generate table="Aset_kibmutasi" by="UNITKEY,UNITKEY2,NOMUTASIKEL"/>
+    </delete>
+    <select id="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.UNITKEY2, D2.KDUNIT AS KDUNIT2, D2.NMUNIT AS NMUNIT2
+      , A.NOMUTASIKEL, A.TGLMUTASIKEL, A.KDTANS, J.NMTRANS, A.KET, A.TGLMUTASITER
+      , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+      , ltrim(rtrim(D2.KDUNIT))+' - '+ltrim(rtrim(D2.NMUNIT)) KDNMUNIT2
+      from ASET_KIBMUTASI A
+      left join JTRANS J ON J.KDTANS = A.KDTANS
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      left join DAFTUNIT D2 ON D2.UNITKEY = A.UNITKEY2
+    </select>
+    <select id="QueryByAllKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where 1=1
+      and A.Unitkey=#Unitkey#
+      AND A.KDTANS='205'
+      and year(A.TGLMUTASIKEL) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByKeluarintKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where 1=1
+      and A.Unitkey=#Unitkey#
+      AND A.KDTANS='227'
+      and year(A.TGLMUTASIKEL) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByTerimaKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where 1=1
+      and A.Unitkey2=#Unitkey#
+      AND A.KDTANS='205'
+      and year(A.TGLMUTASIKEL) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByTerimaintKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where 1=1
+      and A.Unitkey2=#Unitkey#
+      AND A.KDTANS='227'
+      and year(A.TGLMUTASIKEL) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKKibmutasi" extends="BaseQueryKibmutasi" parameterClass="Kibmutasi" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.UNITKEY2=#Unitkey2# and A.NOMUTASIKEL=#Nomutasikel#
+    </select>
+    <select id="LoadByJmlkibKibmutasi" parameterClass="Kibmutasi" resultMap="return-jmlkib">
+      select sum(x.NOBAMUTASI) as JMLKIB from (
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBADET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBBDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBCDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBDDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBEDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBGDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#
+      union all
+      select count(NODOKUMEN) as NOBAMUTASI from ASET_KIBHDET where KDTANS='205' and UNITKEY=#Unitkey# and NODOKUMEN=#Nomutasikel#) x
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibmutasi">
+      <parameter property="Tglmutasikel" column="TGLMUTASIKEL"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Nomutasikel" column="NOMUTASIKEL"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Kibmutasi">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibmutasi">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Nomutasikel" column="NOMUTASIKEL"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

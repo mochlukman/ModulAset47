@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibmutasidet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibmutasidet" type="Usadi.Valid49.BO.KibmutasidetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibmutasidet">
+      <result property="Id" column="ID"/>
+      <result property="Noreg2" column="NOREG2"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Statusmutasi" column="STATUSMUTASI"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Unitkey" column="UNITKEY"/>      
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Nomutasikel" column="NOMUTASIKEL"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibmutasidet" parameterMap="insert-param">
+      <generate table="Aset_kibmutasidet"/>
+    </insert>
+    <update id="UpdateByKibmutasidet" parameterMap="update-param">
+      <generate table="Aset_kibmutasidet" by="UNITKEY,UNITKEY2,NOMUTASIKEL,ASETKEY,TAHUN,NOREG"/>
+    </update>
+    <update id="UpdateByValidRevKibmutasidet" parameterClass="Kibmutasidet">
+      update ASET_KIBMUTASIDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibmutasidet" parameterClass="Kibmutasidet">
+      update ASET_KIBMUTASIDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibmutasidet" parameterMap="delete-param">
+      <generate table="Aset_kibmutasidet" by="UNITKEY,UNITKEY2,NOMUTASIKEL,ASETKEY,TAHUN,NOREG"/>
+    </delete>
+    <select id="BaseQueryKibmutasidet" parameterClass="Kibmutasidet" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.UNITKEY2, A.NOMUTASIKEL, A.ASETKEY, D.KDASET, D.NMASET, A.TAHUN, A.NOREG
+      , A.NOREG2, A.IDBRG, A.NILAI, (case A.STATUS when '0' then 'Diajukan' when '1' then 'Diterima' end) STATUSMUTASI
+      from ASET_KIBMUTASIDET A
+      left join DAFTASET D on D.ASETKEY=A.ASETKEY
+    </select>
+    <select id="QueryByAllKibmutasidet" extends="BaseQueryKibmutasidet" parameterClass="Kibmutasidet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.UNITKEY2=#Unitkey2#
+      and A.NOMUTASIKEL=#Nomutasikel#
+      <!--and (A.ASETKEY=#Asetkey# or isnull(#Asetkey#,'')='')-->
+    </select>
+    <select id="QueryByLookupKibmutasidet" extends="BaseQueryKibmutasidet" parameterClass="Kibmutasidet" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKKibmutasidet" extends="BaseQueryKibmutasidet" parameterClass="Kibmutasidet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.UNITKEY2=#Unitkey2# and A.NOMUTASIKEL=#Nomutasikel# and A.ASETKEY=#Asetkey# and A.TAHUN=#Tahun# and A.NOREG=#Noreg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibmutasidet">
+      <parameter property="Noreg2" column="NOREG2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Statusmutasi" column="STATUS"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Nomutasikel" column="NOMUTASIKEL"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Kibmutasidet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibmutasidet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Nomutasikel" column="NOMUTASIKEL"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

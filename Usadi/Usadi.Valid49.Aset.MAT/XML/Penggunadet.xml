@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Penggunadet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Penggunadet" type="Usadi.Valid49.BO.PenggunadetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Penggunadet">
+      <result property="Id" column="ID"/>
+      <result property="Jangkawaktu" column="JANGKAWAKTU"/>
+      <result property="Kdsatwaktu" column="KDSATWAKTU"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Statuspengguna" column="STATUSPENGGUNA"/>
+      <result property="Statuspenggunaan" column="STATUSPENGGUNAAN"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdnmaset" column="KDNMASET"/>
+      <result property="Nmsatwaktu" column="NMSATWAKTU"/>
+      <result property="Tglselesai" column="TGLSELESAI"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nodokpengguna" column="NODOKPENGGUNA"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPenggunadet" parameterMap="insert-param">
+      <generate table="Aset_penggunadet"/>
+    </insert>
+    <update id="UpdateByPenggunadet" parameterClass="Penggunadet">
+      update ASET_PENGGUNADET
+      set KDSATWAKTU=#Kdsatwaktu#, JANGKAWAKTU=#Jangkawaktu#, STATUS=#Statuspengguna#
+      where UNITKEY=#Unitkey# and NODOKPENGGUNA=#Nodokpengguna# and KDTANS=#Kdtans# and ASETKEY=#Asetkey# and TAHUN=#Tahun# and NOREG=#Noreg#
+    </update>
+    <update id="UpdateByValidRevPenggunadet" parameterClass="Penggunadet">
+      update ASET_PENGGUNADET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPenggunadet" parameterClass="Penggunadet">
+      update ASET_PENGGUNADET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPenggunadet" parameterMap="delete-param">
+      <generate table="Aset_penggunadet" by="UNITKEY,NODOKPENGGUNA,KDTANS,ASETKEY,TAHUN,NOREG"/>
+    </delete>
+    <select id="BaseQueryPenggunadet" parameterClass="Penggunadet" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NODOKPENGGUNA, A.KDTANS, A.ASETKEY, D.KDASET, D.NMASET, LTRIM(RTRIM(D.KDASET))+' - '+LTRIM(RTRIM(D.NMASET)) KDNMASET
+      , A.TAHUN, A.NOREG, A.JANGKAWAKTU, A.KDSATWAKTU, S.NMSATWAKTU, A.IDBRG, rtrim(A.[STATUS]) as STATUSPENGGUNA
+      , AP.TGLSELESAI, AP.TGLVALID, (case A.STATUS when '0' then 'Sebagian' when '1' then 'Semua' end) STATUSPENGGUNAAN
+      from ASET_PENGGUNADET A
+      left join ASET_PENGGUNA AP ON AP.UNITKEY = A.UNITKEY AND AP.NODOKPENGGUNA = A.NODOKPENGGUNA AND AP.KDTANS = A.KDTANS
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+      left join SATWAKTU S ON S.KDSATWAKTU = A.KDSATWAKTU
+    </select>
+    <select id="QueryByAllPenggunadet" extends="BaseQueryPenggunadet" parameterClass="Penggunadet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey# 
+      and A.NODOKPENGGUNA=#Nodokpengguna# 
+      and A.KDTANS=#Kdtans#
+    </select>
+    <select id="QueryByLookupPenggunadet" extends="BaseQueryPenggunadet" parameterClass="Penggunadet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NODOKPENGGUNA=#Nodokpengguna#
+      and A.KDTANS=#Kdtans#
+    </select>
+    <select id="LoadByPKPenggunadet" extends="BaseQueryPenggunadet" parameterClass="Penggunadet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey#
+      and A.NODOKPENGGUNA=#Nodokpengguna#
+      and A.KDTANS=#Kdtans#
+      and A.ASETKEY=#Asetkey#
+      and A.TAHUN=#Tahun#
+      and A.NOREG=#Noreg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Penggunadet">
+      <parameter property="Jangkawaktu" column="JANGKAWAKTU"/>
+      <parameter property="Kdsatwaktu" column="KDSATWAKTU"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Statuspengguna" column="STATUS"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nodokpengguna" column="NODOKPENGGUNA"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Penggunadet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Penggunadet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nodokpengguna" column="NODOKPENGGUNA"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Webgroup" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+      <typeAlias alias="Webgroup" type="Usadi.Valid49.BO.WebgroupControl" />
+    </alias>
+    <resultMaps>
+      <resultMap id="return-result" class="Webgroup">
+        <result property="Groupid" column="GROUPID"/>
+        <result property="Nmgroup" column="NMGROUP"/>
+        <result property="Ket" column="KET"/>
+      </resultMap>
+      <resultMap id="return-result-groupid" class="Webgroup">
+        <result property="Groupid" column="GROUPID"/>
+      </resultMap>
+      <resultMap id="return-cekjmlotor" class="Webgroup">
+        <result property="Jmlotor" column="JMLOTOR"/>
+      </resultMap>
+    </resultMaps>
+    <statements>
+      <insert id="InsertWebgroup" parameterMap="insert-param">
+        <generate table="WEBGROUP"/>
+      </insert>
+      <update id="UpdateByWebgroup" parameterClass="Webgroup">
+        UPDATE WEBGROUP SET NMGROUP=#Nmgroup#,KET=#Ket#
+        WHERE GROUPID = #Groupid#
+      </update>
+      <update id="UpdateByValidRevWebgroup" parameterClass="Webgroup">
+        update WEBGROUP set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+      </update>
+      <update id="UpdateByUnValidRevWebgroup" parameterClass="Webgroup">
+        update WEBGROUP set REV_BY='' and REV_DATE=null
+      </update>
+      <delete id="DeleteByWebgroup" parameterMap="delete-param">
+        <generate table="WEBGROUP" by="GROUPID,NMGROUP"/>
+      </delete>
+      <select id="QueryByGroupidWebgroup" parameterClass="Webgroup" resultMap="return-result-groupid">
+        SELECT CAST(ISNULL(MAX(CAST(w.GROUPID as INT)),0) as VARCHAR) GROUPID FROM WEBGROUP AS w
+      </select>
+      <select id="BaseQueryWebgroup" parameterClass="Webgroup" resultMap="return-result">
+        SELECT RTRIM(w.GROUPID) GROUPID, RTRIM(w.NMGROUP)NMGROUP,w.KET
+        FROM WEBGROUP AS w
+      </select>      
+      <select id="QueryByAllWebgroup" extends="BaseQueryWebgroup" parameterClass="Webgroup" resultMap="return-result">
+        where 1=1
+        order by W.GROUPID
+      </select>
+      <select id="QueryByLookupWebgroup" extends="BaseQueryWebgroup" parameterClass="Webgroup" resultMap="return-result">
+        where 1=1
+        order by W.GROUPID
+      </select>
+      <select id="LoadByPKWebgroup" extends="BaseQueryWebgroup" parameterClass="Webgroup" resultMap="return-result">
+        where W.GROUPID = #Groupid# and W.NMGROUP = #Nmgroup#
+      </select>
+      <select id="LoadByCekotorWebgroup" parameterClass="Webgroup" resultMap="return-cekjmlotor">
+        SELECT ISNULL(COUNT(*),0) AS JMLOTOR FROM WEBGROUP AS w
+        INNER JOIN WEBOTOR AS w2 ON w2.GROUPID = w.GROUPID
+        where w.GROUPID = #Groupid#
+      </select>
+    </statements>
+    <parameterMaps>
+      <parameterMap id="insert-param" class="Webgroup">
+        <parameter property="Groupid" column="GROUPID"/>
+        <parameter property="Nmgroup" column="NMGROUP"/>
+        <parameter property="Ket" column="KET"/>
+      </parameterMap>
+      <parameterMap id="update-param" extends="insert-param" class="Webgroup">
+      </parameterMap>
+      <parameterMap id="delete-param" class="Webgroup">
+        <parameter property="Groupid" column="GROUPID"/>
+        <parameter property="Nmgroup" column="NMGROUP"/>
+      </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

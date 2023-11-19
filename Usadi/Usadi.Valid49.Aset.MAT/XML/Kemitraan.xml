@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kemitraan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Kemitraan" type="Usadi.Valid49.BO.KemitraanControl, Usadi.Valid49.Aset.MAT" />
+    </alias>
+    <resultMaps>
+        <resultMap id="return-result" class="Kemitraan">
+            <result property="Id" column="ID"/>
+            <result property="Kdjenis" column="KDJENIS"/>
+            <result property="Tglawal" column="TGLAWAL"/>
+            <result property="Tglakhir" column="TGLAKHIR"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Nilai" column="NILAI"/>
+            <result property="Iddokumen" column="IDDOKUMEN"/>
+            <result property="Idpengajuan" column="IDPENGAJUAN"/>
+            <result property="Ket" column="KET"/>
+            <result property="Iddokumenawal" column="IDDOKUMENAWAL"/>
+            <result property="Nodokumenawal" column="NODOKUMENAWAL"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Nmp3" column="NMP3"/>
+            <result property="Nminst" column="NMINST"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Nmjenis" column="NMJENIS"/>
+            <result property="Kdtans" column="KDTANS"/>
+            <result property="Kdp3" column="KDP3"/>
+            <result property="Nodokumen" column="NODOKUMEN"/>
+            <result property="Unitkey" column="UNITKEY"/>
+        </resultMap>
+        <resultMap id="return-dokumen" class="Kemitraan">
+            <result property="Iddokumen" column="IDDOKUMEN"/>
+        </resultMap>
+        <resultMap id="return-nodok" class="Kemitraan">
+            <result property="Nodokumen" column="NODOKUMEN"/>
+        </resultMap>
+        <resultMap id="return-pengajuan" class="Kemitraan">
+            <result property="Idpengajuan" column="IDPENGAJUAN"/>
+        </resultMap>
+        <resultMap id="return-kontrak" class="Kemitraan">
+            <result property="Iddokumenawal" column="IDDOKUMENAWAL"/>
+            <result property="Nodokumenawal" column="NODOKUMENAWAL"/>
+        </resultMap>
+        <resultMap id="return-jmldata" class="Kemitraan">
+            <result property="Jmldata" column="JMLDATA"/>
+        </resultMap>
+        <resultMap id="return-jmlkib" class="Kemitraan">
+            <result property="Jmlkib" column="JMLKIB"/>
+        </resultMap>
+    </resultMaps>
+    <statements>
+        <insert id="InsertKemitraan" parameterClass="Kemitraan">
+            insert into ASET_KEMITRAAN(UNITKEY,NODOKUMEN,KDP3,KDTANS,KDJENIS,TGLAWAL,TGLAKHIR,TGLVALID,NILAI,IDDOKUMEN,IDPENGAJUAN,KET)
+            values(#Unitkey#, #Nodokumen#, #Kdp3#, #Kdtans#, #Kdjenis#, #Tglawal#, #Tglakhir#, null, 0, #Iddokumen#, #Idpengajuan#, #Ket#)
+        </insert>
+        <insert id="InsertPerpanjanganKemitraan" parameterClass="Kemitraan">
+            insert into ASET_KEMITRAANDET(UNITKEY,NODOKUMEN,KDP3,KDTANS,ASETKEY,TAHUN,NOREG,IDBRG,KDSATWAKTU,JANGKAWAKTU,NILAI,NOPENILAIAN,[STATUS])
+            select #Unitkey#, #Nodokumen#, #Kdp3#, #Kdtans#, A.ASETKEY, A.TAHUN, A.NOREG, A.IDBRG, A.KDSATWAKTU, A.JANGKAWAKTU, A.NILAI
+            , A.NOPENILAIAN, A.[STATUS]
+            from ASET_KEMITRAANDET A
+            left join ASET_KEMITRAAN AK ON AK.UNITKEY = A.UNITKEY AND AK.NODOKUMEN = A.NODOKUMEN AND AK.KDP3 = A.KDP3 AND AK.KDTANS = A.KDTANS
+            where A.UNITKEY=#Unitkey# and A.KDTANS=#Kdtans# and AK.IDDOKUMEN = #Iddokumen# and AK.KDJENIS = '01' and AK.IDPENGAJUAN = 1
+        </insert>
+        <update id="UpdateByKemitraan" parameterClass="Kemitraan">
+            update ASET_KEMITRAAN set TGLAWAL=#Tglawal#, TGLAKHIR=#Tglakhir#, KET=#Ket#
+            where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDP3=#Kdp3# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateBySahKemitraan" parameterClass="Kemitraan">
+            update ASET_KEMITRAAN set TGLVALID=#Tglvalid#
+            where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDP3=#Kdp3# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByDraftKemitraan" parameterClass="Kemitraan">
+            update ASET_KEMITRAAN set TGLVALID = NULL
+            where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDP3=#Kdp3# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByValidRevKemitraan" parameterClass="Kemitraan">
+            update ASET_KEMITRAAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+        </update>
+        <update id="UpdateByUnValidRevKemitraan" parameterClass="Kemitraan">
+            update ASET_KEMITRAAN set REV_BY='' and REV_DATE=null
+        </update>
+        <delete id="DeleteByKemitraan" parameterMap="delete-param">
+            <generate table="Aset_kemitraan" by="KDTANS,KDP3,NODOKUMEN,UNITKEY"/>
+        </delete>
+        <select id="BaseQueryKemitraan" parameterClass="Kemitraan" resultMap="return-result">
+            select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NODOKUMEN, A.KDP3, D2.NMPENGGUNA as NMP3, D2.NMINST, A.KDTANS, J.NMTRANS, A.KDJENIS, JK.NMJENIS
+            , A.TGLAWAL, A.TGLAKHIR, A.TGLVALID, A.NILAI, rtrim(A.IDDOKUMEN) IDDOKUMEN, rtrim(A.IDPENGAJUAN) IDPENGAJUAN, A.KET
+            , rtrim(AK.IDDOKUMEN) as IDDOKUMENAWAL, AK.NODOKUMEN as NODOKUMENAWAL
+            from ASET_KEMITRAAN A
+            left join ASET_KEMITRAAN AK ON AK.UNITKEY = A.UNITKEY AND AK.IDDOKUMEN = A.IDDOKUMEN AND AK.KDJENIS = '01' AND AK.IDPENGAJUAN = 1
+            left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+            left join DAFTPENGGUNA D2 ON D2.KDPENGGUNA = A.KDP3
+            <!--left join DAFTPHK3 D2 ON D2.KDP3 = A.KDP3-->
+            left join JTRANS J ON J.KDTANS = A.KDTANS
+            left join JKONTRAK JK ON JK.KDJENIS = A.KDJENIS
+        </select>
+        <select id="QueryByAllKemitraan" extends="BaseQueryKemitraan" parameterClass="Kemitraan" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+            and A.KDJENIS=#Kdjenis#
+        </select>
+        <select id="QueryByLookupKemitraan" extends="BaseQueryKemitraan" parameterClass="Kemitraan" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+            and A.KDJENIS='01'
+        </select>
+        <select id="QueryByNodokKemitraan" parameterClass="Kemitraan" resultMap="return-nodok">
+            select A.NODOKUMEN
+            from ASET_KEMITRAAN A
+            where 1=1
+            and A.NODOKUMEN=#Nodokumen#
+        </select>
+        <select id="LoadByPKKemitraan" extends="BaseQueryKemitraan" parameterClass="Kemitraan" resultMap="return-result">
+            where A.UNITKEY=#Unitkey# and A.NODOKUMEN=#Nodokumen# and A.KDP3=#Kdp3# and A.KDTANS=#Kdtans#
+        </select>
+        <select id="LoadByDokumenKemitraan" parameterClass="Kemitraan" resultMap="return-dokumen">
+            select cast(isnull(max(A.IDDOKUMEN),0)+1 as CHAR) IDDOKUMEN from ASET_KEMITRAAN A
+        </select>
+        <select id="LoadByPengajuanKemitraan" parameterClass="Kemitraan" resultMap="return-pengajuan">
+            select cast(isnull(max(A.IDPENGAJUAN),0)+1 as CHAR) IDPENGAJUAN
+            from ASET_KEMITRAAN as A
+            where A.UNITKEY=#Unitkey# and A.IDDOKUMEN=#Iddokumen#
+        </select>
+        <select id="LoadByKontrakKemitraan" parameterClass="Kemitraan" resultMap="return-kontrak">
+            select IDDOKUMEN as IDDOKUMENAWAL, NODOKUMEN as NODOKUMENAWAL from ASET_KEMITRAAN
+            where UNITKEY=#Unitkey# and IDDOKUMEN=#Iddokumen# and KDJENIS = '01' and IDPENGAJUAN = 1
+        </select>
+        <select id="LoadByJmldataKemitraan" parameterClass="Kemitraan" resultMap="return-jmldata">
+            select count(*) JMLDATA from ASET_KEMITRAANDET
+            where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDP3=#Kdp3# and KDTANS=#Kdtans#
+        </select>
+        <select id="LoadByJmlkibKemitraan" parameterClass="Kemitraan" resultMap="return-jmlkib">
+            select sum(x.NODOKUMEN) as JMLKIB from (
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NODOKUMEN from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nodokumen# and KDTANS=#Kdtans#) x
+        </select>
+    </statements>
+    <parameterMaps>
+        <parameterMap id="insert-param" class="Kemitraan">
+            <parameter property="Tglawal" column="TGLAWAL"/>
+            <parameter property="Tglakhir" column="TGLAKHIR"/>
+            <parameter property="Tglvalid" column="TGLVALID"/>
+            <parameter property="Nilai" column="NILAI"/>
+            <parameter property="Iddokumen" column="IDDOKUMEN"/>
+            <parameter property="Idpengajuan" column="IDPENGAJUAN"/>
+            <parameter property="Ket" column="KET"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+            <parameter property="Kdp3" column="KDP3"/>
+            <parameter property="Nodokumen" column="NODOKUMEN"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+        </parameterMap>
+        <parameterMap id="update-param" extends="insert-param" class="Kemitraan">
+        </parameterMap>
+        <parameterMap id="delete-param" class="Kemitraan">
+            <parameter property="Kdtans" column="KDTANS"/>
+            <parameter property="Kdp3" column="KDP3"/>
+            <parameter property="Nodokumen" column="NODOKUMEN"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Skdask" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Skdask" type="Usadi.Valid49.BO.SkdaskControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Skdask">
+      <result property="Id" column="ID"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Idxkode" column="IDXKODE"/>
+      <result property="Idxttd1" column="IDXTTD1"/>
+      <result property="Idxttd2" column="IDXTTD2"/>
+      <result property="Nodask" column="NODASK"/>
+      <result property="Tgldask" column="TGLDASK"/>
+      <result property="Nosah" column="NOSAH"/>
+      <result property="Ketdask" column="KETDASK"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Idxdask" column="IDXDASK"/>
+      <result property="Unitkey" column="UNITKEY"/>
+    </resultMap>
+    <resultMap id="return-kdgroup" class="Skdask">
+      <result property="Kdgroup" column="KDGROUP"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSkdask" parameterMap="insert-param">
+      <generate table="SKDASK"/>
+    </insert>
+    <update id="UpdateBySkdask" parameterMap="update-param">
+      <generate table="SKDASK" by="THANG,IDXDASK,UNITKEY"/>
+    </update>
+    <update id="UpdateByValidRevSkdask" parameterClass="Skdask">
+      update SKDASK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSkdask" parameterClass="Skdask">
+      update SKDASK set TGLVALID=null where UNITKEY=#Unitkey# and IDXDASK=#Idxdask#
+    </update>
+    <delete id="DeleteBySkdask" parameterMap="delete-param">
+      <generate table="SKDASK" by="THANG,IDXDASK,UNITKEY"/>
+    </delete>
+    <select id="BaseQuerySkdask" parameterClass="Skdask" resultMap="return-result">
+      select S.ID, S.KDTAHAP, S.IDXKODE, S.IDXTTD1, S.IDXTTD2, S.IDXDASK, S.NODASK, S.TGLDASK
+      , S.NOSAH, S.KETDASK, S.TGLVALID, S.UNITKEY, D.KDUNIT, D.NMUNIT, #Kdkegunit# as KDKEGUNIT, S.THANG
+      from SKDASK S
+      left join TAHAP T on S.KDTAHAP=T.KDTAHAP
+      left join DAFTUNIT D on S.UNITKEY=D.UNITKEY
+    </select>
+    <select id="QueryByAllSkdask" parameterClass="Skdask" resultMap="return-result">
+      select S.ID, S.KDTAHAP, S.IDXKODE, S.IDXTTD1, S.IDXTTD2, S.IDXDASK, S.NODASK, S.TGLDASK
+      , S.NOSAH, S.KETDASK, S.TGLVALID, S.UNITKEY, DU.KDUNIT, DU.NMUNIT, #Kdkegunit# as KDKEGUNIT, S.THANG
+      from SKDASK S
+      inner join DAFTUNIT DU on DU.UNITKEY=S.UNITKEY
+      inner join TAHAP B on S.KDTAHAP=B.KDTAHAP
+      left outer join
+      (
+      select DISTINCT UNITKEY,IDXDASK,KDKEGUNIT,THANG from DASKR
+      where UNITKEY=#Unitkey#
+      and KDKEGUNIT=#Kdkegunit#
+      and THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      )  D on S.UNITKEY=D.UNITKEY and S.IDXDASK=D.IDXDASK and S.THANG=D.THANG
+      where S.UNITKEY=#Unitkey#
+      and S.Kdtahap=#Kdtahap#
+      and D.KDKEGUNIT=#Kdkegunit#
+      and S.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupSkdask" extends="BaseQuerySkdask" parameterClass="Skdask" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKSkdask" extends="BaseQuerySkdask" parameterClass="Skdask" resultMap="return-result">
+      <!--where A.UNITKEY=#Unitkey#-->
+    </select>
+    <select id="LoadByGetkdgroupSkdask" parameterClass="Skdask" resultMap="return-kdgroup">
+      select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Skdask">
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+      <parameter property="Idxkode" column="IDXKODE"/>
+      <parameter property="Idxttd1" column="IDXTTD1"/>
+      <parameter property="Idxttd2" column="IDXTTD2"/>
+      <parameter property="Nodask" column="NODASK"/>
+      <parameter property="Tgldask" column="TGLDASK"/>
+      <parameter property="Nosah" column="NOSAH"/>
+      <parameter property="Ketdask" column="KETDASK"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idxdask" column="IDXDASK"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Skdask">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Skdask">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idxdask" column="IDXDASK"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

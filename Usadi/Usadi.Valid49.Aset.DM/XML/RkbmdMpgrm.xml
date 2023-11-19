@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdMpgrm" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="RkbmdMpgrm" type="Usadi.Valid49.BO.RkbmdMpgrmControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="RkbmdMpgrm">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Uruskey" column="URUSKEY"/>
+      <result property="Kdurus" column="KDURUS"/>
+      <result property="Nmurus" column="NMURUS"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Nuprgrm" column="NUPRGRM"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+    </resultMap>
+    <resultMap id="return-result-key" class="RkbmdMpgrm">
+      <result property="Nuprgrm" column="NUPRGRM"/>
+    </resultMap>
+    <resultMap id="return-result-last" class="RkbmdMpgrm">
+      <result property="Idprgrm" column="IDPRGRM"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertRkbmdMpgrm" parameterMap="insert-param">
+      <generate table="Rkbmd_mpgrm"/>
+    </insert>
+    <update id="UpdateByRkbmdMpgrm" parameterMap="update-param">
+      <generate table="Rkbmd_mpgrm" by="THANG,IDPRGRM"/>
+    </update>
+    <update id="UpdateByValidRevRkbmdMpgrm" parameterClass="RkbmdMpgrm">
+      update RKBMD_MPGRM set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevRkbmdMpgrm" parameterClass="RkbmdMpgrm">
+      update RKBMD_MPGRM set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByRkbmdMpgrm" parameterMap="delete-param">
+      <generate table="Rkbmd_mpgrm" by="THANG,IDPRGRM"/>
+    </delete>
+    <select id="BaseQueryRkbmdMpgrm" parameterClass="RkbmdMpgrm" resultMap="return-result">
+      select M.ID, M.IDPRGRM, M.UNITKEY, M.NMPRGRM, M.NUPRGRM, UR.UNITKEY as URUSKEY
+      , UR.KDUNIT as KDURUS, UR.NMUNIT as NMURUS, M.THANG
+      from RKBMD_MPGRM M
+      left join DAFTUNIT UR on M.UNITKEY=UR.UNITKEY
+    </select>
+    <select id="QueryByAllRkbmdMpgrm" extends="BaseQueryRkbmdMpgrm" parameterClass="RkbmdMpgrm" resultMap="return-result">
+      where 1=1
+      and (isnull(M.UNITKEY,'')= isnull(#Uruskey#,''))
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.NUPRGRM desc
+    </select>
+    <select id="QueryByLookupRkbmdMpgrm" extends="BaseQueryRkbmdMpgrm" parameterClass="RkbmdMpgrm" resultMap="return-result">
+      where 1=1
+      and (isnull(M.UNITKEY,'')= isnull(#Unitkey#,''))
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.NUPRGRM
+    </select>
+    <select id="QueryByKeyRkbmdMpgrm"  parameterClass="RkbmdMpgrm" resultMap="return-result-key">
+      select isnull (max (rtrim(Nuprgrm)),0) as Nuprgrm from RKBMD_MPGRM where (isnull(UNITKEY,'')= isnull(#Uruskey#,''))
+    </select>
+    <select id="QueryByLastRkbmdMpgrm" parameterClass="RkbmdMpgrm" resultMap="return-result-last">
+      select top 1 rtrim(M.IDPRGRM) as IDPRGRM
+      from RKBMD_MPGRM M
+      order by M.IDPRGRM desc
+    </select>
+    <select id="LoadByPKRkbmdMpgrm" extends="BaseQueryRkbmdMpgrm" parameterClass="RkbmdMpgrm" resultMap="return-result">
+      where M.IDPRGRM = #Idprgrm#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="RkbmdMpgrm">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nmprgrm" column="NMPRGRM"/>
+      <parameter property="Nuprgrm" column="NUPRGRM"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="RkbmdMpgrm">
+    </parameterMap>
+    <parameterMap id="delete-param" class="RkbmdMpgrm">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,68 @@
+﻿<%@ Page Language="C#" AutoEventWireup="True" ValidateRequest="false" CodeFile="Sinkronisasi.aspx.cs" Inherits="Sinkronisasi" %>
+
+<%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+  <title></title>
+  <script type="text/javascript">
+    var home = function () {
+      parent.home();
+    }
+  </script>
+</head>
+<body>
+  <form id="form1" runat="server">
+  <div>
+    <ext:ResourceManager ID="ResourceManager1" runat="server" />
+    <ext:Viewport ID="Viewport1" runat="server" Layout="Fit">
+      <Items>
+        <ext:FormPanel ID="FormPanel1" runat="server" Title="Sinkronisasi" Icon="Disconnect"
+          Padding="15" Layout="Form" Border="false" Frame="true" Timeout="600">
+          <Items>
+            <ext:Container ID="Conttainer1" runat="server">
+              <Items>
+                <ext:CompositeField ID="CompositeFieldMode" runat="server" MaxWidth="900" FieldLabel="Service Mode">
+                  <Items>
+                    <ext:RadioGroup ID="RadioGroup2" runat="server" Vertical="false" Width="400" OnDirectChange="RadioCheckChanged">
+                      <Items>
+                        <ext:Radio ID="Radio1" FieldLabel="" runat="server" BoxLabel="Client" Checked="true"
+                          AutoWidth="true" />
+                        <ext:Radio ID="Radio2" FieldLabel="" runat="server" BoxLabel="Server" AutoWidth="true" />
+                      </Items>
+                    </ext:RadioGroup>
+                  </Items>
+                </ext:CompositeField>
+              </Items>
+            </ext:Container>
+            <ext:Container ID="Container2" runat="server">
+              <Items>
+                <ext:CompositeField ID="bottomctrl" runat="server" Width="900">
+                  <Items>
+                    <ext:StatusBar ID="Statusbar1" runat="server">
+                      <Items>
+                        <ext:ProgressBar ID="Progress1" runat="server" Width="300" />
+                      </Items>
+                    </ext:StatusBar>
+                  </Items>
+                </ext:CompositeField>
+              </Items>
+            </ext:Container>
+          </Items>
+        </ext:FormPanel>
+      </Items>
+    </ext:Viewport>
+  </div>
+  <ext:TaskManager ID="TaskManager1" runat="server">
+    <Tasks>
+      <ext:Task TaskID="longactionprogress" Interval="500" AutoRun="false" OnStart="#{Conttainer1}.setDisabled(true);"
+        OnStop="#{Conttainer1}.setDisabled(false);">
+        <DirectEvents>
+          <Update OnEvent="RefreshProgress" />
+        </DirectEvents>
+      </ext:Task>
+    </Tasks>
+  </ext:TaskManager>
+  </form>
+</body>
+</html>

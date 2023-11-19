@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Satuan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Satuan" type="Usadi.Valid49.BO.SatuanControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Satuan">
+      <result property="Id" column="ID"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+    </resultMap>
+    <resultMap id="return-result-kdsatuan" class="Satuan">
+      <result property="Kdsatuan" column="KDSATUAN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSatuan" parameterMap="insert-param">
+      <generate table="Satuan"/>
+    </insert>
+    <update id="UpdateBySatuan" parameterMap="update-param">
+      <generate table="Satuan" by="KDSATUAN"/>
+    </update>
+    <update id="UpdateByValidRevSatuan" parameterClass="Satuan">
+      update SATUAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSatuan" parameterClass="Satuan">
+      update SATUAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteBySatuan" parameterMap="delete-param">
+      <generate table="Satuan" by="KDSATUAN"/>
+    </delete>
+    <select id="BaseQuerySatuan" parameterClass="Satuan" resultMap="return-result">
+      select S.ID, S.KDSATUAN, S.NMSATUAN
+      from SATUAN S
+    </select>
+    <select id="QueryByAllSatuan" extends="BaseQuerySatuan" parameterClass="Satuan" resultMap="return-result">
+      where 1=1
+      order by S.KDSATUAN
+    </select>
+    <select id="QueryByKdsatuanSatuan" parameterClass="Satuan" resultMap="return-result-kdsatuan">
+      select cast(isnull(max(S.KDSATUAN),0) as varchar) KDSATUAN from SATUAN as S
+    </select>
+    <select id="QueryByLookupSatuan" extends="BaseQuerySatuan" parameterClass="Satuan" resultMap="return-result">
+      where 1=1
+      order by S.KDSATUAN
+    </select>
+    <select id="LoadByPKSatuan" extends="BaseQuerySatuan" parameterClass="Satuan" resultMap="return-result">
+      <!--where S.KDLEVEL = #Kdlevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Satuan">
+      <parameter property="Nmsatuan" column="NMSATUAN"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Satuan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Satuan">
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

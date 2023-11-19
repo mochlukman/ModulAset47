@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Berita" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Berita" type="Usadi.Valid49.BO.BeritaControl, Usadi.Valid49.Aset.MAT" />
+    </alias>
+    <resultMaps>
+        <resultMap id="return-result" class="Berita">
+            <result property="Id" column="ID"/>
+            <result property="Tglba" column="TGLBA"/>
+            <result property="Nobap" column="NOBAP"/>
+            <result property="Tglbap" column="TGLBAP"/>
+            <result property="Kdkegunit" column="KDKEGUNIT"/>
+            <result property="Kdtahap" column="KDTAHAP"/>
+            <result property="Idprgrm" column="IDPRGRM"/>
+            <result property="Nokontrak" column="NOKONTRAK"/>
+            <result property="Uraiba" column="URAIBA"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Kdbukti" column="KDBUKTI"/>
+            <result property="Kdtans" column="KDTANS"/>
+            <result property="Kddana" column="KDDANA"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Nmkegunit" column="NMKEGUNIT"/>
+            <result property="Nmprgrm" column="NMPRGRM"/>
+            <result property="Uraian" column="URAIAN"/>
+            <result property="Kdp3" column="KDP3"/>
+            <result property="Nminst" column="NMINST"/>
+            <result property="Nilai" column="NILAI"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Nmdana" column="NMDANA"/>
+            <result property="Nmbukti" column="NMBUKTI"/>
+            <result property="Unitkey" column="UNITKEY"/>
+            <result property="Noba" column="NOBA"/>
+        </resultMap>
+        <resultMap id="return-bakflookup" class="Berita">
+            <result property="Id" column="ID"/>
+            <result property="Unitkey" column="UNITKEY"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Noba" column="NOBA"/>
+            <result property="Tglba" column="TGLBA"/>
+            <result property="Uraiba" column="URAIBA"/>
+            <result property="Nokontrak" column="NOKONTRAK"/>
+            <result property="Uraian" column="URAIAN"/>
+            <result property="Nilai" column="NILAI"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Kdtans" column="KDTANS"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Nilaibakf" column="NILAIBAKF"/>
+        </resultMap>
+        <resultMap id="return-jmlrek" class="Berita">
+            <result property="Jmlrek" column="JMLREK"/>
+        </resultMap>
+        <resultMap id="return-jmlbrg" class="Berita">
+            <result property="Jmlbrg" column="JMLBRG"/>
+        </resultMap>
+        <resultMap id="return-jmlgenerated" class="Berita">
+            <result property="Jmlgenerated" column="JMLGENERATED"/>
+        </resultMap>
+        <resultMap id="return-jmlbrgpengguna" class="Berita">
+            <result property="Jmlbrgpengguna" column="JMLBRGPENGGUNA"/>
+        </resultMap>
+        <resultMap id="return-jmlkib" class="Berita">
+            <result property="Jmlkib" column="JMLKIB"/>
+        </resultMap>
+    </resultMaps>
+    <statements>
+        <insert id="InsertBerita" parameterClass="Berita">
+            insert into ASET_BERITA(UNITKEY,NOBA,TGLBA,NOBAP,TGLBAP,KDKEGUNIT,KDTAHAP,IDPRGRM,NOKONTRAK,URAIBA,TGLVALID,KDBUKTI,KDTANS,KDDANA)
+            values(#Unitkey#,#Noba#,#Tglba#,#Nobap#,#Tglbap#,#Kdkegunit#,#Kdtahap#,#Idprgrm#,#Nokontrak#,#Uraiba#,null,#Kdbukti#,#Kdtans#,#Kddana#)
+        </insert>
+        <update id="UpdateByBerita" parameterClass="Berita">
+            update ASET_BERITA set TGLBA=#Tglba#, NOBAP=#Nobap#, TGLBAP=#Tglbap#, URAIBA=#Uraiba#
+            where UNITKEY=#Unitkey# and NOBA=#Noba#
+        </update>
+        <update id="UpdateBySahBerita" parameterClass="Berita">
+            update ASET_BERITA set TGLVALID=#Tglvalid#
+            where UNITKEY=#Unitkey# and NOBA=#Noba#
+        </update>
+        <delete id="UpdateByKibBerita" parameterClass="Berita">
+          delete from ASET_KIBSPESIFIKASI where UNITKEY=#Unitkey#
+          AND IDBRG IN(select IDBRG from ASET_KIB where UNITKEY=#Unitkey# and DOKPEROLEHAN=#Noba#)
+          DELETE FROM ASET_KIBFDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noba#
+          DELETE FROM ASET_KIBHDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noba#
+          delete from ASET_KIB where UNITKEY=#Unitkey# and DOKPEROLEHAN=#Noba#
+        </delete>
+        <update id="UpdateByDraftBerita" parameterClass="Berita">
+          <!--DELETE FROM ASET_KIBFDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noba#
+          DELETE FROM ASET_KIBHDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noba#-->
+          update ASET_BERITA set TGLVALID=null
+          where UNITKEY=#Unitkey# and NOBA=#Noba#
+        </update>
+        <update id="UpdateByValidRevBerita" parameterClass="Berita">
+            update ASET_BERITA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+        </update>
+        <update id="UpdateByUnValidRevBerita" parameterClass="Berita">
+            update ASET_BERITA set REV_BY='' and REV_DATE=null
+        </update>
+        <delete id="DeleteByBerita" parameterMap="delete-param">
+            <generate table="Aset_berita" by="UNITKEY,NOBA"/>
+        </delete>
+        <select id="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOBA, A.TGLBA, A.NOBAP, A.TGLBAP, A.KDKEGUNIT, M.NMKEGUNIT, A.KDTAHAP, A.IDPRGRM
+            , M2.NMPRGRM, A.NOKONTRAK, K.URAIAN, K.KDP3, DP.NMINST, K.NILAI, A.URAIBA, A.TGLVALID, A.KDBUKTI, A.KDTANS
+            , J.NMTRANS, A.KDDANA, JD.NMDANA, JB.NMBUKTI
+            from ASET_BERITA A
+            left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+            left join KONTRAK K ON K.UNITKEY = A.UNITKEY and K.NOKONTRAK = A.NOKONTRAK
+            left join MKEGIATAN M ON M.KDKEGUNIT = K.KDKEGUNIT and M.THANG = year(A.TGLBA)
+            left join MPGRM M2 ON M2.IDPRGRM = M.IDPRGRM and M2.THANG = M.THANG
+            left join DAFTPHK3 DP ON DP.KDP3 = K.KDP3
+            left join JDANA JD ON JD.KDDANA = A.KDDANA
+            left join JBUKTI JB ON JB.KDBUKTI = A.KDBUKTI
+            left join JTRANS J ON J.KDTANS = A.KDTANS
+        </select>
+        <select id="QueryByAllBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+        </select>
+        <select id="QueryByPengadaanBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+          where 1=1
+          and A.UNITKEY=#Unitkey#
+          and A.KDTAHAP = #Kdtahap#
+          and (ISNULL(#Kdkegunit#,'')='' OR A.KDKEGUNIT = #Kdkegunit#)
+          and A.KDTANS='101'
+          and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByLainnyaBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS in ('102','103','107','124')
+            and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+      <select id="QueryByHibahBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTANS = '102'
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByTukarBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTANS = '103'
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByInventarisasiBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTANS = '107'
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+        <select id="QueryByKdtansBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS = #Kdtans#
+            and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByBakfBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDKEGUNIT=#Kdkegunit#
+            and A.KDTANS in('111','112')
+            and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+      <select id="QueryByJanjikontrakBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTANS in('116','117')
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByBakfUMBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTAHAP = #Kdtahap#
+        and (ISNULL(#Kdkegunit#,'')='' OR A.KDKEGUNIT = #Kdkegunit#)
+        and A.KDTANS = '111'
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+      <select id="QueryByBakfTerminBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+        where 1=1
+        and A.UNITKEY=#Unitkey#
+        and A.KDTAHAP = #Kdtahap#
+        and (ISNULL(#Kdkegunit#,'')='' OR A.KDKEGUNIT = #Kdkegunit#)
+        and A.KDTANS = '112'
+        and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+        <select id="QueryByBosBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS = '101'
+            and A.KDDANA = '02'
+            and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByBludBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS = '101'
+            and A.KDDANA = '03'
+            and year(A.TGLBA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByRptBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and year(A.TGLVALID) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByLookupBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS='101'
+            and year(A.TGLVALID) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+      <select id="QueryByBakfLookupBerita" parameterClass="Berita" resultMap="return-bakflookup">
+        select AB.ID, AB.UNITKEY, D.KDUNIT, D.NMUNIT, AB.NOBA, AB.TGLBA, AB.URAIBA, AB.NOKONTRAK, K.URAIAN, K.NILAI
+        , AB.TGLVALID, AB.KDTANS, J.NMTRANS, X.NILAIBAKF
+        from ASET_BERITA AB
+        left join (
+        select A.UNITKEY, A.NOBA, SUM(A.NILAI) NILAIBAKF
+        from ASET_BERITADETR A
+        where A.UNITKEY=#Unitkey#
+        group by A.UNITKEY, A.NOBA
+        ) X ON X.UNITKEY = AB.UNITKEY AND X.NOBA = AB.NOBA
+        left join KONTRAK K ON K.UNITKEY = AB.UNITKEY AND K.NOKONTRAK = AB.NOKONTRAK
+        left join DAFTUNIT D ON D.UNITKEY = AB.UNITKEY
+        left join JTRANS J ON J.KDTANS = AB.KDTANS
+        where AB.UNITKEY=#Unitkey#
+        and AB.KDTANS='112'
+        and AB.NOBA not in (select NODOKUMEN from ASET_KIBFDET where UNITKEY = #Unitkey# and KDTANS = '112')
+        and year(AB.TGLVALID) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      </select>
+        <select id="LoadByPKBerita" extends="BaseQueryBerita" parameterClass="Berita" resultMap="return-result">
+            where A.UNITKEY=#Unitkey# and A.NOBA=#Noba#
+        </select>
+        <select id="LoadByJmlrekBerita" parameterClass="Berita" resultMap="return-jmlrek">
+            select COUNT(A.MTGKEY) JMLREK from ASET_BERITADETR A
+            where A.UNITKEY=#Unitkey# and A.NOBA=#Noba#
+        </select>
+        <select id="LoadByJmlbrgBerita" parameterClass="Berita" resultMap="return-jmlbrg">
+            select COUNT(A.ASETKEY) JMLBRG from ASET_BERITADETBRG A
+            where A.UNITKEY=#Unitkey# and A.NOBA=#Noba#
+        </select>
+        <select id="LoadByJmlgeneratedBerita" parameterClass="Berita" resultMap="return-jmlgenerated">
+            select COUNT(A.ASETKEY) JMLGENERATED from ASET_BERITADETBRG A
+            where A.UNITKEY=#Unitkey# and A.NOBA=#Noba# and A.GENERATED = '1'
+        </select>
+        <select id="LoadByJmlbrgpenggunaBerita" parameterClass="Berita" resultMap="return-jmlbrgpengguna">
+            select count(A.IDBRG) as JMLBRGPENGGUNA
+            from ASET_SKPENGGUNADETBRG A
+            left join ASET_KIB AA on AA.IDBRG = A.IDBRG
+            where AA.UNITKEY=#Unitkey# and AA.DOKPEROLEHAN=#Noba#
+        </select>
+        <select id="LoadByJmlkibBerita" parameterClass="Berita" resultMap="return-jmlkib">
+            select COUNT(A.DOKPEROLEHAN) JMLKIB from ASET_KIB A
+            where A.UNITKEY=#Unitkey# and A.DOKPEROLEHAN=#Noba#
+        </select>
+      <select id="LoadByJmlkibhBerita" parameterClass="Berita" resultMap="return-jmlkib">
+        select COUNT(A.DOKPEROLEHAN) JMLKIB from ASET_KIB A
+        where A.UNITKEY=#Unitkey# and A.DOKPEROLEHAN=#Noba# AND A.KDKIB='00'
+      </select>
+    </statements>
+    <parameterMaps>
+        <parameterMap id="insert-param" class="Berita">
+            <parameter property="Tglba" column="TGLBA"/>
+            <parameter property="Nobap" column="NOBAP"/>
+            <parameter property="Tglbap" column="TGLBAP"/>
+            <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+            <parameter property="Kdtahap" column="KDTAHAP"/>
+            <parameter property="Idprgrm" column="IDPRGRM"/>
+            <parameter property="Nokontrak" column="NOKONTRAK"/>
+            <parameter property="Uraiba" column="URAIBA"/>
+            <parameter property="Tglvalid" column="TGLVALID"/>
+            <parameter property="Kdbukti" column="KDBUKTI"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+            <parameter property="Kddana" column="KDDANA"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Noba" column="NOBA"/>
+        </parameterMap>
+        <parameterMap id="update-param" extends="insert-param" class="Berita">
+        </parameterMap>
+        <parameterMap id="delete-param" class="Berita">
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Noba" column="NOBA"/>
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

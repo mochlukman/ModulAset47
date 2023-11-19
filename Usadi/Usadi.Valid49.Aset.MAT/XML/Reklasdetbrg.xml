@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Reklasdetbrg" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Reklasdetbrg" type="Usadi.Valid49.BO.ReklasdetbrgControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Reklasdetbrg">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Kdkib" column="KDKIB"/>
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+      <result property="Nmpemilik" column="NMPEMILIK"/>
+      <result property="Asalusul" column="ASALUSUL"/>
+      <result property="Pengguna" column="PENGGUNA"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdhak" column="KDHAK"/>
+      <result property="Nmhak" column="NMHAK"/>
+      <result property="Luastnh" column="LUASTNH"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Nofikat" column="NOFIKAT"/>
+      <result property="Tgfikat" column="TGFIKAT"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merktype" column="MERKTYPE"/>
+      <result property="Ukuran" column="UKURAN"/>
+      <result property="Bahan" column="BAHAN"/>
+      <result property="Kdwarna" column="KDWARNA"/>
+      <result property="Nmwarna" column="NMWARNA"/>
+      <result property="Nopabrik" column="NOPABRIK"/>
+      <result property="Norangka" column="NORANGKA"/>
+      <result property="Nopolisi" column="NOPOLISI"/>
+      <result property="Nobpkb" column="NOBPKB"/>
+      <result property="Nomesin" column="NOMESIN"/>
+      <result property="Bertingkat" column="BERTINGKAT"/>
+      <result property="Beton" column="BETON"/>
+      <result property="Luaslt" column="LUASLT"/>
+      <result property="Nodokgdg" column="NODOKGDG"/>
+      <result property="Tgdokgdg" column="TGDOKGDG"/>
+      <result property="Konstruksi" column="KONSTRUKSI"/>
+      <result property="Panjang" column="PANJANG"/>
+      <result property="Lebar" column="LEBAR"/>
+      <result property="Luas" column="LUAS"/>
+      <result property="Nodokjij" column="NODOKJIJ"/>
+      <result property="Tgdokjij" column="TGDOKJIJ"/>
+      <result property="Jdlpenerbit" column="JDLPENERBIT"/>
+      <result property="Bkpencipta" column="BKPENCIPTA"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Asaldaerah" column="ASALDAERAH"/>
+      <result property="Pencipta" column="PENCIPTA"/>
+      <result property="Jenis" column="JENIS"/>
+      <result property="Kdfisik" column="KDFISIK"/>
+      <result property="Nmfisik" column="NMFISIK"/>
+      <result property="Nodokkdp" column="NODOKKDP"/>
+      <result property="Tgdokkdp" column="TGDOKKDP"/>
+      <result property="Tgmulai" column="TGMULAI"/>
+      <result property="Nokdtanah" column="NOKDTANAH"/>
+      <result property="Judul" column="JUDUL"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Uruthist" column="URUTHIST"/>
+    </resultMap>
+    <resultMap id="return-kdtanah" class="Reklasdetbrg">
+      <result property="Nmkdtanah" column="NMKDTANAH"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertReklasdetbrg" parameterMap="insert-param">
+      <generate table="Aset_kibspesifikasi"/>
+    </insert>
+    <update id="UpdateByReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDHAK=#Kdhak#, LUASTNH=#Luastnh#, ALAMAT=#Alamat#
+      , NOFIKAT=#Nofikat#, TGFIKAT=#Tgfikat#, KDSATUAN=#Kdsatuan#, MERKTYPE=#Merktype#, UKURAN=#Ukuran#, BAHAN=#Bahan#, KDWARNA=#Kdwarna#, NOPABRIK=#Nopabrik#
+      , NORANGKA=#Norangka#, NOPOLISI=#Nopolisi#, NOBPKB=#Nobpkb#, NOMESIN=#Nomesin#, BERTINGKAT=#Bertingkat#, BETON=#Beton#, LUASLT=#Luaslt#, NODOKGDG=#Nodokgdg#
+      , TGDOKGDG=#Tgdokgdg#, KONSTRUKSI=#Konstruksi#, PANJANG=#Panjang#, LEBAR=#Lebar#, LUAS=#Luas#, NODOKJIJ=#Nodokjij#, TGDOKJIJ=#Tgdokjij#, JDLPENERBIT=#Jdlpenerbit#
+      , BKPENCIPTA=#Bkpencipta#, SPESIFIKASI=#Spesifikasi#, ASALDAERAH=#Asaldaerah#, PENCIPTA=#Pencipta#, JENIS=#Jenis#, NOKDTANAH=#Nokdtanah#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByKibaReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDHAK=#Kdhak#, LUASTNH=#Luastnh#, ALAMAT=#Alamat#
+      , NOFIKAT=#Nofikat#, TGFIKAT=#Tgfikat#, KDSATUAN=#Kdsatuan#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByKibbReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDSATUAN=#Kdsatuan#, MERKTYPE=#Merktype#, UKURAN=#Ukuran#
+      , BAHAN=#Bahan#, KDWARNA=#Kdwarna#, NOPABRIK=#Nopabrik#, NORANGKA=#Norangka#, NOPOLISI=#Nopolisi#, NOBPKB=#Nobpkb#, NOMESIN=#Nomesin#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByKibcReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDHAK=#Kdhak#, LUASTNH=#Luastnh#, ALAMAT=#Alamat#
+      , KDSATUAN=#Kdsatuan#, BERTINGKAT=#Bertingkat#, BETON=#Beton#, LUASLT=#Luaslt#, NODOKGDG=#Nodokgdg#, TGDOKGDG=#Tgdokgdg#, NOKDTANAH=#Nokdtanah#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByKibdReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDHAK=#Kdhak#, ALAMAT=#Alamat#, KDSATUAN=#Kdsatuan#
+      , KONSTRUKSI=#Konstruksi#, PANJANG=#Panjang#, LEBAR=#Lebar#, LUAS=#Luas#, NODOKJIJ=#Nodokjij#, TGDOKJIJ=#Tgdokjij#, NOKDTANAH=#Nokdtanah#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByKibeReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, KET=#Ket#, KDSATUAN=#Kdsatuan#, UKURAN=#Ukuran#, BAHAN=#Bahan#
+      , JDLPENERBIT=#Jdlpenerbit#, BKPENCIPTA=#Bkpencipta#, SPESIFIKASI=#Spesifikasi#, ASALDAERAH=#Asaldaerah#, PENCIPTA=#Pencipta#, JENIS=#Jenis#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByValidRevReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevReklasdetbrg" parameterClass="Reklasdetbrg">
+      update ASET_KIBSPESIFIKASI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByReklasdetbrg" parameterMap="delete-param">
+      <generate table="Aset_kibspesifikasi" by="IDBRG,URUTHIST"/>
+    </delete>
+    <select id="BaseQueryReklasdetbrg" parameterClass="Reklasdetbrg" resultMap="return-result">
+      select A.ID, A.IDBRG, A.URUTHIST, A.UNITKEY, A.ASETKEY, DA.KDASET, DA.NMASET, A.TAHUN, A.NOREG, A.KDKIB, A.KDPEMILIK
+      , JM.NMPEMILIK, A.ASALUSUL, A.PENGGUNA, A.KET, A.KDHAK, JH.NMHAK, A.LUASTNH, A.ALAMAT, A.NOFIKAT, A.TGFIKAT, A.KDSATUAN, S.NMSATUAN
+      , A.MERKTYPE, A.UKURAN, A.BAHAN, A.KDWARNA, W.NMWARNA, A.NOPABRIK, A.NORANGKA, A.NOPOLISI, A.NOBPKB, A.NOMESIN
+      , (case when A.BERTINGKAT='true' then '1' else '0' end) as BERTINGKAT
+      , (case when A.BETON='true' then '1' else '0' end) as BETON
+      , A.LUASLT, A.NODOKGDG, A.TGDOKGDG, A.KONSTRUKSI, A.PANJANG, A.LEBAR, A.LUAS, A.NODOKJIJ, A.TGDOKJIJ, A.JDLPENERBIT, A.BKPENCIPTA
+      , A.SPESIFIKASI, A.ASALDAERAH, A.PENCIPTA, A.JENIS, A.KDFISIK, JF.NMFISIK, A.NODOKKDP, A.TGDOKKDP, A.TGMULAI, A.NOKDTANAH, A.JUDUL
+      from ASET_KIBSPESIFIKASI A
+      left join DAFTASET DA on DA.ASETKEY = A.ASETKEY
+      left join DAFTUNIT DU on DU.UNITKEY = A.UNITKEY
+      left join JMILIK JM on JM.KDPEMILIK = A.KDPEMILIK
+      left join JHAK JH on JH.KDHAK = A.KDHAK
+      left join SATUAN S on S.KDSATUAN = A.KDSATUAN
+      left join WARNA W on W.KDWARNA = A.KDWARNA
+      left join JFISIK JF on JF.KDFISIK = A.KDFISIK
+    </select>
+    <select id="QueryByAllReklasdetbrg" extends="BaseQueryReklasdetbrg" parameterClass="Reklasdetbrg" resultMap="return-result">
+      where 1=1
+      and A.IDBRG=#Idbrg#
+    </select>
+    <select id="QueryByReklaskdpReklasdetbrg" parameterClass="Reklasdetbrg" resultMap="return-result">
+      select AR.ID, AR.IDBRG, A.URUTHIST, AR.UNITKEY, AR.ASETKEY2 as ASETKEY, DA.KDASET, DA.NMASET, A.TAHUN, A.NOREG, JN.KDKIB, A.KDPEMILIK
+      , JM.NMPEMILIK, A.ASALUSUL, A.PENGGUNA, A.KET, A.KDHAK, JH.NMHAK, A.LUASTNH, A.ALAMAT, A.NOFIKAT, A.TGFIKAT, A.KDSATUAN, S.NMSATUAN
+      , A.MERKTYPE, A.UKURAN, A.BAHAN, A.KDWARNA, W.NMWARNA, A.NOPABRIK, A.NORANGKA, A.NOPOLISI, A.NOBPKB, A.NOMESIN
+      , (case when A.BERTINGKAT='true' then '1' else '0' end) as BERTINGKAT
+      , (case when A.BETON='true' then '1' else '0' end) as BETON
+      , A.LUASLT, A.NODOKGDG, A.TGDOKGDG, A.KONSTRUKSI, A.PANJANG, A.LEBAR, A.LUAS, A.NODOKJIJ, A.TGDOKJIJ, A.JDLPENERBIT, A.BKPENCIPTA
+      , A.SPESIFIKASI, A.ASALDAERAH, A.PENCIPTA, A.JENIS, A.KDFISIK, JF.NMFISIK, A.NODOKKDP, A.TGDOKKDP, A.TGMULAI, A.NOKDTANAH, A.JUDUL
+      from ASET_REKLASDET AR
+      left join ASET_KIBSPESIFIKASI A on AR.IDBRG = A.IDBRG and AR.UNITKEY = A.UNITKEY and AR.ASETKEY = A.ASETKEY
+      left join DAFTASET DA on DA.ASETKEY = AR.ASETKEY2
+      left join JNSKIBASET JN on JN.K_BRG = left(DA.KDASET,9)
+      left join JMILIK JM on JM.KDPEMILIK = A.KDPEMILIK
+      left join JHAK JH on JH.KDHAK = A.KDHAK
+      left join SATUAN S on S.KDSATUAN = A.KDSATUAN
+      left join WARNA W on W.KDWARNA = A.KDWARNA
+      left join JFISIK JF on JF.KDFISIK = A.KDFISIK
+      where AR.IDBRG=#Idbrg# and AR.UNITKEY=#Unitkey# and AR.ASETKEY2=#Asetkey#
+    </select>
+    <select id="LoadByKdtanahReklasdetbrg" parameterClass="Reklasdetbrg" resultMap="return-kdtanah">
+      select A.ALAMAT as NMKDTANAH
+      from ASET_KIBSPESIFIKASI A
+      where A.IDBRG=#Nokdtanah# and A.URUTHIST = (select max(URUTHIST) from ASET_KIBSPESIFIKASI where IDBRG=#Nokdtanah#)
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Reklasdetbrg">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Kdkib" column="KDKIB"/>
+      <parameter property="Kdpemilik" column="KDPEMILIK"/>
+      <parameter property="Asalusul" column="ASALUSUL"/>
+      <parameter property="Pengguna" column="PENGGUNA"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdhak" column="KDHAK"/>
+      <parameter property="Luastnh" column="LUASTNH"/>
+      <parameter property="Alamat" column="ALAMAT"/>
+      <parameter property="Nofikat" column="NOFIKAT"/>
+      <parameter property="Tgfikat" column="TGFIKAT"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Merktype" column="MERKTYPE"/>
+      <parameter property="Ukuran" column="UKURAN"/>
+      <parameter property="Bahan" column="BAHAN"/>
+      <parameter property="Kdwarna" column="KDWARNA"/>
+      <parameter property="Nopabrik" column="NOPABRIK"/>
+      <parameter property="Norangka" column="NORANGKA"/>
+      <parameter property="Nopolisi" column="NOPOLISI"/>
+      <parameter property="Nobpkb" column="NOBPKB"/>
+      <parameter property="Nomesin" column="NOMESIN"/>
+      <parameter property="Bertingkat" column="BERTINGKAT"/>
+      <parameter property="Beton" column="BETON"/>
+      <parameter property="Luaslt" column="LUASLT"/>
+      <parameter property="Nodokgdg" column="NODOKGDG"/>
+      <parameter property="Tgdokgdg" column="TGDOKGDG"/>
+      <parameter property="Konstruksi" column="KONSTRUKSI"/>
+      <parameter property="Panjang" column="PANJANG"/>
+      <parameter property="Lebar" column="LEBAR"/>
+      <parameter property="Luas" column="LUAS"/>
+      <parameter property="Nodokjij" column="NODOKJIJ"/>
+      <parameter property="Tgdokjij" column="TGDOKJIJ"/>
+      <parameter property="Jdlpenerbit" column="JDLPENERBIT"/>
+      <parameter property="Bkpencipta" column="BKPENCIPTA"/>
+      <parameter property="Spesifikasi" column="SPESIFIKASI"/>
+      <parameter property="Asaldaerah" column="ASALDAERAH"/>
+      <parameter property="Pencipta" column="PENCIPTA"/>
+      <parameter property="Jenis" column="JENIS"/>
+      <parameter property="Kdfisik" column="KDFISIK"/>
+      <parameter property="Nodokkdp" column="NODOKKDP"/>
+      <parameter property="Tgdokkdp" column="TGDOKKDP"/>
+      <parameter property="Tgmulai" column="TGMULAI"/>
+      <parameter property="Nokdtanah" column="NOKDTANAH"/>
+      <parameter property="Judul" column="JUDUL"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruthist" column="URUTHIST"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Reklasdetbrg">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Reklasdetbrg">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruthist" column="URUTHIST"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

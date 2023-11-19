@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Golongan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Golongan" type="Usadi.Valid49.BO.GolonganControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Golongan">
+      <result property="Id" column="ID"/>
+      <result property="Nmgol" column="NMGOL"/>
+      <result property="Pangkat" column="PANGKAT"/>
+      <result property="Kdgol" column="KDGOL"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertGolongan" parameterMap="insert-param">
+      <generate table="Golongan"/>
+    </insert>
+    <update id="UpdateByGolongan" parameterMap="update-param">
+      <generate table="Golongan" by="KDGOL"/>
+    </update>
+    <update id="UpdateByValidRevGolongan" parameterClass="Golongan">
+      update GOLONGAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevGolongan" parameterClass="Golongan">
+      update GOLONGAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByGolongan" parameterMap="delete-param">
+      <generate table="Golongan" by="KDGOL"/>
+    </delete>
+    <select id="BaseQueryGolongan" parameterClass="Golongan" resultMap="return-result">
+      select G.ID, G.NMGOL, G.PANGKAT, G.KDGOL
+      from GOLONGAN G
+    </select>
+    <select id="QueryByAllGolongan" extends="BaseQueryGolongan" parameterClass="Golongan" resultMap="return-result">
+      where 1=1
+      order by G.KDGOL
+    </select>
+    <select id="QueryByLookupGolongan" extends="BaseQueryGolongan" parameterClass="Golongan" resultMap="return-result">
+      where 1=1
+      order by G.KDGOL
+    </select>
+    <select id="LoadByPKGolongan" extends="BaseQueryGolongan" parameterClass="Golongan" resultMap="return-result">
+      where G.KDGOL = #Kdgol#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Golongan">
+      <parameter property="Nmgol" column="NMGOL"/>
+      <parameter property="Pangkat" column="PANGKAT"/>
+      <parameter property="Kdgol" column="KDGOL"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Golongan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Golongan">
+      <parameter property="Kdgol" column="KDGOL"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

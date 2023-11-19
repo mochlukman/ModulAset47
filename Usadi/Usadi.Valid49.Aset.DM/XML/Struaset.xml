@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Struaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Struaset" type="Usadi.Valid49.BO.StruasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Struaset">
+      <result property="Nmlevel" column="NMLEVEL"/>
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+    <resultMap id="return-result-level" class="Struaset">
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertStruaset" parameterMap="insert-param">
+      <generate table="Struaset"/>
+    </insert>
+    <update id="UpdateByStruaset" parameterMap="update-param">
+      <generate table="Struaset" by="MTGLEVEL"/>
+    </update>
+    <update id="UpdateByValidRevStruaset" parameterClass="Struaset">
+      update STRUASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevStruaset" parameterClass="Struaset">
+      update STRUASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByStruaset" parameterMap="delete-param">
+      <generate table="Struaset" by="MTGLEVEL"/>
+    </delete>
+    <select id="BaseQueryStruaset" parameterClass="Struaset" resultMap="return-result">
+      select S.NMLEVEL, rtrim(S.MTGLEVEL) as KDLEVEL
+      from STRUASET S
+    </select>
+    <select id="QueryByAllStruaset" extends="BaseQueryStruaset" parameterClass="Struaset" resultMap="return-result">
+      where 1=1
+      order by S.MTGLEVEL
+    </select>
+    <select id="QueryByLevelStruaset" parameterClass="Struaset" resultMap="return-result-level">
+      select cast(isnull(max(cast(S.MTGLEVEL as int)),0) as varchar) KDLEVEL from STRUASET as S
+    </select>
+    <select id="QueryByLookupStruaset" extends="BaseQueryStruaset" parameterClass="Struaset" resultMap="return-result">
+      where 1=1
+      order by S.MTGLEVEL
+    </select>
+    <select id="LoadByPKStruaset" extends="BaseQueryStruaset" parameterClass="Struaset" resultMap="return-result">
+      <!--where S.MTGLEVEL = #Mtglevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Struaset">
+      <parameter property="Nmlevel" column="NMLEVEL"/>
+      <parameter property="Level" column="MTGLEVEL"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Struaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Struaset">
+      <parameter property="Level" column="MTGLEVEL"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

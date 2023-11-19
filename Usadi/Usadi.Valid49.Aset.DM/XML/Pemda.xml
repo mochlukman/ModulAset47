@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Pemda" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Pemda" type="Usadi.Valid49.BO.PemdaControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Pemda">
+      <result property="Id" column="ID"/>
+      <result property="Configval" column="CONFIGVAL"/>
+      <result property="Configdes" column="CONFIGDES"/>
+      <result property="Configid" column="CONFIGID"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPemda" parameterMap="insert-param">
+      <generate table="Pemda"/>
+    </insert>
+    <update id="UpdateByPemda" parameterMap="update-param">
+      <generate table="Pemda" by="CONFIGID"/>
+    </update>
+    <update id="UpdateByValidRevPemda" parameterClass="Pemda">
+      update PEMDA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPemda" parameterClass="Pemda">
+      update PEMDA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPemda" parameterMap="delete-param">
+      <generate table="Pemda" by="CONFIGID"/>
+    </delete>
+    <select id="BaseQueryPemda" parameterClass="Pemda" resultMap="return-result">
+      select D.ID, D.CONFIGID, D.CONFIGVAL, D.CONFIGDES
+      from PEMDA D
+    </select>
+    <select id="QueryByAllPemda" extends="BaseQueryPemda" parameterClass="Pemda" resultMap="return-result">
+      where 1=1
+      order by D.ID
+    </select>
+    <select id="QueryByLookupPemda" extends="BaseQueryPemda" parameterClass="Pemda" resultMap="return-result">
+      where 1=1
+      order by D.ID
+    </select>
+    <select id="LoadByPKPemda" extends="BaseQueryPemda" parameterClass="Pemda" resultMap="return-result">
+      where D.CONFIGID = #Configid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Pemda">
+      <parameter property="Configval" column="CONFIGVAL"/>
+      <parameter property="Configdes" column="CONFIGDES"/>
+      <parameter property="Configid" column="CONFIGID"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Pemda">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Pemda">
+      <parameter property="Configid" column="CONFIGID"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

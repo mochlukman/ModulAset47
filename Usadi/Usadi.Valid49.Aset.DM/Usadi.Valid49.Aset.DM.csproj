@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19C88DEC-8B1C-4927-A37D-171833734797}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Usadi.Valid49.BO</RootNamespace>
+    <AssemblyName>Usadi.Valid49.Aset.DM</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Hasil_Build\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Base\BaseDataControlAsetDM.cs" />
+    <Compile Include="Base\ConstantTablesAsetDM.cs" />
+    <Compile Include="BO\Bulan.cs" />
+    <Compile Include="BO\BulanLookup.cs" />
+    <Compile Include="BO\Daftaset.cs" />
+    <Compile Include="BO\DaftasetAsetlainnyaLookup.cs" />
+    <Compile Include="BO\DaftasetBastLookup.cs" />
+    <Compile Include="BO\DaftasetBosbludLookup.cs" />
+    <Compile Include="BO\DaftasetKibbLookup.cs" />
+    <Compile Include="BO\DaftasetKibfilterLookup.cs" />
+    <Compile Include="BO\DaftasetKibLookup.cs" />
+    <Compile Include="BO\DaftasetKirLookup.cs" />
+    <Compile Include="BO\DaftasetNonoperasioanlLookup.cs" />
+    <Compile Include="BO\DaftasetObjekAsetlainnyaLookup.cs" />
+    <Compile Include="BO\DaftasetObjekLookup.cs" />
+    <Compile Include="BO\DaftasetObjekPersediaanLookup.cs" />
+    <Compile Include="BO\DaftasetObjeksusutLookup.cs" />
+    <Compile Include="BO\DaftasetPersediaanLookup.cs" />
+    <Compile Include="BO\DaftasetRkbmdPemeliharaanLookup.cs" />
+    <Compile Include="BO\DaftasetRusakberatLookup.cs" />
+    <Compile Include="BO\DaftasetRusakberatRptLookup.cs" />
+    <Compile Include="BO\DaftasetSejarahLookup.cs" />
+    <Compile Include="BO\DaftasetTetapLookup.cs" />
+    <Compile Include="BO\DaftasetLookup.cs" />
+    <Compile Include="BO\DaftasetReklasLookup.cs" />
+    <Compile Include="BO\DaftasetSusutLookup.cs" />
+    <Compile Include="BO\Daftgudang.cs" />
+    <Compile Include="BO\DaftgudangLookup.cs" />
+    <Compile Include="BO\Daftlokasi.cs" />
+    <Compile Include="BO\Daftpengguna.cs" />
+    <Compile Include="BO\DaftpenggunaLookup.cs" />
+    <Compile Include="BO\DaftunitMutasiInternalLookup.cs" />
+    <Compile Include="BO\DaftunitPenggunaLookup.cs" />
+    <Compile Include="BO\DaftunitPenyediaLookup.cs" />
+    <Compile Include="BO\DaftunitSkpenggunaLookup.cs" />
+    <Compile Include="BO\DaftunitUkLookup.cs" />
+    <Compile Include="BO\DaftunitUserskpd.cs" />
+    <Compile Include="BO\DaskrBastLookup.cs" />
+    <Compile Include="BO\DaskrRenovLookup.cs" />
+    <Compile Include="BO\Daftjabatan.cs" />
+    <Compile Include="BO\DaftjabatanLookup.cs" />
+    <Compile Include="BO\IntKonphk3.cs" />
+    <Compile Include="BO\IntRkbmd.cs" />
+    <Compile Include="BO\IntSipkd.cs" />
+    <Compile Include="BO\Jbukti.cs" />
+    <Compile Include="BO\JbuktiBastLookup.cs" />
+    <Compile Include="BO\JbuktiJanjikontrakLookup.cs" />
+    <Compile Include="BO\JbuktiLainnyaLookup.cs" />
+    <Compile Include="BO\JbuktiLookup.cs" />
+    <Compile Include="BO\JbuktiPembatalanLookup.cs" />
+    <Compile Include="BO\JbuktiTukarLookup.cs" />
+    <Compile Include="BO\JdanaLookup.cs" />
+    <Compile Include="BO\Jlokasi.cs" />
+    <Compile Include="BO\JlokasiLookup.cs" />
+    <Compile Include="BO\JnskibAstetapLookup.cs" />
+    <Compile Include="BO\JnskibFilterLookup.cs" />
+    <Compile Include="BO\JtransHapusskLookup.cs" />
+    <Compile Include="BO\JtransManfaatLookup.cs" />
+    <Compile Include="BO\JtransJanjikontrakLookup.cs" />
+    <Compile Include="BO\MapsusutAset.cs" />
+    <Compile Include="BO\MatangrRptLookup.cs" />
+    <Compile Include="BO\Jkontrak.cs" />
+    <Compile Include="BO\JkontrakLookup.cs" />
+    <Compile Include="BO\JnskibKirLookup.cs" />
+    <Compile Include="BO\JnskibLookup.cs" />
+    <Compile Include="BO\JnskibTransLookup.cs" />
+    <Compile Include="BO\JtransBakfLookup.cs" />
+    <Compile Include="BO\JtransBastLookup.cs" />
+    <Compile Include="BO\JtransRptbastLookup.cs" />
+    <Compile Include="BO\JusahaLookup.cs" />
+    <Compile Include="BO\JbankLookup.cs" />
+    <Compile Include="BO\Daftphk3Lookup.cs" />
+    <Compile Include="BO\KegunitBastLookup.cs" />
+    <Compile Include="BO\MatangrLookup.cs" />
+    <Compile Include="BO\RkbmdKegunit.cs" />
+    <Compile Include="BO\RkbmdKegunitLookup.cs" />
+    <Compile Include="BO\RkbmdMkegiatan.cs" />
+    <Compile Include="BO\RkbmdMpgrm.cs" />
+    <Compile Include="BO\RkbmdMpgrmLookup.cs" />
+    <Compile Include="BO\RkbmdPgrmunit.cs" />
+    <Compile Include="BO\Satwaktu.cs" />
+    <Compile Include="BO\SatwaktuLookup.cs" />
+    <Compile Include="BO\Strurek.cs" />
+    <Compile Include="BO\StskirLookup.cs" />
+    <Compile Include="BO\DaftruangLookup.cs" />
+    <Compile Include="BO\DaftunitMutasiLookup.cs" />
+    <Compile Include="BO\Daskr.cs" />
+    <Compile Include="BO\JfisikLookup.cs" />
+    <Compile Include="BO\JhakLookup.cs" />
+    <Compile Include="BO\JklasLookup.cs" />
+    <Compile Include="BO\JklasRptLookup.cs" />
+    <Compile Include="BO\JmilikLookup.cs" />
+    <Compile Include="BO\JtransPenilaianLookup.cs" />
+    <Compile Include="BO\JtransLookup.cs" />
+    <Compile Include="BO\JtransRptLookup.cs" />
+    <Compile Include="BO\KonasetLookup.cs" />
+    <Compile Include="BO\Pemda.cs" />
+    <Compile Include="BO\SatuanLookup.cs" />
+    <Compile Include="BO\Tahun.cs" />
+    <Compile Include="BO\KegunitLookup.cs" />
+    <Compile Include="BO\Mapnrcaset.cs" />
+    <Compile Include="BO\Mapbljaset.cs" />
+    <Compile Include="BO\Jnskibaset.cs" />
+    <Compile Include="BO\Skdask.cs" />
+    <Compile Include="BO\Stdrenov.cs" />
+    <Compile Include="BO\Jabttd.cs" />
+    <Compile Include="BO\Pegawai.cs" />
+    <Compile Include="BO\Kegunit.cs" />
+    <Compile Include="BO\Matangnrc.cs" />
+    <Compile Include="BO\Matangr.cs" />
+    <Compile Include="BO\Daftunit.cs" />
+    <Compile Include="BO\DaftunitLookup.cs" />
+    <Compile Include="BO\DaftunitUrusLookup.cs" />
+    <Compile Include="BO\Jbank.cs" />
+    <Compile Include="BO\Jusaha.cs" />
+    <Compile Include="BO\Jfisik.cs" />
+    <Compile Include="BO\Jdana.cs" />
+    <Compile Include="BO\Jhak.cs" />
+    <Compile Include="BO\Jklas.cs" />
+    <Compile Include="BO\Jtrans.cs" />
+    <Compile Include="BO\Konaset.cs" />
+    <Compile Include="BO\Golongan.cs" />
+    <Compile Include="BO\Mkegiatan.cs" />
+    <Compile Include="BO\Mpgrm.cs" />
+    <Compile Include="BO\MpgrmLookup.cs" />
+    <Compile Include="BO\Pgrmunit.cs" />
+    <Compile Include="BO\Struruang.cs" />
+    <Compile Include="BO\Daftruang.cs" />
+    <Compile Include="BO\GolonganLookup.cs" />
+    <Compile Include="BO\DaftdokLookup.cs" />
+    <Compile Include="BO\PegawaiLookup.cs" />
+    <Compile Include="BO\StruruangLookup.cs" />
+    <Compile Include="BO\Daftdok.cs" />
+    <Compile Include="BO\Jmilik.cs" />
+    <Compile Include="BO\Stskir.cs" />
+    <Compile Include="BO\Jnskib.cs" />
+    <Compile Include="BO\Tahap.cs" />
+    <Compile Include="BO\TahapLookup.cs" />
+    <Compile Include="BO\TahunEntryLookup.cs" />
+    <Compile Include="BO\TahunLookup.cs" />
+    <Compile Include="BO\TahunSusutLookup.cs" />
+    <Compile Include="BO\Warna.cs" />
+    <Compile Include="BO\Struaset.cs" />
+    <Compile Include="BO\Daftphk3.cs" />
+    <Compile Include="BO\Satuan.cs" />
+    <Compile Include="BO\StruunitLookup.cs" />
+    <Compile Include="BO\StruasetLookup.cs" />
+    <Compile Include="BO\Struunit.cs" />
+    <Compile Include="BO\WarnaLookup.cs" />
+    <Compile Include="BO\Webset.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftaset.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Mkegiatan.xml" />
+    <EmbeddedResource Include="XML\Stdrenov.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Daftunit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Struaset.xml" />
+    <EmbeddedResource Include="XML\Golongan.xml" />
+    <EmbeddedResource Include="XML\Struunit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Konaset.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Mpgrm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftphk3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Satuan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Warna.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Struruang.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftruang.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftdok.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jmilik.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jtrans.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jklas.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jhak.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jfisik.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jdana.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jbank.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Stskir.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jusaha.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Matangr.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Matangnrc.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Tahap.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Pgrmunit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Kegunit.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Pegawai.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jnskib.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jabttd.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jnskibaset.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Mapbljaset.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Mapnrcaset.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Skdask.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daskr.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Tahun.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bulan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Pemda.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jbukti.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\RkbmdKegunit.xml" />
+    <EmbeddedResource Include="XML\RkbmdMkegiatan.xml" />
+    <EmbeddedResource Include="XML\RkbmdMpgrm.xml" />
+    <EmbeddedResource Include="XML\RkbmdPgrmunit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftpengguna.xml" />
+    <EmbeddedResource Include="XML\Jkontrak.xml" />
+    <EmbeddedResource Include="XML\Satwaktu.xml" />
+    <EmbeddedResource Include="XML\Strurek.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Webset.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftjabatan.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Castle.DynamicProxy">
+      <HintPath>..\..\Bin\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Data">
+      <HintPath>..\..\Bin\CoreNET.Common.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Ext">
+      <HintPath>..\..\Bin\CoreNET.Common.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Lib">
+      <HintPath>..\..\Bin\CoreNET.Common.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Sys">
+      <HintPath>..\..\Bin\CoreNET.Common.Sys.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Thread">
+      <HintPath>..\..\Bin\CoreNET.Common.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.UI">
+      <HintPath>..\..\Bin\CoreNET.Common.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\Bin\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net, Version=1.1.0.42036, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\Ext.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net.Utilities, Version=1.1.0.42030, Culture=neutral, PublicKeyToken=2c34ac34702a3c23, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\Ext.Net.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreNET.Common.CR\CoreNET.Common.CR.csproj">
+      <Project>{c46f4fe0-300a-4f84-9396-3c3c93a48111}</Project>
+      <Name>CoreNET.Common.CR</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftlokasi.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Jlokasi.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Daftgudang.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\MapsusutAset.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

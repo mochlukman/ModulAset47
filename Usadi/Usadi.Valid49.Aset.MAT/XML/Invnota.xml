@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invnota" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invnota" type="Usadi.Valid49.BO.InvnotaControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invnota">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Qty" column="QTY"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Untuk" column="UNTUK"/>
+      <result property="Untuk2" column="UNTUK2"/>
+      <result property="Ket" column="KET"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nonpb" column="NONPB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvnota" parameterMap="insert-param">
+      <generate table="INV_NOTA"/>
+    </insert>
+    <update id="UpdateByInvnota" parameterMap="update-param">
+      <generate table="INV_NOTA" by="UNITKEY,NONPB"/>
+    </update>
+    <update id="UpdateByValidRevInvnota" parameterClass="Invnota">
+      update INV_NOTA set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvnota" parameterClass="Invnota">
+      update INV_NOTA set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvnota" parameterMap="delete-param">
+      <generate table="INV_NOTA" by="UNITKEY,NONPB"/>
+    </delete>
+    <select id="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(I.UNITKEY) as UNITKEY2,rtrim(D.KDUNIT) as KDUNIT,rtrim(D.NMUNIT) as NMUNIT,
+      rtrim(I.NONPB) as NONPB,rtrim(I.ASETKEY) as ASETKEY,rtrim(D1.KDASET) as KDASET,rtrim(D1.NMASET) as NMASET,
+      I.QTY,rtrim(I.KDSATUAN) as KDSATUAN,rtrim(S.NMSATUAN) as NMSATUAN,rtrim(I.UNTUK) as UNTUK,rtrim(I.UNTUK) as UNTUK2,rtrim(I.KET) as KET
+      from INV_NOTA I
+      LEFT OUTER JOIN DAFTUNIT D ON I.UNITKEY=D.UNITKEY
+      LEFT OUTER JOIN DAFTASET D1 ON I.ASETKEY=D1.ASETKEY
+      LEFT OUTER JOIN SATUAN S ON I.KDSATUAN=S.KDSATUAN
+    </select>
+    <select id="QueryByAllInvnota" extends="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY=#Unitkey#
+      order by I.NONPB
+    </select>
+    <select id="QueryByLookupInvnota" extends="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      where 1=1
+      order by I.UNITKEY,I.NONPB
+    </select>
+    <select id="QueryByInvpbsInvnota" extends="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY=#Unitkey2#
+      order by I.NONPB
+    </select>
+    <select id="LoadByPKInvnota" extends="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NONPB = #Nonpb#
+    </select>
+    <select id="LoadByIDInvnota" extends="BaseQueryInvnota" parameterClass="Invnota" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NONPB = #Nonpb#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invnota">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Qty" column="QTY"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Untuk" column="UNTUK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nonpb" column="NONPB"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invnota">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invnota">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nonpb" column="NONPB"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

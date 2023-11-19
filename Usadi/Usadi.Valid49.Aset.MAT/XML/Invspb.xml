@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invspb" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invspb" type="Usadi.Valid49.BO.InvspbControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invspb">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Kdunit2" column="KDUNIT2"/>
+      <result property="Nmunit2" column="NMUNIT2"/>
+      <result property="Tglspb" column="TGLSPB"/>
+      <result property="Untuk" column="UNTUK"/>
+      <result property="Idxttd" column="IDXTTD"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nospb" column="NOSPB"/>
+      <result property="Nonpb" column="NONPB"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Invspb">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvspb" parameterMap="insert-param">
+      <generate table="INV_SPB"/>
+    </insert>
+    <update id="UpdateByInvspb" parameterMap="update-param">
+      <generate table="INV_SPB" by="UNITKEY,NOSPB"/>
+    </update>
+    <update id="UpdateByValidRevInvspb" parameterClass="Invspb">
+      update INV_SPB set TGLVALID = #Tglvalid#
+      where UNITKEY=#Unitkey# and NOSPB=#Nospb#
+    </update>
+    <update id="UpdateByUnValidRevInvspb" parameterClass="Invspb">
+      update INV_SPB set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvspb" parameterMap="delete-param">
+      <generate table="INV_SPB" by="UNITKEY,NOSPB"/>
+    </delete>
+    <select id="BaseQueryInvspb" parameterClass="Invspb" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(D.KDUNIT) as KDUNIT,rtrim(D.NMUNIT) as NMUNIT,
+      rtrim(I.NOSPB) as NOSPB,rtrim(I.NONPB) as NONPB,rtrim(I.UNITKEY2) as UNITKEY2,rtrim(D1.KDUNIT) as KDUNIT2,rtrim(D1.NMUNIT) as NMUNIT2,
+      I.TGLSPB,rtrim(I.UNTUK) as UNTUK,rtrim(I.IDXTTD) as IDXTTD,I.TGLVALID,rtrim(I.KDTANS) as KDTANS,rtrim(I.KET) as KET,I.DATECREATE,I.DATEUPDATE
+      from INV_SPB I
+      LEFT OUTER JOIN DAFTUNIT D ON I.UNITKEY=D.UNITKEY
+      LEFT OUTER JOIN DAFTUNIT D1 ON I.UNITKEY2=D1.UNITKEY
+      LEFT OUTER JOIN INV_NOTA I1 ON I.NONPB=I1.NONPB AND I.UNITKEY=I1.UNITKEY
+    </select>
+    <select id="QueryByAllInvspb" extends="BaseQueryInvspb" parameterClass="Invspb" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY2=#Unitkey2#
+      order by I.UNITKEY,I.NOSPB
+    </select>
+    <select id="QueryByLookupInvspb" extends="BaseQueryInvspb" parameterClass="Invspb" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY=#Unitkey#
+      order by I.UNITKEY,I.NOSPB
+    </select>
+    <select id="LoadByJmldataInvspb" parameterClass="Invspb" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from INV_SPBDET A
+      where A.UNITKEY=#Unitkey#
+      and A.NOSPB=#Nospb#
+    </select>
+    <select id="LoadByPKInvspb" extends="BaseQueryInvspb" parameterClass="Invspb" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# and I.NOSPB = #Nospb#
+    </select>
+    <select id="LoadByIDInvspb" extends="BaseQueryInvspb" parameterClass="Invspb" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# AND I.UNITKEY2=#Unitkey2# and I.NOSPB = #Nospb#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invspb">
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Tglspb" column="TGLSPB"/>
+      <parameter property="Untuk" column="UNTUK"/>
+      <parameter property="Idxttd" column="IDXTTD"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nospb" column="NOSPB"/>
+      <parameter property="Nonpb" column="NONPB"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invspb">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invspb">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nospb" column="NOSPB"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

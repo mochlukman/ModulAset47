@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jhak" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jhak" type="Usadi.Valid49.BO.JhakControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jhak">
+      <result property="Id" column="ID"/>
+      <result property="Nmhak" column="NMHAK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdhak" column="KDHAK"/>
+    </resultMap>
+    <resultMap id="return-result-kdhak" class="Jhak">
+      <result property="Kdhak" column="KDHAK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJhak" parameterMap="insert-param">
+      <generate table="Jhak"/>
+    </insert>
+    <update id="UpdateByJhak" parameterMap="update-param">
+      <generate table="Jhak" by="KDHAK"/>
+    </update>
+    <update id="UpdateByValidRevJhak" parameterClass="Jhak">
+      update JHAK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJhak" parameterClass="Jhak">
+      update JHAK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJhak" parameterMap="delete-param">
+      <generate table="Jhak" by="KDHAK"/>
+    </delete>
+    <select id="BaseQueryJhak" parameterClass="Jhak" resultMap="return-result">
+      select J.ID, J.KDHAK, J.NMHAK, J.KET
+      from JHAK J
+    </select>
+    <select id="QueryByAllJhak" extends="BaseQueryJhak" parameterClass="Jhak" resultMap="return-result">
+      where 1=1
+      order by J.KDHAK
+    </select>
+    <select id="QueryByKdhakJhak" parameterClass="Jhak" resultMap="return-result-kdhak">
+      select cast(isnull(max(J.KDHAK),0) as varchar) KDHAK from JHAK as J
+    </select>
+    <select id="QueryByLookupJhak" extends="BaseQueryJhak" parameterClass="Jhak" resultMap="return-result">
+      where 1=1
+      order by J.KDHAK
+    </select>
+    <select id="LoadByPKJhak" extends="BaseQueryJhak" parameterClass="Jhak" resultMap="return-result">
+      <!--where S.KDHAK = #Kdhak#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jhak">
+      <parameter property="Nmhak" column="NMHAK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdhak" column="KDHAK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jhak">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jhak">
+      <parameter property="Kdhak" column="KDHAK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

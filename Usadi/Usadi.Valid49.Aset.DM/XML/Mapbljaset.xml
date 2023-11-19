@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Mapbljaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Mapbljaset" type="Usadi.Valid49.BO.MapbljasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Mapbljaset">
+      <result property="Id" column="ID"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Nmdana" column="NMDANA"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Kddana" column="KDDANA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-rek" class="Mapbljaset">
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Kddana" column="KDDANA"/>
+    </resultMap>
+    <resultMap id="return-jmlrek" class="Mapbljaset">
+      <result property="Jmlrek" column="JMLREK"/>
+    </resultMap>
+    <resultMap id="return-jmlaset" class="Mapbljaset">
+      <result property="Jmlaset" column="JMLASET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMapbljaset" parameterMap="insert-param">
+      <generate table="Mapbljaset"/>
+    </insert>
+    <update id="UpdateByMapbljaset" parameterMap="update-param">
+      <generate table="Mapbljaset" by="THANG,KDDANA,MTGKEY,ASETKEY"/>
+    </update>
+    <update id="UpdateByKddanaMapbljaset" parameterClass="Mapbljaset">
+      update MATANGR set KDDANA=#Kddana# 
+      where MTGKEY=#Mtgkey# and THANG=(select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+    </update>
+    <update id="UpdateByHapusdanaMapbljaset" parameterClass="Mapbljaset">
+      update MATANGR set KDDANA=null
+      where MTGKEY=#Mtgkey# and THANG=(select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+    </update>
+    <update id="UpdateByValidRevMapbljaset" parameterClass="Mapbljaset">
+      update MAPBLJASET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMapbljaset" parameterClass="Mapbljaset">
+      update MAPBLJASET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMapbljaset" parameterMap="delete-param">
+      <generate table="Mapbljaset" by="THANG,KDDANA,MTGKEY,ASETKEY"/>
+    </delete>
+    <delete id="DeleteByKddanaMapbljaset" parameterClass="Mapbljaset">
+      delete from MAPBLJASET
+      where MTGKEY=#Mtgkey# and KDDANA=#Kddana# and THANG=(select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+    </delete>
+    <select id="BaseQueryMapbljaset" parameterClass="Mapbljaset" resultMap="return-result">
+      select M.ID, M.KDDANA, J.NMDANA, M.MTGKEY, MA.KDPER, MA.NMPER, M.ASETKEY, D.KDASET, D.NMASET, M.THANG
+      from MAPBLJASET M
+      left join MATANGR MA on MA.MTGKEY = M.MTGKEY
+      left join JDANA J on j.KDDANA = M.KDDANA
+      left join DAFTASET as D on D.ASETKEY = M.ASETKEY
+    </select>
+    <select id="QueryByAllMapbljaset" extends="BaseQueryMapbljaset" parameterClass="Mapbljaset" resultMap="return-result">
+      where 1=1
+      and M.MTGKEY=#Mtgkey#
+      and M.KDDANA=#Kddana#
+      and M.THANG = (select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+    </select>
+    <select id="QueryByRekMapbljaset" parameterClass="Mapbljaset" resultMap="return-rek">
+      select M.MTGKEY, M.KDPER, M.NMPER, M.KDDANA
+      from MATANGR M
+      where 1=1
+      and M.KDDANA=#Kddana#
+      <!--and left(M.KDPER,4) = '5.2.'-->
+      and M.TYPE = 'D'
+      <!--and M.MTGLEVEL='5'-->
+      and M.THANG = (select rtrim(p.CONFIGVAL) from PEMDA p where p.CONFIGID='cur_thang')
+    </select>
+    <select id="QueryByLookupMapbljaset" extends="BaseQueryMapbljaset" parameterClass="Mapbljaset" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKMapbljaset" extends="BaseQueryMapbljaset" parameterClass="Mapbljaset" resultMap="return-result">
+      where M.ASETKEY = #Asetkey# and M.MTGKEY = #Mtgkey# and M.KDDANA = #Kddana# and M.THANG = #Thang#
+    </select>
+    <select id="LoadByJmlrekMapbljaset" parameterClass="Mapbljaset" resultMap="return-jmlrek">
+      select count(A.MTGKEY) JMLREK
+      from ASET_BERITADETR A
+      inner join ASET_BERITA AB on AB.UNITKEY = A.UNITKEY and AB.NOBA = A.NOBA
+      where A.MTGKEY=#Mtgkey# AND AB.KDDANA=#Kddana# and AB.KDTANS='101'
+    </select>
+    <select id="LoadByJmlasetMapbljaset" parameterClass="Mapbljaset" resultMap="return-jmlaset">
+      select count(A.ASETKEY) JMLASET
+      from ASET_BERITADETBRG A
+      inner join ASET_BERITADETR AA on AA.UNITKEY = A.UNITKEY and AA.NOBA = A.NOBA and AA.MTGKEY = A.MTGKEY
+      inner join ASET_BERITA AB ON AB.UNITKEY = AA.UNITKEY and AB.NOBA = AA.NOBA
+      where A.ASETKEY=#Asetkey# and A.MTGKEY=#Mtgkey# and AB.KDDANA=#Kddana#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Mapbljaset">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kddana" column="KDDANA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Mapbljaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Mapbljaset">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kddana" column="KDDANA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

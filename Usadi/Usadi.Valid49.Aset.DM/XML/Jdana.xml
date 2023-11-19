@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jdana" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jdana" type="Usadi.Valid49.BO.JdanaControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jdana">
+      <result property="Id" column="ID"/>
+      <result property="Nmdana" column="NMDANA"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kddana" column="KDDANA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJdana" parameterMap="insert-param">
+      <generate table="Jdana"/>
+    </insert>
+    <update id="UpdateByJdana" parameterMap="update-param">
+      <generate table="Jdana" by="KDDANA"/>
+    </update>
+    <update id="UpdateByValidRevJdana" parameterClass="Jdana">
+      update JDANA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJdana" parameterClass="Jdana">
+      update JDANA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJdana" parameterMap="delete-param">
+      <generate table="Jdana" by="KDDANA"/>
+    </delete>
+    <select id="BaseQueryJdana" parameterClass="Jdana" resultMap="return-result">
+      select J.ID, J.KDDANA, J.NMDANA, J.KET
+      from JDANA J
+    </select>
+    <select id="QueryByAllJdana" extends="BaseQueryJdana" parameterClass="Jdana" resultMap="return-result">
+      where 1=1
+      order by J.KDDANA
+    </select>
+    <select id="QueryByLookupJdana" extends="BaseQueryJdana" parameterClass="Jdana" resultMap="return-result">
+      where 1=1
+      order by J.KDDANA
+    </select>
+    <select id="LoadByPKJdana" extends="BaseQueryJdana" parameterClass="Jdana" resultMap="return-result">
+      <!--where J.KDDANA = #Kddana#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jdana">
+      <parameter property="Nmdana" column="NMDANA"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kddana" column="KDDANA"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jdana">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jdana">
+      <parameter property="Kddana" column="KDDANA"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

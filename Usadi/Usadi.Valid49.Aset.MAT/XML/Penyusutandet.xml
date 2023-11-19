@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Penyusutandet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Penyusutandet" type="Usadi.Valid49.BO.PenyusutandetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Penyusutandet">
+      <result property="Id" column="ID"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Masapakai" column="MASAPAKAI"/>
+      <result property="Nilaiaset" column="NILAIASET"/>
+      <result property="Nilaiasettbh" column="NILAIASETTBH"/>
+      <result property="Nilaiasethitung" column="NILAIASETHITUNG"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Umekohitung" column="UMEKOHITUNG"/>
+      <result property="Umekotbh" column="UMEKOTBH"/>
+      <result property="Umekosisa" column="UMEKOSISA"/>
+      <result property="Nilaisusut" column="NILAISUSUT"/>
+      <result property="Nilaiakumsusut" column="NILAIAKUMSUSUT"/>
+      <result property="Nilaibuku" column="NILAIBUKU"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Ket_bulan" column="KET_BULAN"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Bulan" column="BULAN"/>
+      <!--<result property="Kdbulan" column="KDBULAN"/>-->
+      <result property="Tahunhitung" column="TAHUNHITUNG"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPenyusutandet" parameterMap="insert-param">
+      <generate table="Aset_penyusutandet"/>
+    </insert>
+    <update id="UpdateByPenyusutandet" parameterMap="update-param">
+      <generate table="Aset_penyusutandet" by="BULAN,TAHUNHITUNG,IDBRG,UNITKEY,ASETKEY"/>
+    </update>
+    <update id="UpdateByValidRevPenyusutandet" parameterClass="Penyusutandet">
+      update ASET_PENYUSUTANDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPenyusutandet" parameterClass="Penyusutandet">
+      update ASET_PENYUSUTANDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPenyusutandet" parameterMap="delete-param">
+      <generate table="Aset_penyusutandet" by="BULAN,TAHUNHITUNG,IDBRG,UNITKEY,ASETKEY"/>
+    </delete>
+    <select id="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
+      select  A.ID, A.IDBRG, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.ASETKEY, DA.KDASET, DA.NMASET, A.TAHUN
+      , A.TAHUNHITUNG, A.BULAN,  A.NOREG, B.KET_BULAN, A.MASAPAKAI, A.NILAIASET, A.NILAIASETTBH, A.NILAIASETHITUNG, A.UMEKO
+      , A.UMEKOHITUNG, A.UMEKOTBH, A.UMEKOSISA, A.NILAISUSUT, A.NILAIAKUMSUSUT, A.NILAIBUKU, A.KDTANS, J.NMTRANS
+      from ASET_PENYUSUTANDET A
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      left join DAFTASET DA ON DA.ASETKEY = A.ASETKEY
+      left join JTRANS J ON J.KDTANS = A.KDTANS
+      LEFT JOIN BULAN B ON B.KD_BULAN = A.BULAN
+    </select>
+    <select id="QueryByAllPenyusutandet" extends="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
+      where 1=1
+      and A.IDBRG=#Idbrg# AND A.KD_BULAN=#Bulan#
+    </select>
+    <select id="QueryByLookupPenyusutandet" extends="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKPenyusutandet" extends="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
+      where A.IDBRG=#Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Penyusutandet">
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Masapakai" column="MASAPAKAI"/>
+      <parameter property="Nilaiaset" column="NILAIASET"/>
+      <parameter property="Nilaiasettbh" column="NILAIASETTBH"/>
+      <parameter property="Nilaiasethitung" column="NILAIASETHITUNG"/>
+      <parameter property="Umeko" column="UMEKO"/>
+      <parameter property="Umekohitung" column="UMEKOHITUNG"/>
+      <parameter property="Umekotbh" column="UMEKOTBH"/>
+      <parameter property="Umekosisa" column="UMEKOSISA"/>
+      <parameter property="Nilaisusut" column="NILAISUSUT"/>
+      <parameter property="Nilaiakumsusut" column="NILAIAKUMSUSUT"/>
+      <parameter property="Nilaibuku" column="NILAIBUKU"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Bulan" column="BULAN"/>
+      <parameter property="Tahunhitung" column="TAHUNHITUNG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Penyusutandet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Penyusutandet">
+      <parameter property="Bulan" column="BULAN"/>
+      <parameter property="Tahunhitung" column="TAHUNHITUNG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

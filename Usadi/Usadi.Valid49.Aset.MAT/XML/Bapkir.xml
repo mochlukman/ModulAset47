@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Bapkir" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Bapkir" type="Usadi.Valid49.BO.BapkirControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Bapkir">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Ruangkey" column="RUANGKEY"/>
+      <result property="Kdruang" column="KDRUANG"/>
+      <result property="Nmruang" column="NMRUANG"/>
+      <result property="Nobapkir" column="NOBAPKIR"/>
+      <result property="Kdbapkir" column="KDBAPKIR"/>
+      <result property="Nmbapkir" column="NMBAPKIR"/>
+      <result property="Tglbapkir" column="TGLBAPKIR"/>
+      <result property="Ket" column="KET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertBapkir" parameterClass="Bapkir">
+      insert into ASET_BAPKIR(UNITKEY,RUANGKEY,NOBAPKIR,KDBAPKIR,TGLBAPKIR,KET)
+      values(#Unitkey#,#Ruangkey#,#Nobapkir#,#Kdbapkir#,#Tglbapkir#,#Ket#)
+    </insert>
+    <update id="UpdateByBapkir" parameterClass="Bapkir">
+      update ASET_BAPKIR set TGLBAPKIR = #Tglbapkir#, KET = #Ket#
+      where UNITKEY=#Unitkey# and RUANGKEY=#Ruangkey# and NOBAPKIR=#Nobapkir# and KDBAPKIR=#Kdbapkir#
+    </update>
+    <delete id="DeleteByBapkir" parameterMap="delete-param">
+      <generate table="ASET_BAPKIR" by="UNITKEY,RUANGKEY,NOBAPKIR,KDBAPKIR"/>
+    </delete>
+    <select id="BaseQueryBapkir" parameterClass="Bapkir" resultMap="return-result">
+      select ab.ID, ab.UNITKEY, ab.RUANGKEY,d.KDRUANG, d.NMRUANG, ab.NOBAPKIR, ab.KDBAPKIR, s.NMBAPKIR,ab.TGLBAPKIR,ab.KET
+      from ASET_BAPKIR AS ab
+      inner join DAFTRUANG AS d ON d.RUANGKEY = ab.RUANGKEY
+      inner join STSKIR AS s ON s.KDBAPKIR = ab.KDBAPKIR
+    </select>
+    <select id="QueryByAllBapkir" extends="BaseQueryBapkir" parameterClass="Bapkir" resultMap="return-result">
+      where 1=1
+      and ab.UNITKEY=#Unitkey#
+      and ab.RUANGKEY=#Ruangkey#
+      order by ab.NOBAPKIR,ab.TGLBAPKIR
+    </select>    
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Bapkir">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+      <parameter property="Kdruang" column="RUANGKEY"/>
+      <parameter property="Nmruang" column="RUANGKEY"/>
+      <parameter property="Nobapkir" column="NOBAPKIR"/>
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+      <parameter property="Nmbapkir" column="NMBAPKIR"/>
+      <parameter property="Tglbapkir" column="TGLBAPKIR"/>
+      <parameter property="Ket" column="KET"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Bapkir">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Bapkir">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+      <parameter property="Nobapkir" column="NOBAPKIR"/>
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

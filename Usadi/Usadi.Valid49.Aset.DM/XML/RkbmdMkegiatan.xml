@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdMkegiatan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="RkbmdMkegiatan" type="Usadi.Valid49.BO.RkbmdMkegiatanControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="RkbmdMkegiatan">
+      <result property="Id" column="ID"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+      <result property="Kdperspektif" column="KDPERSPEKTIF"/>
+      <result property="Nukeg" column="NUKEG"/>
+      <result property="Nmkegunit" column="NMKEGUNIT"/>
+      <result property="Levelkeg" column="LEVELKEG"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Kdkeg_induk" column="KDKEG_INDUK"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+    </resultMap>
+    <resultMap id="return-result-key" class="RkbmdMkegiatan">
+      <result property="Nukeg" column="NUKEG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertRkbmdMkegiatan" parameterMap="insert-param">
+      <generate table="Rkbmd_mkegiatan"/>
+    </insert>
+    <update id="UpdateByRkbmdMkegiatan" parameterMap="update-param">
+      <generate table="Rkbmd_mkegiatan" by="KDKEGUNIT, THANG"/>
+    </update>
+    <update id="UpdateByValidRevRkbmdMkegiatan" parameterClass="RkbmdMkegiatan">
+      update RKBMD_MKEGIATAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevRkbmdMkegiatan" parameterClass="RkbmdMkegiatan">
+      update RKBMD_MKEGIATAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByRkbmdMkegiatan" parameterMap="delete-param">
+      <generate table="Rkbmd_mkegiatan" by="KDKEGUNIT, THANG"/>
+    </delete>
+    <select id="BaseQueryRkbmdMkegiatan" parameterClass="RkbmdMkegiatan" resultMap="return-result">
+      select M.ID, MP.UNITKEY, M.KDKEGUNIT, M.IDPRGRM, M.KDPERSPEKTIF, M.NUKEG
+      , M.NMKEGUNIT, M.LEVELKEG, rtrim(M.TYPE) as TYPE, M.KDKEG_INDUK, M.THANG
+      from RKBMD_MKEGIATAN M
+      Left join RKBMD_MPGRM MP ON M.IDPRGRM=MP.IDPRGRM
+      left join DAFTUNIT D ON D.UNITKEY=MP.UNITKEY
+    </select>
+    <select id="QueryByAllRkbmdMkegiatan" extends="BaseQueryRkbmdMkegiatan" parameterClass="RkbmdMkegiatan" resultMap="return-result">
+      where 1=1
+      and (isnull(MP.UNITKEY,'')= isnull(D.UNITKEY,''))
+      and ISNULL(M.IDPRGRM,'') = #Idprgrm#
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      <!--and M.KDKEGUNIT not in(select KDKEGUNIT from KEGUNIT where UNITKEY=#Unitkey# and IDPRGRM=#Idprgrm# and KDTAHAP=#Kdtahap#)-->
+    </select>
+    <select id="QueryByLookupRkbmdMkegiatan" extends="BaseQueryRkbmdMkegiatan"  parameterClass="RkbmdMkegiatan" resultMap="return-result">
+      where 1=1
+      and M.LEVELKEG='1'
+      and ISNULL(M.IDPRGRM,'') = #Idprgrm#
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      <!--and M.KDKEGUNIT not in (select KDKEGUNIT from KEGUNIT where UNITKEY=#Unitkey# and IDPRGRM=#Idprgrm# and KDTAHAP=#Kdtahap#)-->
+      order by rtrim(M.NUKEG)
+    </select>
+    <select id="QueryByKeyMkegiatan"  parameterClass="RkbmdMkegiatan" resultMap="return-result-key">
+      select isnull (max (rtrim(Nukeg)),0) as Nukeg from RKBMD_MKEGIATAN where IDPRGRM=#Idprgrm#
+    </select>
+    <select id="LoadByPKRkbmdMkegiatan" extends="BaseQueryRkbmdMkegiatan" parameterClass="RkbmdMkegiatan" resultMap="return-result">
+      where M.KDKEGUNIT = #Kdkegunit#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="RkbmdMkegiatan">
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+      <parameter property="Kdperspektif" column="KDPERSPEKTIF"/>
+      <parameter property="Nukeg" column="NUKEG"/>
+      <parameter property="Nmkegunit" column="NMKEGUNIT"/>
+      <parameter property="Levelkeg" column="LEVELKEG"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Kdkeg_induk" column="KDKEG_INDUK"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="RkbmdMkegiatan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="RkbmdMkegiatan">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

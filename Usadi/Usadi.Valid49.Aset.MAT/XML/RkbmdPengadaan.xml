@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="RkbmdPengadaan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="RkbmdPengadaan" type="Usadi.Valid49.BO.RkbmdPengadaanControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="RkbmdPengadaan">
+      <result property="Id" column="ID"/>
+      <result property="Idprgrm" column="IDPRGRM"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Jumlahaset" column="JUMLAHASET"/>
+      <result property="Jumlahrb" column="JUMLAHRB"/>
+      <result property="Kebutuhan" column="KEBUTUHAN"/>
+      <result property="Jumlahusulan" column="JUMLAHUSULAN"/>
+      <result property="Jumlahsah" column="JUMLAHSAH"/>
+      <result property="Jmltersedia" column="JMLTERSEDIA"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Statususulan" column="STATUSUSULAN"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Kdnmaset" column="KDNMASET"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Nmkegunit" column="NMKEGUNIT"/>
+      <result property="Nukeg" column="NUKEG"/>
+      <result property="Nmprgrm" column="NMPRGRM"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+    </resultMap>
+    <resultMap id="return-jmldata" class="RkbmdPengadaan">
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      insert into RKBMD_PENGADAAN(UNITKEY,KDKEGUNIT,IDPRGRM,ASETKEY,KDSATUAN,KET,JUMLAHASET,JUMLAHRB,KEBUTUHAN,JUMLAHUSULAN,JUMLAHSAH,TGLVALID,THANG)
+      values(#Unitkey#, #Kdkegunit#, #Idprgrm#, #Asetkey#, null, null, #Jumlahaset#, #Jumlahrb#, 0, 0, 0, null, #Thang#)
+    </insert>
+    <update id="UpdateByRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set KEBUTUHAN=#Kebutuhan#, JUMLAHUSULAN=#Jumlahusulan#, KDSATUAN=#Kdsatuan#, KET=#Ket#
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and THANG=#Thang#
+    </update>
+    <update id="UpdateByVerifikasiRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set JUMLAHSAH=#Jumlahsah#
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and THANG=#Thang#
+    </update>
+    <update id="UpdateBySahRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set TGLVALID=#Tglvalid#, JUMLAHSAH=#Jumlahsah#
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and THANG=#Thang#
+    </update>
+    <update id="UpdateByDraftRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set TGLVALID=null
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and THANG=#Thang#
+    </update>
+    <update id="UpdateByValidRevRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevRkbmdPengadaan" parameterClass="RkbmdPengadaan">
+      update RKBMD_PENGADAAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByRkbmdPengadaan" parameterMap="delete-param">
+      <generate table="Rkbmd_pengadaan" by="UNITKEY,KDKEGUNIT,ASETKEY,THANG"/>
+    </delete>
+    <select id="BaseQueryRkbmdPengadaan" parameterClass="RkbmdPengadaan" resultMap="return-result">
+      select R.ID, R.UNITKEY, DU.KDUNIT, DU.NMUNIT, R.KDKEGUNIT, RK.NMKEGUNIT, RK.NUKEG, R.IDPRGRM, RM.NMPRGRM, R.ASETKEY
+      , DA.KDASET, DA.NMASET, R.KDSATUAN, R.JUMLAHASET, R.JUMLAHRB, R.KEBUTUHAN, R.JUMLAHUSULAN, R.JUMLAHSAH, (R.JUMLAHASET-R.JUMLAHRB) AS JMLTERSEDIA 
+      , S.NMSATUAN, R.KET, R.TGLVALID, R.THANG, case when R.TGLVALID is null then 'Diajukan' else 'Diterima' end as STATUSUSULAN
+      , ltrim(rtrim(DA.KDASET)) + ' - ' + ltrim(rtrim(DA.NMASET)) AS KDNMASET
+      from RKBMD_PENGADAAN R
+      left join RKBMD_MPGRM RM on RM.UNITKEY = R.UNITKEY and RM.IDPRGRM = R.IDPRGRM and RM.THANG = R.THANG
+      left join RKBMD_MKEGIATAN RK on RK.IDPRGRM = RM.IDPRGRM and RK.THANG = RM.THANG
+      left join DAFTUNIT DU on DU.UNITKEY = R.UNITKEY
+      left join DAFTASET DA on DA.ASETKEY = R.ASETKEY
+      left join SATUAN S on S.KDSATUAN = R.KDSATUAN
+    </select>
+    <select id="QueryByAllRkbmdPengadaan" extends="BaseQueryRkbmdPengadaan" parameterClass="RkbmdPengadaan" resultMap="return-result">
+      where 1=1
+      and R.UNITKEY=#Unitkey#
+      and R.KDKEGUNIT=#Kdkegunit#
+      and R.THANG=#Thang#
+    </select>
+    <select id="QueryByLookupRkbmdPengadaan" extends="BaseQueryRkbmdPengadaan" parameterClass="RkbmdPengadaan" resultMap="return-result">
+      where 1=1
+      and R.UNITKEY=#Unitkey#
+      and R.KDKEGUNIT=#Kdkegunit#
+      and R.THANG=#Thang#
+    </select>
+    <select id="LoadByPKRkbmdPengadaan" extends="BaseQueryRkbmdPengadaan" parameterClass="RkbmdPengadaan" resultMap="return-result">
+      where R.UNITKEY=#Unitkey# and R.KDKEGUNIT=#Kdkegunit# and R.ASETKEY=#Asetkey#
+    </select>
+    <select id="LoadByJmldataRkbmdPengadaan" parameterClass="RkbmdPengadaan" resultMap="return-jmldata">
+      select ASETKEY, count(ASETKEY) JMLDATA from RKBMD_PENGADAAN
+      where UNITKEY=#Unitkey# and KDKEGUNIT=#Kdkegunit# and ASETKEY=#Asetkey# and THANG=#Thang#
+      group by ASETKEY
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="RkbmdPengadaan">
+      <parameter property="Idprgrm" column="IDPRGRM"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Jumlahaset" column="JUMLAHASET"/>
+      <parameter property="Jumlahrb" column="JUMLAHRB"/>
+      <parameter property="Kebutuhan" column="KEBUTUHAN"/>
+      <parameter property="Jumlahusulan" column="JUMLAHUSULAN"/>
+      <parameter property="Jumlahsah" column="JUMLAHSAH"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="RkbmdPengadaan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="RkbmdPengadaan">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Thang" column="THANG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

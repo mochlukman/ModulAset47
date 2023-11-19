@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jusaha" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jusaha" type="Usadi.Valid49.BO.JusahaControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jusaha">
+      <result property="Id" column="ID"/>
+      <result property="Jenisbadanusaha" column="JENISBADANUSAHA"/>
+      <result property="Keterangan" column="KETERANGAN"/>
+      <result property="Akronim" column="AKRONIM"/>
+      <result property="Kdjenis" column="KDJENIS"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJusaha" parameterMap="insert-param">
+      <generate table="Jusaha"/>
+    </insert>
+    <update id="UpdateByJusaha" parameterMap="update-param">
+      <generate table="Jusaha" by="KDJENIS"/>
+    </update>
+    <update id="UpdateByValidRevJusaha" parameterClass="Jusaha">
+      update JUSAHA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJusaha" parameterClass="Jusaha">
+      update JUSAHA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJusaha" parameterMap="delete-param">
+      <generate table="Jusaha" by="KDJENIS"/>
+    </delete>
+    <select id="BaseQueryJusaha" parameterClass="Jusaha" resultMap="return-result">
+      select J.ID, J.KDJENIS, J.JENISBADANUSAHA, J.KETERANGAN, J.AKRONIM
+      from JUSAHA J
+    </select>
+    <select id="QueryByAllJusaha" extends="BaseQueryJusaha" parameterClass="Jusaha" resultMap="return-result">
+      where 1=1
+      order by J.KDJENIS
+    </select>
+    <select id="QueryByLookupJusaha" extends="BaseQueryJusaha" parameterClass="Jusaha" resultMap="return-result">
+      where 1=1
+      order by J.KDJENIS
+    </select>
+    <select id="LoadByPKJusaha" extends="BaseQueryJusaha" parameterClass="Jusaha" resultMap="return-result">
+      <!--where J.KDJENIS = #Kdjenis#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jusaha">
+      <parameter property="Jenisbadanusaha" column="JENISBADANUSAHA"/>
+      <parameter property="Keterangan" column="KETERANGAN"/>
+      <parameter property="Akronim" column="AKRONIM"/>
+      <parameter property="Kdjenis" column="KDJENIS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jusaha">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jusaha">
+      <parameter property="Kdjenis" column="KDJENIS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

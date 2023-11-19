@@ -1,0 +1,271 @@
+﻿{
+    "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ]
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    font-family: 'Source Sans Pro', 'Poppins', 'Inter';
+    font-size: 22px;
+}
+/*navbar*/
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f2f2f2;
+    padding: 0 2rem;
+    height: 80px;
+    align-items: center;
+}
+
+    .navbar ul {
+        margin: 0 2rem;
+        color: #000000;
+        font-size: 30px;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    .navbar li {
+        margin-right: 10px;
+    }
+
+        .navbar li:last-child {
+            margin-right: 0;
+        }
+
+    .navbar ul a {
+        text-decoration: none;
+    }
+
+    .navbar .big img {
+      /*width: 150px;
+        height: auto;
+        margin-right: 15px;
+      */
+      width: auto;
+      height: 60px;
+      margin-top: 10px;
+      margin-right: 15px;
+      margin-left: 20px;
+    }
+
+
+    .navbar img.medium {
+        height: 30px;
+        width: auto;
+        margin-right: 5px;
+    }
+
+    .navbar img.small {
+        height: 17px;
+        width: auto;
+        margin-right: 5px;
+    }
+
+    .navbar .image-link {
+        display: flex;
+        align-items: center;
+    }
+/*row*/
+.row {
+    padding-top: 80px;
+    text-align: center;
+    background-color: #e8ecf1;
+    height: 780px;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    display: inline-block;
+    height: 500px
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/*infoDiv*/
+#infoDiv * {
+    margin-bottom: 10px;
+}
+
+#rafiki {
+    width: 500px;
+    height: auto;
+}
+
+#sigawai {
+    width: 300px;
+    height: auto;
+}
+
+.caption h2 {
+    font-size: 25px;
+    font-family: 'Poppins';
+}
+
+.caption p {
+    font-size: 15px;
+}
+
+/*mainDiv*/
+#mainDiv {
+    margin-left: 150px;
+    margin-right: 50px;
+    background-color: #ffffff;
+    width: 450px;
+    height: 500px;
+    text-align: left;
+    border-radius: 10px;
+    padding: 20px 30px 10px 30px;
+}
+
+/*title*/
+.title-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    flex: 1;
+    text-align: left;
+    font-size: 35px;
+    font-family: 'Inter';
+}
+
+
+.title-image-container img {
+    text-align: right;
+    max-width: 80px;
+    height: auto;
+}
+/*form*/
+form h1 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.ExtTextField {
+    height: 50px !important;
+    width: 100%;
+    padding: 0 10px !important;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    background-color: white !important;
+    border-color: grey !important;
+    border-width: 0.8px !important;
+    border-radius: 5px;
+    outline: none !important;
+}
+/*extranous*/
+.extranous {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+    .extranous a {
+        font-size: 12px;
+        text-decoration: none;
+        color: #83a7fd;
+        margin-bottom: 40px;
+    }
+
+/*buttons*/
+.Panel .x-panel-body {
+    border: none !important;
+}
+
+.x-btn-tl, .x-btn-tr, .x-btn-tc, .x-btn-ml, .x-btn-mr, .x-btn-mc, .x-btn-bl, .x-btn-br, .x-btn-bc {
+    background-image: none !important;
+}
+
+.ExtButton {
+    width: 100% !important;
+    height: 50px !important;
+    background-color: #5c81fd !important;
+}
+
+.x-btn-noicon .x-btn-small .x-btn-text {
+    height: auto !important; /* height: 16px; */
+}
+
+#mainDiv .x-btn button {
+    font-family: "Source Sans Pro";
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/*social*/
+.info {
+    margin-top: 10px;
+}
+
+#mainDiv p {
+    margin-top: 0px;
+    text-align: center;
+    font-size: 15px;
+}
+
+#mainDiv h5 {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.image-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+
+    .image-container a {
+        flex: 0 0 20%;
+        text-align: center;
+        margin: 0 0px;
+        font-size: 12px;
+    }
+
+    .image-container img {
+        max-width: 30px;
+        height: auto;
+    }
+/*footer*/
+.footer {
+    padding-top: 25px;
+}
+
+    .footer p {
+        text-align: center;
+    }

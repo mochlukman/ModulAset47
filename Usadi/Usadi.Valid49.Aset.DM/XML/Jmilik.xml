@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jmilik" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jmilik" type="Usadi.Valid49.BO.JmilikControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jmilik">
+      <result property="Id" column="ID"/>
+      <result property="Nmpemilik" column="NMPEMILIK"/>
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+    </resultMap>
+    <resultMap id="return-result-kdpemilik" class="Jmilik">
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJmilik" parameterMap="insert-param">
+      <generate table="Jmilik"/>
+    </insert>
+    <update id="UpdateByJmilik" parameterMap="update-param">
+      <generate table="Jmilik" by="KDPEMILIK"/>
+    </update>
+    <update id="UpdateByValidRevJmilik" parameterClass="Jmilik">
+      update JMILIK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJmilik" parameterClass="Jmilik">
+      update JMILIK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJmilik" parameterMap="delete-param">
+      <generate table="Jmilik" by="KDPEMILIK"/>
+    </delete>
+    <select id="BaseQueryJmilik" parameterClass="Jmilik" resultMap="return-result">
+      select J.ID, J.KDPEMILIK, J.NMPEMILIK
+      from JMILIK J
+    </select>
+    <select id="QueryByAllJmilik" extends="BaseQueryJmilik" parameterClass="Jmilik" resultMap="return-result">
+      where 1=1
+      order by J.KDPEMILIK
+    </select>
+    <select id="QueryByKdpemilikJmilik" parameterClass="Jmilik" resultMap="return-result-kdpemilik">
+      select cast(isnull(max(J.KDPEMILIK),0) as varchar) KDPEMILIK from JMILIK as J
+    </select>
+    <select id="QueryByLookupJmilik" extends="BaseQueryJmilik" parameterClass="Jmilik" resultMap="return-result">
+      where 1=1
+      order by J.KDPEMILIK
+    </select>
+    <select id="LoadByPKJmilik" extends="BaseQueryJmilik" parameterClass="Jmilik" resultMap="return-result">
+      <!--where S.KDLEVEL = #Kdlevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jmilik">
+      <parameter property="Nmpemilik" column="NMPEMILIK"/>
+      <parameter property="Kdpemilik" column="KDPEMILIK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jmilik">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jmilik">
+      <parameter property="Kdpemilik" column="KDPEMILIK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

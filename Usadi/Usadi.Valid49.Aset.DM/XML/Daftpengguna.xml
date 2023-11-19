@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftpengguna" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftpengguna" type="Usadi.Valid49.BO.DaftpenggunaControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftpengguna">
+      <result property="Id" column="ID"/>
+      <result property="Nmpengguna" column="NMPENGGUNA"/>
+      <result property="Nminst" column="NMINST"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Telepon" column="TELEPON"/>
+      <result property="Npwp" column="NPWP"/>
+      <result property="Stvalid" column="STVALID"/>
+      <result property="Kdpengguna" column="KDPENGGUNA"/>
+    </resultMap>
+    <resultMap id="return-kdpengguna" class="Daftpengguna">
+      <result property="Kdpengguna" column="KDPENGGUNA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftpengguna" parameterMap="insert-param">
+      <generate table="Daftpengguna"/>
+    </insert>
+    <update id="UpdateByDaftpengguna" parameterMap="update-param">
+      <generate table="Daftpengguna" by="KDPENGGUNA"/>
+    </update>
+    <update id="UpdateByValidRevDaftpengguna" parameterClass="Daftpengguna">
+      update DAFTPENGGUNA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftpengguna" parameterClass="Daftpengguna">
+      update DAFTPENGGUNA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftpengguna" parameterMap="delete-param">
+      <generate table="Daftpengguna" by="KDPENGGUNA"/>
+    </delete>
+    <select id="BaseQueryDaftpengguna" parameterClass="Daftpengguna" resultMap="return-result">
+      select D.ID, D.KDPENGGUNA, D.NMPENGGUNA, D.NMINST, D.ALAMAT, D.TELEPON, D.NPWP, D.STVALID
+      from DAFTPENGGUNA D
+    </select>
+    <select id="QueryByAllDaftpengguna" extends="BaseQueryDaftpengguna" parameterClass="Daftpengguna" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="QueryByLookupDaftpengguna" extends="BaseQueryDaftpengguna" parameterClass="Daftpengguna" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="QueryByKdpenggunaDaftpengguna" parameterClass="Daftpengguna" resultMap="return-kdpengguna">
+      select cast(isnull(max(cast(d.KDPENGGUNA as INT)),0) as varchar) KDPENGGUNA from DAFTPENGGUNA AS d
+    </select>
+    <select id="LoadByPKDaftpengguna" extends="BaseQueryDaftpengguna" parameterClass="Daftpengguna" resultMap="return-result">
+      where D.KDPENGGUNA=#Kdpengguna#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftpengguna">
+      <parameter property="Nmpengguna" column="NMPENGGUNA"/>
+      <parameter property="Nminst" column="NMINST"/>
+      <parameter property="Alamat" column="ALAMAT"/>
+      <parameter property="Telepon" column="TELEPON"/>
+      <parameter property="Npwp" column="NPWP"/>
+      <parameter property="Stvalid" column="STVALID"/>
+      <parameter property="Kdpengguna" column="KDPENGGUNA"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftpengguna">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftpengguna">
+      <parameter property="Kdpengguna" column="KEPENGGUNA"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

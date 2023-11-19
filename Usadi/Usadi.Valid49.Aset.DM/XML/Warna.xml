@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Warna" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Warna" type="Usadi.Valid49.BO.WarnaControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Warna">
+      <result property="Id" column="ID"/>
+      <result property="Nmwarna" column="NMWARNA"/>
+      <result property="Kdwarna" column="KDWARNA"/>
+    </resultMap>
+    <resultMap id="return-result-kdwarna" class="Warna">
+      <result property="Kdwarna" column="KDWARNA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertWarna" parameterMap="insert-param">
+      <generate table="Warna"/>
+    </insert>
+    <update id="UpdateByWarna" parameterMap="update-param">
+      <generate table="Warna" by="KDWARNA"/>
+    </update>
+    <update id="UpdateByValidRevWarna" parameterClass="Warna">
+      update WARNA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevWarna" parameterClass="Warna">
+      update WARNA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByWarna" parameterMap="delete-param">
+      <generate table="Warna" by="KDWARNA"/>
+    </delete>
+    <select id="BaseQueryWarna" parameterClass="Warna" resultMap="return-result">
+      select W.ID, W.KDWARNA, W.NMWARNA
+      from WARNA W
+    </select>
+    <select id="QueryByAllWarna" extends="BaseQueryWarna" parameterClass="Warna" resultMap="return-result">
+      where 1=1
+      order by W.KDWARNA
+    </select>
+    <select id="QueryByKdwarnaWarna" parameterClass="Warna" resultMap="return-result-kdwarna">
+      select cast(isnull(max(W.KDWARNA),0) as varchar) KDWARNA from WARNA as W
+    </select>
+    <select id="QueryByLookupWarna" extends="BaseQueryWarna" parameterClass="Warna" resultMap="return-result">
+      where 1=1
+      order by W.KDWARNA
+    </select>
+    <select id="LoadByPKWarna" extends="BaseQueryWarna" parameterClass="Warna" resultMap="return-result">
+      <!--where S.KDLEVEL = #Kdlevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Warna">
+      <parameter property="Nmwarna" column="NMWARNA"/>
+      <parameter property="Kdwarna" column="KDWARNA"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Warna">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Warna">
+      <parameter property="Kdwarna" column="KDWARNA"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

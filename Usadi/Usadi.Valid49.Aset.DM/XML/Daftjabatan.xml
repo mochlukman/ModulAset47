@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftjabatan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftjabatan" type="Usadi.Valid49.BO.DaftjabatanControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftjabatan">
+      <result property="Id" column="ID"/>
+      <result property="Kdjbt" column="KDJBT"/>
+      <result property="Nmjbt" column="NMJBT"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftjabatan" parameterMap="insert-param">
+      <generate table="Daftjabatan"/>
+    </insert>
+    <update id="UpdateByDaftjabatan" parameterMap="update-param">
+      <generate table="Daftjabatan" by="KDJBT"/>
+    </update>
+    <update id="UpdateByValidRevDaftjabatan" parameterClass="Daftjabatan">
+      update Daftjabatan set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftjabatan" parameterClass="Daftjabatan">
+      update Daftjabatan set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftjabatan" parameterMap="delete-param">
+      <generate table="Daftjabatan" by="KDJBT"/>
+    </delete>
+    <select id="BaseQueryDaftjabatan" parameterClass="Daftjabatan" resultMap="return-result">
+      select D.ID, D.KDJBT, D.NMJBT
+      from Daftjabatan D
+    </select>
+    <select id="QueryByAllDaftjabatan" extends="BaseQueryDaftjabatan" parameterClass="Daftjabatan" resultMap="return-result">
+      where 1=1
+      order by D.KDJBT
+    </select>
+    <select id="QueryByLookupDaftjabatan" extends="BaseQueryDaftjabatan" parameterClass="Daftjabatan" resultMap="return-result">
+      where 1=1
+      order by D.KDJBT
+    </select>
+    <select id="LoadByPKDaftjabatan" extends="BaseQueryDaftjabatan" parameterClass="Daftjabatan" resultMap="return-result">
+      where D.KDJBT = #Kdjbt#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftjabatan">
+      <parameter property="Kdjbt" column="KDJBT"/>
+      <parameter property="Nmjbt" column="NMJBT"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftjabatan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftjabatan">
+      <parameter property="Kdjbt" column="KDJBT"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

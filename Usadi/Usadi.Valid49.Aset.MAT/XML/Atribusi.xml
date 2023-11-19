@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Atribusi" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Atribusi" type="Usadi.Valid49.BO.AtribusiControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Atribusi">
+      <result property="Id" column="ID"/>
+      <result property="Tglatribusi" column="TGLATRIBUSI"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglba" column="TGLBA"/>
+      <result property="Uraiba" column="Uraiba"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noatribusi" column="NOATRIBUSI"/>
+      <result property="Noba" column="NOBA"/>
+    </resultMap>
+    <resultMap id="return-jmlbukti" class="Atribusi">
+      <result property="Jmlbukti" column="JMLBUKTI"/>
+    </resultMap>
+    <resultMap id="return-jmlrek" class="Atribusi">
+      <result property="Jmlrek" column="JMLREK"/>
+    </resultMap>
+    <resultMap id="return-jmlbrg" class="Atribusi">
+      <result property="Jmlbrg" column="JMLBRG"/>
+    </resultMap>
+    <resultMap id="return-jmlgenerated" class="Atribusi">
+      <result property="Jmlgenerated" column="JMLGENERATED"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Atribusi">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  <resultMap id="return-jmlbarenov" class="Atribusi">
+      <result property="Jmlbarenov" column="JMLBARENOV"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertAtribusi" parameterClass="Atribusi">
+      insert into ASET_ATRIBUSI(UNITKEY,NOATRIBUSI,NOBA,TGLATRIBUSI,TGLVALID,KET)
+      values(#Unitkey#, #Noatribusi#, #Noba#, #Tglatribusi#, null, #Ket#)
+    </insert>
+    <update id="UpdateByAtribusi" parameterClass="Atribusi">
+      update ASET_ATRIBUSI set TGLATRIBUSI=#Tglatribusi#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOATRIBUSI=#Noatribusi# and NOBA=#Noba#
+    </update>
+    <update id="UpdateBySahAtribusi" parameterClass="Atribusi">
+      update ASET_ATRIBUSI set TGLVALID=#Tglvalid#
+      where UNITKEY=#Unitkey# and NOATRIBUSI=#Noatribusi# and NOBA=#Noba#
+    </update>
+    <update id="UpdateByDraftAtribusi" parameterClass="Atribusi">
+      update ASET_ATRIBUSI set TGLVALID = null
+      where UNITKEY=#Unitkey# and NOATRIBUSI=#Noatribusi# and NOBA=#Noba#
+    </update>
+    <update id="UpdateByValidRevAtribusi" parameterClass="Atribusi">
+      update ASET_ATRIBUSI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevAtribusi" parameterClass="Atribusi">
+      update ASET_ATRIBUSI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByAtribusi" parameterMap="delete-param">
+      <generate table="Aset_atribusi" by="UNITKEY,NOATRIBUSI,NOBA"/>
+    </delete>
+    <select id="BaseQueryAtribusi" parameterClass="Atribusi" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOATRIBUSI, A.NOBA, AB.TGLBA, AB.URAIBA, A.TGLATRIBUSI, A.TGLVALID, A.KET
+      from ASET_ATRIBUSI A
+      left join ASET_BERITA AB ON Ab.UNITKEY = A.UNITKEY AND Ab.NOBA = A.NOBA
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+    </select>
+    <select id="QueryByAllAtribusi" extends="BaseQueryAtribusi" parameterClass="Atribusi" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and AB.KDTANS = '101'
+      and year(A.TGLATRIBUSI) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByRenovAtribusi" parameterClass="Atribusi" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOATRIBUSI, A.NOBA, AH.TGLBARENOV AS TGLBA, AH.URAIBARENOV AS URAIBA
+      , A.TGLATRIBUSI, A.TGLVALID, A.KET
+      from ASET_ATRIBUSI A
+      left join ASET_HISTRENOV AH ON AH.UNITKEY = A.UNITKEY AND AH.NOBARENOV = A.NOBA
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      where A.UNITKEY=#Unitkey#
+      and AH.KDTANS in('104','109')
+      and year(A.TGLATRIBUSI) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupAtribusi" extends="BaseQueryAtribusi" parameterClass="Atribusi" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKAtribusi" extends="BaseQueryAtribusi" parameterClass="Atribusi" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and NOATRIBUSI=#Noatribusi# and NOBA=#Noba#
+    </select>
+    <select id="LoadByJmlbuktiAtribusi" parameterClass="Atribusi" resultMap="return-jmlbukti">
+      select COUNT(A.NOATRIBUSI) JMLBUKTI from ASET_ATRIBUSI A
+      where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi# and A.NOBA=#Noba#
+    </select>
+    <select id="LoadByJmlrekAtribusi" parameterClass="Atribusi" resultMap="return-jmlrek">
+      select COUNT(A.MTGKEY) JMLREK from ASET_ATRIBUSIDET A
+      where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi# and A.NOBA=#Noba#
+    </select>
+    <select id="LoadByJmlbrgAtribusi" parameterClass="Atribusi" resultMap="return-jmlbrg">
+      select COUNT(A.IDBRG) JMLBRG from ASET_ATRIBUSIDETBRG A
+      where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi# and A.NOBA=#Noba#
+    </select>
+    <select id="LoadByJmlgeneratedAtribusi" parameterClass="Atribusi" resultMap="return-jmlgenerated">
+      select COUNT(A.IDBRG) JMLGENERATED from ASET_ATRIBUSIDETBRG A
+      where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi# and A.NOBA=#Noba# and A.GENERATED = '1'
+    </select>
+    <select id="LoadByJmlkibAtribusi" parameterClass="Atribusi" resultMap="return-jmlkib">
+      select sum(x.NOATRIBUSI) as JMLKIB from (
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106'
+      union all
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106'
+      union all
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106'
+      union all
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106'
+      union all
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106'
+      union all
+      select count(NODOKUMEN) as NOATRIBUSI from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noatribusi# and KDTANS='106') x
+    </select>
+    <select id="LoadByJmlbarenovAtribusi" parameterClass="Atribusi" resultMap="return-jmlbarenov">
+      select count(A.NOBARENOV) as JMLBARENOV
+      from ASET_HISTRENOV A where A.UNITKEY=#Unitkey# and A.NOBARENOV=#Noba# and A.TGLVALID is not null
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Atribusi">
+      <parameter property="Tglatribusi" column="TGLATRIBUSI"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noatribusi" column="NOATRIBUSI"/>
+      <parameter property="Noba" column="NOBA"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Atribusi">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Atribusi">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noatribusi" column="NOATRIBUSI"/>
+      <parameter property="Noba" column="NOBA"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

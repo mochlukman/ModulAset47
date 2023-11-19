@@ -1,0 +1,22 @@
+﻿body {
+	font-family : "lucida grande",tahoma,arial,sans-serif;
+	font-size   : 11px;
+}
+
+a { color : #15428B; }
+a:link, a:visited { text-decoration : none; }
+a:hover { text-decoration : underline; }
+
+.header {
+    background : #7F99BE url(../Res/Img/header-bg.gif) repeat-x scroll center center; 
+    border     : solid 1px #122A59;
+}
+
+.api-title {
+	color       : #fff;
+	font-size   : 16px;
+	font-weight : normal;
+	padding     : 5px 10px;
+}
+.icon-expand-all    { background-image : url(../Res/Img/expand-all.gif) !important; }
+.icon-collapse-all  { background-image : url(../Res/Img/collapse-all.gif) !important; }

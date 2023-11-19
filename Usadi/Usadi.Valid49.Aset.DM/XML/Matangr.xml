@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Matangr" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Matangr" type="Usadi.Valid49.BO.MatangrControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Matangr">
+      <result property="Id" column="ID"/>
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Kdkhusus" column="KDKHUSUS"/>
+      <result property="Jnsrek" column="JNSREK"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Status" column="STATUS"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+    </resultMap>
+    <resultMap id="return-kdgroup" class="Matangr">
+      <result property="Kdgroup" column="KDGROUP"/>
+    </resultMap>
+    <resultMap id="return-result-Rpt" class="Matangr">
+      <result property="Nmper" column="NMPER"/>
+      <result property="Kdper" column="KDPER"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMatangr" parameterMap="insert-param">
+      <generate table="Matangr"/>
+    </insert>
+    <update id="UpdateByMatangr" parameterMap="update-param">
+      <generate table="Matangr" by="MTGKEY,THANG"/>
+    </update>
+    <update id="UpdateByValidRevMatangr" parameterClass="Matangr">
+      update MATANGR set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMatangr" parameterClass="Matangr">
+      update MATANGR set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMatangr" parameterMap="delete-param">
+      <generate table="Matangr" by="MTGKEY,THANG"/>
+    </delete>
+    <select id="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      select M.ID, M.MTGKEY, M.KDPER, M.NMPER, M.MTGLEVEL as KDLEVEL
+      , M.KDKHUSUS, M.JNSREK, rtrim(M.TYPE) as TYPE, M.STAKTIF as STATUS, M.THANG
+      from MATANGR M
+    </select>
+    <select id="QueryByAllMatangr" extends="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      where 1=1
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="QueryByAtribusiMatangr" extends="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      where 1=1
+      <!--and left(M.KDPER,6) in('5.2.1.','5.2.2.')-->
+      and left(M.KDPER,4) in('5.1.')
+      <!--and M.MTGLEVEL = '5'-->
+      and M.TYPE = 'D'
+      AND M.MTGKEY IN(SELECT MTGKEY FROM DASKR WHERE UNITKEY=#Unitkey# AND THANG=(select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang'))
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="QueryByRenovMatangr" extends="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      where 1=1
+      and left(M.KDPER,2) = '5.'
+      <!--and M.MTGLEVEL = '5'-->
+      and M.TYPE = 'D'
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="QueryByLookupMatangr" extends="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      where 1=1
+      and left(M.KDPER,4) = '5.2.'
+      <!--and M.MTGLEVEL = '5'-->
+      and M.TYPE = 'D'
+      and M.KDDANA is null
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="LoadByPKMatangr" extends="BaseQueryMatangr" parameterClass="Matangr" resultMap="return-result">
+      where M.MTGKEY = #Mtgkey#
+    </select>
+    <select id="LoadByGetkdgroupMatangr" parameterClass="Matangr" resultMap="return-kdgroup">
+      select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+    </select>
+    <select id="QueryByRptLookupMatangr" parameterClass="Matangr" resultMap="return-result-Rpt">
+      SELECT DISTINCT m.MTGKEY,m.KDPER,m.NMPER FROM MATANGR AS m
+      WHERE M.MTGLEVEL = '2'
+      ORDER BY m.KDPER
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Matangr">
+      <parameter property="Kdper" column="KDPER"/>
+      <parameter property="Nmper" column="NMPER"/>
+      <parameter property="Kdlevel" column="MTGLEVEL"/>
+      <parameter property="Kdkhusus" column="KDKHUSUS"/>
+      <parameter property="Jnsrek" column="JNSREK"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Matangr">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Matangr">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

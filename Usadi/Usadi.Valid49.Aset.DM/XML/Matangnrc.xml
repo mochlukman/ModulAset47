@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Matangnrc" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Matangnrc" type="Usadi.Valid49.BO.MatangnrcControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Matangnrc">
+      <result property="Id" column="ID"/>
+      <result property="Kdper" column="KDPER"/>
+      <result property="Nmper" column="NMPER"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Status" column="STATUS"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+    </resultMap>
+    <resultMap id="return-kdgroup" class="Matangnrc">
+      <result property="Kdgroup" column="KDGROUP"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertMatangnrc" parameterMap="insert-param">
+      <generate table="Matangnrc"/>
+    </insert>
+    <update id="UpdateByMatangnrc" parameterMap="update-param">
+      <generate table="Matangnrc" by="MTGKEY,THANG"/>
+    </update>
+    <update id="UpdateByValidRevMatangnrc" parameterClass="Matangnrc">
+      update MATANGNRC set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevMatangnrc" parameterClass="Matangnrc">
+      update MATANGNRC set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByMatangnrc" parameterMap="delete-param">
+      <generate table="Matangnrc" by="MTGKEY,THANG"/>
+    </delete>
+    <select id="BaseQueryMatangnrc" parameterClass="Matangnrc" resultMap="return-result">
+      select M.ID, M.MTGKEY, M.KDPER, M.NMPER, M.MTGLEVEL as KDLEVEL
+      , rtrim(M.TYPE) as TYPE, M.STAKTIF as STATUS, M.THANG
+      from MATANGNRC M
+    </select>
+    <select id="QueryByAllMatangnrc" extends="BaseQueryMatangnrc" parameterClass="Matangnrc" resultMap="return-result">
+      where 1=1
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="QueryByLookupMatangnrc" extends="BaseQueryMatangnrc" parameterClass="Matangnrc" resultMap="return-result">
+      where 1=1
+      and M.THANG = (select rtrim(CONFIGVAL) from PEMDA where CONFIGID = 'cur_thang')
+      order by M.KDPER
+    </select>
+    <select id="LoadByPKMatangnrc" extends="BaseQueryMatangnrc" parameterClass="Matangnrc" resultMap="return-result">
+      where M.MTGKEY = #Mtgkey#
+    </select>
+    <select id="LoadByGetkdgroupMatangnrc" parameterClass="Matangnrc" resultMap="return-kdgroup">
+      select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Matangnrc">
+      <parameter property="Kdper" column="KDPER"/>
+      <parameter property="Nmper" column="NMPER"/>
+      <parameter property="Kdlevel" column="MTGLEVEL"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Matangnrc">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Matangnrc">
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

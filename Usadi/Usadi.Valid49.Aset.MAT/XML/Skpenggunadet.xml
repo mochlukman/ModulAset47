@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Skpenggunadet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Skpenggunadet" type="Usadi.Valid49.BO.SkpenggunadetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Skpenggunadet">
+      <result property="Id" column="ID"/>
+      <result property="Tgldokumen" column="TGLDOKUMEN"/>
+      <result property="Tglskpengguna" column="TGLSKPENGGUNA"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Statusdok" column="STATUSDOK"/>
+      <result property="Statusdokumen" column="STATUSDOKUMEN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Blokid" column="BLOKID"/>
+      <result property="Nmpengguna" column="NMPENGGUNA"/>
+      <result property="Kdunit2" column="KDUNIT2"/>
+      <result property="Nmunit2" column="NMUNIT2"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nodokumen" column="NODOKUMEN"/>
+      <result property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+    </resultMap>
+    <resultMap id="return-jmlbrg" class="Skpenggunadet">
+      <result property="Jmlbrg" column="JMLBRG"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Skpenggunadet">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSkpenggunadet" parameterClass="Skpenggunadet">
+      insert into ASET_SKPENGGUNADET(UNITKEY,NOSKPENGGUNA,NODOKUMEN,UNITKEY2,TGLDOKUMEN,TGLVALID,STATUS,KET)
+      values(#Unitkey#, #Noskpengguna#, #Nodokumen#, #Unitkey2#, #Tgldokumen#, null, 0, null)
+    </insert>
+    <update id="UpdateBySkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set TGLDOKUMEN=#Tgldokumen#
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna# and NODOKUMEN=#Nodokumen# and UNITKEY2=#Unitkey2#
+    </update>
+    <update id="UpdateByStatusSkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set STATUS=#Statusdok#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna# and NODOKUMEN=#Nodokumen# and UNITKEY2=#Unitkey2#
+    </update>
+    <update id="UpdateBySahSkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set TGLVALID=#Tglvalid#
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna# and NODOKUMEN=#Nodokumen# and UNITKEY2=#Unitkey2#
+    </update>
+    <update id="UpdateByDraftSkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set TGLVALID=null, STATUS='0'
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna# and NODOKUMEN=#Nodokumen# and UNITKEY2=#Unitkey2#
+    </update>
+    <update id="UpdateByValidRevSkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSkpenggunadet" parameterClass="Skpenggunadet">
+      update ASET_SKPENGGUNADET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteBySkpenggunadet" parameterMap="delete-param">
+      <generate table="Aset_skpenggunadet" by="UNITKEY,NOSKPENGGUNA,NODOKUMEN,UNITKEY2"/>
+    </delete>
+    <delete id="DeleteByDetailSkpenggunadet" parameterMap="delete-param">
+      <generate table="Aset_skpenggunadet" by="UNITKEY,NOSKPENGGUNA,NODOKUMEN"/>
+    </delete>
+    <select id="BaseQuerySkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOSKPENGGUNA, A.NODOKUMEN, A.UNITKEY2, DU.KDUNIT AS KDUNIT2, DU.NMUNIT AS NMUNIT2
+      , A.TGLDOKUMEN, AA.TGLSKPENGGUNA, A.TGLVALID, rtrim(DU.KDUNIT)+ ' - ' + rtrim(DU.NMUNIT) as NMPENGGUNA
+      , case A.STATUS when 0 then 'Diajukan' when 1 then 'Diterima' when 2 then 'Ditolak' end STATUSDOKUMEN
+      , A.STATUS as STATUSDOK, A.KET, #Blokid# BLOKID
+      from ASET_SKPENGGUNADET AS A
+      left join ASET_SKPENGGUNA AA ON AA.UNITKEY = A.UNITKEY AND AA.NOSKPENGGUNA = A.NOSKPENGGUNA
+      left join DAFTUNIT DU ON DU.UNITKEY = A.UNITKEY2
+    </select>
+    <select id="QueryByAllSkpenggunadet" extends="BaseQuerySkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOSKPENGGUNA=#Noskpengguna#
+    </select>
+    <select id="QueryByLookupSkpenggunadet" extends="BaseQuerySkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOSKPENGGUNA=#Noskpengguna#
+    </select>
+    <select id="LoadByPKSkpenggunadet" extends="BaseQuerySkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOSKPENGGUNA=#Noskpengguna# and A.NODOKUMEN=#Nodokumen# and A.UNITKEY2=#Unitkey2#
+    </select>
+    <select id="LoadByJmlbrgSkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-jmlbrg">
+      select count(ASETKEY) as JMLBRG from ASET_SKPENGGUNADETBRG
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna# and NODOKUMEN=#Nodokumen# and UNITKEY2=#Unitkey2#
+    </select>
+    <select id="LoadByJmlkibSkpenggunadet" parameterClass="Skpenggunadet" resultMap="return-jmlkib">
+      select count(AK.IDBRG) as JMLKIB
+      from ASET_SKPENGGUNADETBRG A
+      inner join ASET_KIBSPESIFIKASI AK ON AK.IDBRG = A.IDBRG
+      where A.NOSKPENGGUNA=#Noskpengguna# and A.NODOKUMEN=#Nodokumen#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Skpenggunadet">
+      <parameter property="Tgldokumen" column="TGLDOKUMEN"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Statusdok" column="STATUS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Skpenggunadet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Skpenggunadet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

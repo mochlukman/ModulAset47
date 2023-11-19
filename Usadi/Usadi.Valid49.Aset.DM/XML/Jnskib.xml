@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jnskib" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jnskib" type="Usadi.Valid49.BO.JnskibControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jnskib">
+      <result property="Nmkib" column="NMKIB"/>
+      <result property="Golkib" column="GOLKIB"/>
+      <result property="Kdkib" column="KDKIB"/>
+    </resultMap>
+    <resultMap id="return-result-kdkib" class="Jnskib">
+      <result property="Kdkib" column="KDKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJnskib" parameterMap="insert-param">
+      <generate table="Jnskib"/>
+    </insert>
+    <update id="UpdateByJnskib" parameterMap="update-param">
+      <generate table="Jnskib" by="KDKIB"/>
+    </update>
+    <update id="UpdateByValidRevJnskib" parameterClass="Jnskib">
+      update JNSKIB set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJnskib" parameterClass="Jnskib">
+      update JNSKIB set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJnskib" parameterMap="delete-param">
+      <generate table="Jnskib" by="KDKIB"/>
+    </delete>
+    <select id="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      select J.KDKIB, J.NMKIB, J.GOLKIB
+      from JNSKIB J
+    </select>
+    <select id="QueryByAllJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where 1=1
+      order by J.KDKIB
+    </select>
+    <select id="QueryByTransJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('01','02','03','04','05','07')
+    </select>
+    <select id="QueryByKirJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('02','05')
+    </select>
+    <select id="QueryBySusutJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('02','03','04','07')
+    </select>
+    <select id="QueryByAstetapJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('01','02','03','04','05','06')
+    </select>
+    <select id="QueryByAslancarJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('00')
+    </select>
+    <select id="QueryByAslainJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB in('07','08','09')
+    </select>
+    <select id="QueryByKdkibJnskib" parameterClass="Jnskib" resultMap="return-result-kdkib">
+      select cast(isnull(max(J.KDKIB),0) as varchar) KDKIB from JNSKIB as J
+    </select>
+    <select id="QueryByLookupJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where 1=1
+      order by J.KDKIB
+    </select>
+    <select id="LoadByPKJnskib" extends="BaseQueryJnskib" parameterClass="Jnskib" resultMap="return-result">
+      where J.KDKIB = #Kdkib#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jnskib">
+      <parameter property="Nmkib" column="NMKIB"/>
+      <parameter property="Golkib" column="GOLKIB"/>
+      <parameter property="Kdkib" column="KDKIB"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jnskib">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jnskib">
+      <parameter property="Kdkib" column="KDKIB"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

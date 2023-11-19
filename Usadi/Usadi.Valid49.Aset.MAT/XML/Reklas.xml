@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Reklas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Reklas" type="Usadi.Valid49.BO.ReklasControl, Usadi.Valid49.Aset.MAT" />
+    </alias>
+    <resultMaps>
+        <resultMap id="return-result" class="Reklas">
+            <result property="Id" column="ID"/>
+            <result property="Tglreklas" column="TGLREKLAS"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Ket" column="KET"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Kdtans" column="KDTANS"/>
+            <result property="Noreklas" column="NOREKLAS"/>
+            <result property="Unitkey" column="UNITKEY"/>
+        </resultMap>
+        <resultMap id="return-jmlkib" class="Reklas">
+            <result property="Jmlkib" column="JMLKIB"/>
+        </resultMap>
+        <resultMap id="return-nodok" class="Reklas">
+            <result property="Noreklas" column="NOREKLAS"/>
+        </resultMap>
+        <resultMap id="return-jmlasetkeynull" class="Reklas">
+            <result property="Jmlasetkeynull" column="JMLASETKEYNULL"/>
+        </resultMap>
+        <resultMap id="return-cekjmldata" class="Reklas">
+            <result property="Jmldata" column="JMLDATA"/>
+        </resultMap>
+    </resultMaps>
+    <statements>
+        <insert id="InsertReklas" parameterClass="Reklas">
+            insert into ASET_REKLAS(UNITKEY,NOREKLAS,KDTANS,TGLREKLAS,TGLVALID,KET)
+            values(#Unitkey#,#Noreklas#,#Kdtans#,#Tglreklas#,null,#Ket#)
+        </insert>
+        <update id="UpdateByReklas" parameterClass="Reklas">
+            update ASET_REKLAS set TGLREKLAS=#Tglreklas#, KET=#Ket#
+            where UNITKEY=#Unitkey# and NOREKLAS=#Noreklas# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateBySahReklas" parameterClass="Reklas">
+            update ASET_REKLAS set TGLVALID = #Tglreklas#
+            where UNITKEY=#Unitkey# and NOREKLAS=#Noreklas# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByDraftReklas" parameterClass="Reklas">
+            update ASET_REKLAS set TGLVALID = null
+            where UNITKEY=#Unitkey# and NOREKLAS=#Noreklas# and KDTANS=#Kdtans#
+            update ASET_REKLASDET set NOREG2 = '', STATUS = 0
+            where UNITKEY=#Unitkey# and NOREKLAS=#Noreklas# and KDTANS=#Kdtans#
+        </update>
+        <update id="UpdateByValidRevReklas" parameterClass="Reklas">
+            update ASET_REKLAS set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+        </update>
+        <update id="UpdateByUnValidRevReklas" parameterClass="Reklas">
+            update ASET_REKLAS set REV_BY='' and REV_DATE=null
+        </update>
+        <delete id="DeleteByReklas" parameterMap="delete-param">
+            <generate table="Aset_reklas" by="UNITKEY,NOREKLAS,KDTANS"/>
+        </delete>
+        <select id="BaseQueryReklas" parameterClass="Reklas" resultMap="return-result">
+            select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOREKLAS, A.KDTANS, J.NMTRANS, A.TGLREKLAS,
+            A.TGLVALID, A.KET
+            from ASET_REKLAS A
+            left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+            left join JTRANS J ON J.KDTANS = A.KDTANS
+        </select>
+        <select id="QueryByAllReklas" extends="BaseQueryReklas" parameterClass="Reklas" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+            and year(A.TGLREKLAS) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+            order by A.TGLREKLAS, A.NOREKLAS
+        </select>
+        <select id="QueryByLookupReklas" extends="BaseQueryReklas" parameterClass="Reklas" resultMap="return-result">
+            where 1=1
+            order by A.TGLREKLAS, A.NOREKLAS
+        </select>
+        <select id="QueryByNodokReklas" parameterClass="Reklas" resultMap="return-nodok">
+            select A.NOREKLAS
+            from ASET_REKLAS A
+            where 1=1
+            and A.NOREKLAS = #Noreklas#
+        </select>
+        <select id="LoadByPKReklas" extends="BaseQueryReklas" parameterClass="Reklas" resultMap="return-result">
+            where A.UNITKEY=#Unitkey# and A.NOREKLAS=#Noreklas#, A.KDTANS=#Kdtans#
+        </select>
+        <select id="LoadByJmldataReklas" parameterClass="Reklas" resultMap="return-cekjmldata">
+            select COUNT(*) JMLDATA
+            from ASET_REKLASDET A
+            where A.UNITKEY = #Unitkey# and A.NOREKLAS = #Noreklas# and A.KDTANS=#Kdtans# 
+            and ASETKEY2 is not null
+        </select>
+        <select id="LoadByJmlasetkeynullReklas" parameterClass="Reklas" resultMap="return-jmlasetkeynull">
+            select COUNT(*) JMLASETKEYNULL
+            from ASET_REKLASDET A
+            where A.UNITKEY = #Unitkey# and A.NOREKLAS = #Noreklas# and A.KDTANS=#Kdtans# and ASETKEY2 is null
+        </select>
+        <select id="LoadByJmlkibReklas" parameterClass="Reklas" resultMap="return-jmlkib">
+            select sum(x.NOREKLAS) as JMLKIB from (
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOREKLAS from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noreklas# and KDTANS=#Kdtans#) x
+        </select>
+    </statements>
+    <parameterMaps>
+        <parameterMap id="insert-param" class="Reklas">
+            <parameter property="Tglreklas" column="TGLREKLAS"/>
+            <parameter property="Tglvalid" column="TGLVALID"/>
+            <parameter property="Ket" column="KET"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Noreklas" column="NOREKLAS"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+        </parameterMap>
+        <parameterMap id="update-param" extends="insert-param" class="Reklas">
+        </parameterMap>
+        <parameterMap id="delete-param" class="Reklas">
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Noreklas" column="NOREKLAS"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

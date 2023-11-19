@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibb" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibb" type="Usadi.Valid49.BO.KibbControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibb">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tglperolehan" column="TGLPEROLEHAN"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+      <result property="Nmpemilik" column="NMPEMILIK"/>
+      <result property="Asalusul" column="ASALUSUL"/>
+      <result property="Pengguna" column="PENGGUNA"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Merktype" column="MERKTYPE"/>
+      <result property="Ukuran" column="UKURAN"/>
+      <result property="Bahan" column="BAHAN"/>
+      <result property="Kdwarna" column="KDWARNA"/>
+      <result property="Nmwarna" column="NMWARNA"/>
+      <result property="Nopabrik" column="NOPABRIK"/>
+      <result property="Norangka" column="NORANGKA"/>
+      <result property="Nopolisi" column="NOPOLISI"/>
+      <result property="Nobpkb" column="NOBPKB"/>
+      <result property="Nomesin" column="NOMESIN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdlokpo" column="KDLOKPO"/>
+      <result property="Kdbrgpo" column="KDBRGPO"/>
+      <result property="Kdklas" column="KDKLAS"/>
+      <result property="Uraiklas" column="URAIKLAS"/>
+      <result property="Kdsensus" column="KDSENSUS"/>
+      <result property="Kdstatusaset" column="KDSTATUSASET"/>
+      <result property="Uruttrans" column="URUTTRANS"/>
+      <result property="Uruthist" column="URUTHIST"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Utara" column="UTARA"/>
+      <result property="Timur" column="TIMUR"/>
+      <result property="Selatan" column="SELATAN"/>
+      <result property="Barat" column="BARAT"/>
+      <result property="Lokasi" column="LOKASI"/>
+    </resultMap>
+    <resultMap id="return-minuruthist" class="Kibb">
+      <result property="Minuruthist" column="MINURUTHIST"/>
+    </resultMap>
+    <resultMap id="return-jmlkibdet" class="Kibb">
+      <result property="Jmlkibdet" column="JMLKIBDET"/>
+    </resultMap>
+    <resultMap id="return-jmlskpengguna" class="Kibb">
+      <result property="Jmlskpengguna" column="JMLSKPENGGUNA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibb" parameterMap="insert-param">
+      <generate table="Aset_kibbdet"/>
+    </insert>
+    <update id="UpdateByKibb" parameterClass="Kibb">
+      update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, PENGGUNA=#Pengguna#, KET=#Ket#
+      , MERKTYPE=#Merktype#, UKURAN=#Ukuran#, BAHAN=#Bahan#, KDWARNA=#Kdwarna#, NOPABRIK=#Nopabrik#, NORANGKA=#Norangka#
+      , NOPOLISI=#Nopolisi#, NOBPKB=#Nobpkb#, NOMESIN=#Nomesin#, KDSATUAN=#Kdsatuan#,
+      UTARA=#Utara#, TIMUR=#Timur#, SELATAN=#Selatan#, BARAT=#Barat#, LOKASI=#Lokasi#
+      where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </update>
+    <update id="UpdateByStatuspenggunaKibb" parameterClass="Kibb">
+      update ASET_KIB set STATUSPENGGUNA = '0' where IDBRG=#Idbrg#
+    </update>
+    <update id="UpdateByValidRevKibb" parameterClass="Kibb">
+      update ASET_KIBBDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibb" parameterClass="Kibb">
+      update ASET_KIBBDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibb" parameterMap="delete-param">
+      <generate table="Aset_kib" by="IDBRG"/>
+    </delete>
+    <delete id="DeleteBySpesifikasiKibb" parameterClass="Kibb">
+      delete from ASET_KIBSPESIFIKASI where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
+    </delete>
+    <delete id="DeleteByKibKibb" parameterClass="Kibb">
+      delete from ASET_KIB where IDBRG=#Idbrg# and UNITKEY=#Unitkey# and ASETKEY=#Asetkey#
+    </delete>
+    <select id="BaseQueryKibb" parameterClass="Kibb" resultMap="return-result">
+    </select>
+    <select id="QueryByAllKibb" parameterClass="Kibb" resultMap="return-result">
+      exec REGISTER_KIBB #Asetkey#, #Unitkey#, #Kdkib#
+    </select>
+    <select id="LoadByMinuruthistKibb" parameterClass="Kibb" resultMap="return-minuruthist">
+      select min(cast(URUTHIST as INT)) MINURUTHIST from ASET_KIBSPESIFIKASI where IDBRG = #Idbrg#
+    </select>
+    <select id="LoadByJmlkibdetKibb" parameterClass="Kibb" resultMap="return-jmlkibdet">
+      select COUNT(*) JMLKIBDET from ASET_KIBBDET where IDBRG=#Idbrg# and URUTTRANS=#Uruthist#
+    </select>
+    <select id="LoadByJmlskpenggunaKibb" parameterClass="Kibb" resultMap="return-jmlskpengguna">
+      select COUNT(*) JMLSKPENGGUNA from ASET_SKPENGGUNADETBRG A where A.IDBRG=#Idbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibb">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Kdkib" column="KDKIB"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdklas" column="KDKLAS"/>
+      <parameter property="Kdsensus" column="KDSENSUS"/>
+      <parameter property="Kdstatusaset" column="KDSTATUSASET"/>
+      <parameter property="Kdlokpo" column="KDLOKPO"/>
+      <parameter property="Kdbrgpo" column="KDBRGPO"/>
+      <parameter property="Tglperolehan" column="TGLPEROLEHAN"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Utara" column="UTARA"/>
+      <parameter property="Timur" column="TIMUR"/>
+      <parameter property="Selatan" column="SELATAN"/>
+      <parameter property="Barat" column="BARAT"/>
+      <parameter property="Lokasi" column="LOKASI"/>
+    </parameterMap>
+    <parameterMap id="update-param" class="Kibb">
+      <parameter property="Kdpemilik" column="KDPEMILIK"/>
+      <parameter property="Asalusul" column="ASALUSUL"/>
+      <parameter property="Pengguna" column="PENGGUNA"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Merktype" column="MERKTYPE"/>
+      <parameter property="Ukuran" column="UKURAN"/>
+      <parameter property="Bahan" column="BAHAN"/>
+      <parameter property="Kdwarna" column="KDWARNA"/>
+      <parameter property="Nopabrik" column="NOPABRIK"/>
+      <parameter property="Norangka" column="NORANGKA"/>
+      <parameter property="Nopolisi" column="NOPOLISI"/>
+      <parameter property="Nobpkb" column="NOBPKB"/>
+      <parameter property="Nomesin" column="NOMESIN"/>
+      <parameter property="Kdsatuan" column="KDSATUAN"/>
+      <parameter property="Utara" column="UTARA"/>
+      <parameter property="Timur" column="TIMUR"/>
+      <parameter property="Selatan" column="SELATAN"/>
+      <parameter property="Barat" column="BARAT"/>
+      <parameter property="Lokasi" column="LOKASI"/>
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibb">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+      <parameter property="Uruthist" column="URUTHIST"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

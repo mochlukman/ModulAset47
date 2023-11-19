@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Strurek" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Strurek" type="Usadi.Valid49.BO.StrurekControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Strurek">
+      <result property="Nmlevel" column="NMLEVEL"/>
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+    <resultMap id="return-result-level" class="Strurek">
+      <result property="Level" column="KDLEVEL"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertStrurek" parameterMap="insert-param">
+      <generate table="Strurek"/>
+    </insert>
+    <update id="UpdateByStrurek" parameterMap="update-param">
+      <generate table="Strurek" by="MTGLEVEL"/>
+    </update>
+    <update id="UpdateByValidRevStrurek" parameterClass="Strurek">
+      update STRUREK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevStrurek" parameterClass="Strurek">
+      update STRUREK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByStrurek" parameterMap="delete-param">
+      <generate table="Strurek" by="MTGLEVEL"/>
+    </delete>
+    <select id="BaseQueryStrurek" parameterClass="Strurek" resultMap="return-result">
+      select S.NMLEVEL, rtrim(S.MTGLEVEL) as KDLEVEL
+      from STRUREK S
+    </select>
+    <select id="QueryByAllStrurek" extends="BaseQueryStrurek" parameterClass="Strurek" resultMap="return-result">
+      where 1=1
+      order by S.MTGLEVEL
+    </select>
+    <select id="QueryByLevelStrurek" parameterClass="Strurek" resultMap="return-result-level">
+      select cast(isnull(max(cast(S.MTGLEVEL as int)),0) as varchar) KDLEVEL from STRUREK as S
+    </select>
+    <select id="QueryByLookupStrurek" extends="BaseQueryStrurek" parameterClass="Strurek" resultMap="return-result">
+      where 1=1
+      order by S.MTGLEVEL
+    </select>
+    <select id="LoadByPKStrurek" extends="BaseQueryStrurek" parameterClass="Strurek" resultMap="return-result">
+      <!--where S.MTGLEVEL = #Mtglevel#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Strurek">
+      <parameter property="Nmlevel" column="NMLEVEL"/>
+      <parameter property="Level" column="MTGLEVEL"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Strurek">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Strurek">
+      <parameter property="Level" column="MTGLEVEL"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

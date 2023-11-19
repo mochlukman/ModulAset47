@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Penyusutan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Penyusutan" type="Usadi.Valid49.BO.PenyusutanControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Penyusutan">
+      <result property="Id" column="ID"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Tglhitung" column="TGLHITUNG"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Periodeke" column="PERIODEKE"/>
+      <result property="Sisamasapakai" column="SISAMASAPAKAI"/>
+      <result property="Tglsusut" column="TGLSUSUT"/>
+      <result property="Nilaiaset" column="NILAIASET"/>
+      <result property="Nilaisusut" column="NILAISUSUT"/>
+      <result property="Nilaiakumsusut" column="NILAIAKUMSUSUT"/>
+      <result property="Nilaibuku" column="NILAIBUKU"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Ket_bulan" column="KET_BULAN"/>
+      <result property="Nmtahun" column="NMTAHUN"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kd_bulan" column="KD_BULAN"/>
+      <result property="Kdtahun" column="KDTAHUN"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+    <resultMap id="return-hitung" class="Penyusutan">
+      <result property="Ket_bulan" column="KET_BULAN"/>
+      <result property="Nmtahun" column="NMTAHUN"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Tglhitung" column="TGLHITUNG"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdtahun" column="KDTAHUN"/>
+      <result property="Kd_bulan" column="KD_BULAN"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Penyusutan">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertPenyusutan" parameterMap="insert-param">
+      <generate table="Aset_penyusutan"/>
+    </insert>
+    <update id="UpdateByPenyusutan" parameterMap="update-param">
+      <generate table="Aset_penyusutan" by="KD_BULAN,KDTAHUN,UNITKEY,ASETKEY,IDBRG"/>
+    </update>
+    <update id="UpdateBySahPenyusutan" parameterClass="Penyusutan">
+      update ASET_PENYUSUTAN set TGLVALID = #Tglvalid#
+      where UNITKEY=#Unitkey# and KDTAHUN=#Kdtahun# and KD_BULAN=#Kd_bulan#
+    </update>
+    <update id="UpdateByDraftPenyusutan" parameterClass="Penyusutan">
+      update ASET_PENYUSUTAN set TGLVALID = null
+      where UNITKEY=#Unitkey# and KDTAHUN=#Kdtahun# and KD_BULAN=#Kd_bulan#
+    </update>
+    <update id="UpdateByValidRevPenyusutan" parameterClass="Penyusutan">
+      update ASET_PENYUSUTAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevPenyusutan" parameterClass="Penyusutan">
+      update ASET_PENYUSUTAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByPenyusutan" parameterMap="delete-param">
+      <generate table="Aset_penyusutan" by="KD_BULAN,KDTAHUN,UNITKEY,ASETKEY,IDBRG"/>
+    </delete>
+    <select id="BaseQueryPenyusutan" parameterClass="Penyusutan" resultMap="return-result">
+      select A.ID, rtrim(A.KD_BULAN) KD_BULAN, B.KET_BULAN, A.KDTAHUN, T.NMTAHUN, A.UNITKEY, D.KDUNIT, D.NMUNIT
+      , A.ASETKEY, DA.KDASET, DA.NMASET, A.TAHUN, A.NOREG, A.IDBRG, A.TGLHITUNG, A.UMEKO, A.PERIODEKE
+      , A.SISAMASAPAKAI, A.TGLSUSUT, A.NILAIASET, A.NILAISUSUT, A.NILAIAKUMSUSUT, A.NILAIBUKU, A.TGLVALID
+      from ASET_PENYUSUTAN A
+      left join BULAN B on B.KD_BULAN = A.KD_BULAN
+      left join TAHUN T on T.KDTAHUN = A.KDTAHUN
+      left join DAFTUNIT D on D.UNITKEY = A.UNITKEY
+      left join DAFTASET DA on DA.ASETKEY = A.ASETKEY
+      left join JNSKIBASET J on J.K_BRG = left(DA.KDASET,9)
+    </select>
+    <select id="QueryByAllPenyusutan" extends="BaseQueryPenyusutan" parameterClass="Penyusutan" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.KD_BULAN=#Kd_bulan#
+      and A.KDTAHUN=#Kdtahun#
+      and left(DA.KDASET,9)=#Kdaset#
+      order by A.KDTAHUN,A.KD_BULAN,DA.KDASET
+    </select>
+    <select id="QueryByHitungPenyusutan" parameterClass="Penyusutan" resultMap="return-hitung">
+      select x.KD_BULAN, x.KET_BULAN, x.KDTAHUN, x.NMTAHUN, x.UNITKEY, x.KDUNIT,
+      x.NMUNIT, x.TGLHITUNG, x.TGLVALID
+      from (
+      select distinct rtrim(A.KD_BULAN) KD_BULAN, B.KET_BULAN, A.KDTAHUN, T.NMTAHUN, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.TGLHITUNG, A.TGLVALID
+      from ASET_PENYUSUTAN A
+      left join BULAN B ON B.KD_BULAN = A.KD_BULAN
+      left join TAHUN T ON T.KDTAHUN = A.KDTAHUN
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+      where A.UNITKEY=#Unitkey# and A.KDTAHUN=#Kdtahun#
+      ) x
+      order by x.KD_BULAN, x.TGLHITUNG
+    </select>
+    <select id="QueryByLookupPenyusutan" extends="BaseQueryPenyusutan" parameterClass="Penyusutan" resultMap="return-result">
+      where 1=1
+      order by DA.KDASET, A.TAHUN, A.NOREG, A.NILAI
+    </select>
+    <select id="LoadByPKPenyusutan" extends="BaseQueryPenyusutan" parameterClass="Penyusutan" resultMap="return-result">
+      where A.KD_BULAN=#Kd_bulan# and A.KDTAHUN=#Kdtahun# and A.UNITKEY=#Unitkey# and A.ASETKEY=#Asetkey# and A.IDBRG=#Idbrg#
+    </select>
+    <select id="LoadByCekdataPenyusutan" parameterClass="Penyusutan" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PENYUSUTAN A
+      where A.UNITKEY=#Unitkey# and A.KDTAHUN=#Kdtahun# and A.KD_BULAN=#Kd_bulan# and A.IDBRG=#Idbrg# and A.TGLVALID is null
+    </select>
+    <select id="LoadByCekvalidPenyusutan" parameterClass="Penyusutan" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_PENYUSUTAN A
+      where A.UNITKEY=#Unitkey# and A.KDTAHUN=#Kdtahun# and A.KD_BULAN=#Kd_bulan# and A.TGLVALID is null
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Penyusutan">
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Tglhitung" column="TGLHITUNG"/>
+      <parameter property="Umeko" column="UMEKO"/>
+      <parameter property="Periodeke" column="PERIODEKE"/>
+      <parameter property="Sisamasapakai" column="SISAMASAPAKAI"/>
+      <parameter property="Tglsusut" column="TGLSUSUT"/>
+      <parameter property="Nilaiaset" column="NILAIASET"/>
+      <parameter property="Nilaisusut" column="NILAISUSUT"/>
+      <parameter property="Nilaiakumsusut" column="NILAIAKUMSUSUT"/>
+      <parameter property="Nilaibuku" column="NILAIBUKU"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Kd_bulan" column="KD_BULAN"/>
+      <parameter property="Kdtahun" column="KDTAHUN"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Penyusutan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Penyusutan">
+      <parameter property="Kd_bulan" column="KD_BULAN"/>
+      <parameter property="Kdtahun" column="KDTAHUN"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

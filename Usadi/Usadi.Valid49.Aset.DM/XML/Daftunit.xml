@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftunit" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+      <typeAlias alias="Daftunit" type="Usadi.Valid49.BO.DaftunitControl, Usadi.Valid49.Aset.DM" />
+    </alias>
+    <resultMaps>
+      <resultMap id="return-result" class="Daftunit">
+        <result property="Id" column="ID"/>
+        <result property="Kdunit" column="KDUNIT"/>
+        <result property="Nmunit" column="NMUNIT"/>
+        <result property="Akrounit" column="AKROUNIT"/>
+        <result property="Alamat" column="ALAMAT"/>
+        <result property="Telepon" column="TELEPON"/>
+        <result property="Kdlevel" column="KDLEVEL"/>
+        <result property="Type" column="TYPE"/>
+        <result property="Kdnmunit" column="KDNMUNIT"/>
+        <result property="Unitkey" column="UNITKEY"/>
+      </resultMap>
+      <resultMap id="return-result-induk" extends="return-result" class="Daftunit">
+        <result property="Unitkey2" column="UNITKEY2"/>
+        <result property="Kdunit2" column="KDUNIT2"/>
+        <result property="Nmunit2" column="NMUNIT2"/>
+      </resultMap>
+      <resultMap id="return-kdlevelmin" class="Daftunit">
+        <result property="Kdlevelmin" column="KDLEVELMIN"/>
+      </resultMap>
+      <resultMap id="return-kdgroup" class="Daftunit">
+        <result property="Kdgroup" column="KDGROUP"/>
+      </resultMap>
+    </resultMaps>
+    <statements>
+      <insert id="InsertDaftunit" parameterMap="insert-param">
+        <generate table="Daftunit"/>
+      </insert>
+      <update id="UpdateByDaftunit" parameterMap="update-param">
+        <generate table="Daftunit" by="UNITKEY"/>
+      </update>
+      <update id="UpdateByValidRevDaftunit" parameterClass="Daftunit">
+        update DAFTUNIT set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+      </update>
+      <update id="UpdateByUnValidRevDaftunit" parameterClass="Daftunit">
+        update DAFTUNIT set REV_BY='' and REV_DATE=null
+      </update>
+      <delete id="DeleteByDaftunit" parameterMap="delete-param">
+        <generate table="Daftunit" by="UNITKEY"/>
+      </delete>
+      <select id="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT, D.AKROUNIT, D.ALAMAT, D.TELEPON, D.KDLEVEL, rtrim(D.TYPE) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+      </select>
+      <select id="QueryByAllDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where 1=1
+        order by D.UNITKEY
+      </select>
+      <select id="QueryBySubunitDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        IF (#Unitkey# in(SELECT UNITKEY FROM DAFTUNIT WHERE KDLEVEL IN('4','5')))
+        BEGIN
+        select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT, D.AKROUNIT, D.ALAMAT, D.TELEPON,
+        CAST((CAST(D.KDLEVEL AS INT) - 3) AS CHAR(1)) as KDLEVEL, rtrim(D.TYPE) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+        where 1=1
+        AND LEFT(D.KDUNIT,18) IN(SELECT LEFT(KDUNIT,18) FROM DAFTUNIT WHERE UNITKEY=#Unitkey#
+        AND D.KDLEVEL=KDLEVEL)
+        AND KDLEVEL IN('4','5')
+        order by D.KDUNIT
+        END
+        ELSE
+        BEGIN
+        select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT, D.AKROUNIT, D.ALAMAT, D.TELEPON,
+        CAST((CAST(D.KDLEVEL AS INT) - 3) AS CHAR(1)) as KDLEVEL, rtrim(D.TYPE) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+        where 1=1
+        AND LEFT(D.KDUNIT,18) IN(SELECT RTRIM(KDUNIT) FROM DAFTUNIT WHERE UNITKEY=#Unitkey#)
+        AND KDLEVEL IN('4','5')
+        order by D.KDUNIT
+        END
+      </select>
+      <select id="QueryByUnitPbDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT,D.UNITKEY as UNITKEY2, 
+        D.AKROUNIT, D.ALAMAT, D.TELEPON, D.KDLEVEL, rtrim(D.TYPE) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+      </select>
+      <select id="QueryByUnitPenyediaDaftunit" parameterClass="Daftunit" resultMap="return-result-induk">
+        select D.ID, D.UNITKEY,D.UNITKEY AS UNITKEY2, D.KDUNIT, D.NMUNIT, D.KDUNIT as KDUNIT2, D.NMUNIT as NMUNIT2,
+        D.AKROUNIT, D.ALAMAT, D.TELEPON, D.KDLEVEL, rtrim(D.TYPE) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+        WHERE UNITKEY IN(SELECT UNITKEY FROM DAFTUNIT WHERE RTRIM(KDUNIT)=LEFT(#Kdunit2#,18))
+      </select>
+      <select id="QueryByUrusDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where 1=1
+        and D.KDLEVEL='2'
+        order by D.UNITKEY
+      </select>
+      <select id="QueryByUnitDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        <![CDATA[
+        where 1=1
+        and D.KDLEVEL >= '3'
+        order by D.KDUNIT
+        ]]>
+      </select>
+      <select id="QueryBySkpenggunaDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        <![CDATA[
+        where 1=1
+        and D.KDLEVEL >= '3'
+        ]]>
+        and D.KDUNIT like #Kdunit# + '%'
+        order by D.KDUNIT
+      </select>
+      <select id="QueryByKdunitDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where D.KDUNIT=#Kdunit#
+      </select>
+      <select id="QueryByLookupDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where 1=1
+        and (isnull(D.UNITKEY,'')=isnull(#Unitkey#,'') or isnull(#Unitkey#,'')='' or (D.UNITKEY is null and #Unitkey# is not null))
+      </select>
+      <select id="QueryByWebuserskpdDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where 1=1
+        and D.KDLEVEL in('3','4')
+        and (D.UNITKEY not in (select UNITKEY from WEBUSERSKPD where USERID=#Userid#))
+      </select>
+      <select id="LoadByGetkdgroupDaftunit" parameterClass="Daftunit" resultMap="return-kdgroup">
+        select rtrim(KDGROUP) as KDGROUP from SMARTSYS.dbo.SS20GROUPUSER WHERE USERID=#Userid#
+      </select>
+      <select id="LoadByPKDaftunit" extends="BaseQueryDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        where D.UNITKEY = #Unitkey#
+      </select>
+      <select id="LoadByKdlevelminDaftunit" parameterClass="Daftunit" resultMap="return-kdlevelmin">
+        select min(KDLEVEL) as KDLEVELMIN from DAFTUNIT
+      </select>
+    </statements>
+    <parameterMaps>
+      <parameterMap id="insert-param" class="Daftunit">
+        <parameter property="Kdunit" column="KDUNIT"/>
+        <parameter property="Nmunit" column="NMUNIT"/>
+        <parameter property="Akrounit" column="AKROUNIT"/>
+        <parameter property="Alamat" column="ALAMAT"/>
+        <parameter property="Telepon" column="TELEPON"/>
+        <parameter property="Kdlevel" column="KDLEVEL"/>
+        <parameter property="Type" column="TYPE"/>
+        <parameter property="Unitkey" column="UNITKEY"/>
+      </parameterMap>
+      <parameterMap id="update-param" extends="insert-param" class="Daftunit">
+      </parameterMap>
+      <parameterMap id="delete-param" class="Daftunit">
+        <parameter property="Unitkey" column="UNITKEY"/>
+      </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

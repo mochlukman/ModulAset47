@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Webset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Webset" type="Usadi.Valid49.BO.WebsetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Webset">
+      <result property="Valset" column="VALSET"/>
+      <result property="Uraivalset" column="URAIVALSET"/>
+      <result property="Valdesc" column="VALDESC"/>
+      <result property="Modeentry" column="MODEENTRY"/>
+      <result property="Vallist" column="VALLIST"/>
+      <result property="Kdset" column="KDSET"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertWebset" parameterMap="insert-param">
+      <generate table="Webset"/>
+    </insert>
+    <update id="UpdateByWebset" parameterMap="update-param">
+      <generate table="Webset" by="KDSET"/>
+    </update>
+    <update id="UpdateByValidRevWebset" parameterClass="Webset">
+      update WEBSET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevWebset" parameterClass="Webset">
+      update WEBSET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByWebset" parameterMap="delete-param">
+      <generate table="Webset" by="KDSET"/>
+    </delete>
+    <select id="BaseQueryWebset" parameterClass="Webset" resultMap="return-result">
+      select W.KDSET, W.VALSET,
+      case W.VALSET when 'Y' then 'Ya' when 'T' then 'Tidak' else W.VALSET end as URAIVALSET
+      , W.VALDESC, W.MODEENTRY, W.VALLIST
+      from WEBSET W
+    </select>
+    <select id="QueryByAllWebset" extends="BaseQueryWebset" parameterClass="Webset" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="QueryByLookupWebset" extends="BaseQueryWebset" parameterClass="Webset" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKWebset" extends="BaseQueryWebset" parameterClass="Webset" resultMap="return-result">
+      where W.KDSET = #Kdset#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Webset">
+      <parameter property="Valset" column="VALSET"/>
+      <parameter property="Valdesc" column="VALDESC"/>
+      <parameter property="Modeentry" column="MODEENTRY"/>
+      <parameter property="Vallist" column="VALLIST"/>
+      <parameter property="Kdset" column="KDSET"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Webset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Webset">
+      <parameter property="Kdset" column="KDSET"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

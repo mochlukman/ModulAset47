@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Webuser" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Webuser" type="Usadi.Valid49.BO.WebuserControl, Usadi.Valid49.Aset.Sys" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Webuser">
+      <result property="Idapp" column="IDAPP"/>
+      <result property="Kdapp" column="KDAPP"/>
+      <result property="Nmapp" column="NMAPP"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdnmunit" column="KDNMUNIT"/>
+      <result property="Kdtahap" column="KDTAHAP"/>
+      <result property="Nip" column="NIP"/>
+      <result property="Pwd" column="PWD"/>
+      <result property="Nama" column="NAMA"/>
+      <result property="Email" column="EMAIL"/>
+      <result property="Blokid" column="BLOKID"/>
+      <result property="Userblok" column="USERBLOK"/>
+      <result property="Transecure" column="TRANSECURE"/>
+      <result property="Stinsert" column="STINSERT"/>
+      <result property="Stupdate" column="STUPDATE"/>
+      <result property="Stdelete" column="STDELETE"/>
+      <result property="Kdpemda" column="KDPEMDA"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdgroup" column="KDGROUP"/>
+      <result property="Nmgroup" column="NMGROUP"/>
+      <result property="Usertype" column="USERTYPE"/>
+      <result property="Uturaian" column="UTURAIAN"/>
+      <result property="Userid" column="USERID"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertWebuser" parameterMap="insert-param">
+      <generate table="WEBUSER"/>
+    </insert>
+    <update id="UpdateByWebuser" parameterClass="Webuser">
+      update WEBUSER set UNITKEY=#Unitkey#, NIP=#Nip#, NAMA=#Nama#, EMAIL=#Email#, BLOKID=#Blokid#, KET=#Ket#
+      where USERID=#Userid#
+    </update>
+    <update id="UpdateByBlokidWebuser" parameterClass="Webuser">
+      update WEBUSER set BLOKID='1'
+      where USERID=#Userid#
+    </update>
+    <update id="UpdateByHapusblokWebuser" parameterClass="Webuser">
+      update WEBUSER set BLOKID='0'
+      where USERID=#Userid#
+    </update>
+    <update id="UpdateByValidRevWebuser" parameterClass="Webuser">
+      update WEBUSER set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevWebuser" parameterClass="Webuser">
+      update WEBUSER set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByWebuser" parameterMap="delete-param">
+      <generate table="WEBUSER" by="USERID"/>
+    </delete>
+    <select id="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      select W.USERID, GU.KDGROUP, G.NMGROUP, S.USERTYPE, UT.UTURAIAN, W.UNITKEY, D.KDUNIT, D.NMUNIT, W.KDTAHAP
+      , W.NIP, S.USERURAIAN as PWD, W.NAMA, W.EMAIL, W.BLOKID, case W.BLOKID when '0' then 'Tidak' else 'Ya' end as USERBLOK
+      , W.TRANSECURE, W.STINSERT, W.STUPDATE, W.STDELETE, W.KDPEMDA, W.KET, A.IDAPP, A.KDAPP, A.NMAPP
+      , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+      from SMARTSYS.. SS10USER S
+      inner join WEBUSER W on S.USERID=W.USERID COLLATE DATABASE_DEFAULT
+      left join DAFTUNIT D on D.UNITKEY=W.UNITKEY
+      inner join SMARTSYS.. SS10USERAPP UA on S.USERID=UA.USERID
+      inner join SMARTSYS.. SS00APP A on UA.IDAPP=A.IDAPP
+      inner join SMARTSYS.. SS10USERTYPES UT on S.USERTYPE=UT.USERTYPE
+      inner join SMARTSYS.. SS20GROUPUSER GU on S.USERID=GU.USERID
+      inner join SMARTSYS.. SS20GROUP G on G.KDGROUP=GU.KDGROUP
+    </select>
+    <select id="QueryByAllWebuser" extends="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      where 1=1
+      and UA.IDAPP=#Idapp#
+      order by W.USERID
+    </select>
+    <select id="QueryByBlockWebuser" extends="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      where 1=1
+      and UA.IDAPP=#Idapp#
+      and W.BLOKID='1'
+      order by W.USERID
+    </select>
+    <select id="QueryByUserskpdWebuser" extends="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      where 1=1
+      and UA.IDAPP=#Idapp#
+      and (W.UNITKEY is null or W.UNITKEY = '')
+      order by W.USERID
+    </select>
+    <select id="QueryByLookupWebuser" extends="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      where 1=1
+      order by W.USERID
+    </select>
+    <select id="LoadByPKWebuser" extends="BaseQueryWebuser" parameterClass="Webuser" resultMap="return-result">
+      where W.USERID = #Userid#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Webuser">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdtahap" column="KDTAHAP"/>
+      <parameter property="Nip" column="NIP"/>
+      <parameter property="Pwd" column="PWD"/>
+      <parameter property="Nama" column="NAMA"/>
+      <parameter property="Email" column="EMAIL"/>
+      <parameter property="Blokid" column="BLOKID"/>
+      <parameter property="Transecure" column="TRANSECURE"/>
+      <parameter property="Stinsert" column="STINSERT"/>
+      <parameter property="Stupdate" column="STUPDATE"/>
+      <parameter property="Stdelete" column="STDELETE"/>
+      <parameter property="Kdpemda" column="KDPEMDA"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Userid" column="USERID"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Webuser">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Webuser">
+      <parameter property="Userid" column="USERID"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

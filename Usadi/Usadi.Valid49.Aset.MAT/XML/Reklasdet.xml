@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Reklasdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Reklasdet" type="Usadi.Valid49.BO.ReklasdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Reklasdet">
+      <result property="Id" column="ID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Asetkey2" column="ASETKEY2"/>
+      <result property="Kdaset2" column="KDASET2"/>
+      <result property="Nmaset2" column="NMASET2"/>
+      <result property="Noreg2" column="NOREG2"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Kdkibaset1" column="KDKIBASET1"/>
+      <result property="Kdkibaset2" column="KDKIBASET2"/>
+      <result property="Statusreklas" column="STATUSREKLAS"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Blokid" column="BLOKID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noreklas" column="NOREKLAS"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertReklasdet" parameterClass="Reklasdet">
+      insert into ASET_REKLASDET(UNITKEY,NOREKLAS,KDTANS,ASETKEY,ASETKEY2,TAHUN,NOREG,NOREG2,IDBRG,KDKON,NILAI,[STATUS])
+      values(#Unitkey#, #Noreklas#, #Kdtans#, #Asetkey#, #Asetkey2#, #Tahun#, #Noreg#, '', #Idbrg#, #Kdkon#, #Nilai#, '0')
+    </insert>
+    <update id="UpdateByReklasdet" parameterClass="Reklasdet">
+      update ASET_REKLASDET set ASETKEY2=#Asetkey2#
+      where UNITKEY=#Unitkey# and NOREKLAS=#Noreklas# and KDTANS=#Kdtans# and ASETKEY=#Asetkey# and TAHUN=#Tahun# and NOREG=#Noreg#
+    </update>
+    <update id="UpdateByValidRevReklasdet" parameterClass="Reklasdet">
+      update ASET_REKLASDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevReklasdet" parameterClass="Reklasdet">
+      update ASET_REKLASDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByReklasdet" parameterMap="delete-param">
+      <generate table="Aset_reklasdet" by="UNITKEY,NOREKLAS,KDTANS,ASETKEY,TAHUN,NOREG"/>
+    </delete>
+    <select id="BaseQueryReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      select A.ID, A.UNITKEY, DU.KDUNIT, DU.NMUNIT, A.NOREKLAS, A.KDTANS, A.ASETKEY, D.KDASET, D.NMASET, A.ASETKEY2
+      , D2.KDASET as KDASET2, D2.NMASET as NMASET2, A.TAHUN, A.NOREG, A.NOREG2, A.IDBRG, A.KDKON, K.NMKON, A.NILAI, JN.KDKIB as KDKIBASET1, JN2.KDKIB as KDKIBASET2
+      , CASE A.[STATUS] WHEN '0' THEN 'Diajukan' WHEN '1' THEN 'Diterima' END as STATUSREKLAS, AA.TGLVALID, #Blokid# BLOKID
+      from ASET_REKLASDET A
+      left join ASET_REKLAS AA on AA.UNITKEY = A.UNITKEY AND AA.NOREKLAS = A.NOREKLAS AND AA.KDTANS = A.KDTANS
+      left join JTRANS J on J.KDTANS = A.KDTANS
+      left join DAFTUNIT DU on DU.UNITKEY = A.UNITKEY
+      left join DAFTASET D on D.ASETKEY = A.ASETKEY
+      left join JNSKIBASET JN on JN.K_BRG = LEFT(D.KDASET,9)
+      left join DAFTASET D2 on D2.ASETKEY = A.ASETKEY2
+      left join JNSKIBASET JN2 on JN2.K_BRG = LEFT(D2.KDASET,9)
+      left join KONASET K on K.KDKON = A.KDKON
+    </select>
+    <select id="QueryByAllReklasdet" extends="BaseQueryReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey# and A.NOREKLAS=#Noreklas# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="QueryByKdpReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      select A.ID, A.UNITKEY, DU.KDUNIT, DU.NMUNIT, A.NOREKLAS, A.KDTANS, A.ASETKEY,
+      case JN.KDKIB when '01' THEN '1.3.6.01.01.01.001.'
+      when '02' then '1.3.6.01.01.01.002.'
+      when '03' then '1.3.6.01.01.01.003.'
+      when '04' then '1.3.6.01.01.01.004.'
+      when '05' then '1.3.6.01.01.01.005.'
+      else D.KDASET END AS KDASET,
+      case JN.KDKIB when '01' then 'Tanah Dalam Pengerjaan'
+      when '02' then 'Peralatan dan Mesin Dalam Pengerjaan'
+      when '03' then 'Gedung dan Bangunan Dalam Pengerjaan'
+      when '04' then 'Jalan, Irigasi, dan jaringan Dalam Pengerjaan'
+      when '05' then 'Aset Tetap Lainnya Dalam Pengerjaan'
+      else D.NMASET END AS NMASET
+      , A.ASETKEY2, D2.KDASET as KDASET2, D2.NMASET as NMASET2, A.TAHUN, A.NOREG, A.NOREG2, A.IDBRG, A.KDKON, K.NMKON, A.NILAI
+      , JN.KDKIB as KDKIBASET1, JN2.KDKIB as KDKIBASET2, CASE A.[STATUS] WHEN '0' THEN 'Diajukan' WHEN '1' THEN 'Diterima' END as STATUSREKLAS, AA.TGLVALID, #Blokid# BLOKID
+      from ASET_REKLASDET A
+      left join ASET_REKLAS AA on AA.UNITKEY = A.UNITKEY AND AA.NOREKLAS = A.NOREKLAS AND AA.KDTANS = A.KDTANS
+      left join JTRANS J on J.KDTANS = A.KDTANS
+      left join DAFTUNIT DU on DU.UNITKEY = A.UNITKEY
+      left join DAFTASET D on D.ASETKEY = A.ASETKEY
+      left join JNSKIBASET JN on JN.K_BRG = LEFT(D.KDASET,9)
+      left join DAFTASET D2 on D2.ASETKEY = A.ASETKEY2
+      left join JNSKIBASET JN2 on JN2.K_BRG = LEFT(D2.KDASET,9)
+      left join KONASET K on K.KDKON = A.KDKON
+      where A.UNITKEY=#Unitkey# and A.NOREKLAS=#Noreklas# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="QueryByAsetlainnyaReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      select A.ID, A.UNITKEY, DU.KDUNIT, DU.NMUNIT, A.NOREKLAS, A.KDTANS, A.ASETKEY,D.KDASET,D.NMASET
+      , A.ASETKEY2, D2.KDASET as KDASET2, D2.NMASET as NMASET2, A.TAHUN, A.NOREG, A.NOREG2, A.IDBRG, A.KDKON, K.NMKON, A.NILAI
+      , JN.KDKIB as KDKIBASET1, JN2.KDKIB as KDKIBASET2, CASE A.[STATUS] WHEN '0' THEN 'Diajukan' WHEN '1' THEN 'Diterima' END as STATUSREKLAS, AA.TGLVALID, #Blokid# BLOKID
+      from ASET_REKLASDET A
+      left join ASET_REKLAS AA on AA.UNITKEY = A.UNITKEY AND AA.NOREKLAS = A.NOREKLAS AND AA.KDTANS = A.KDTANS
+      left join JTRANS J on J.KDTANS = A.KDTANS
+      left join DAFTUNIT DU on DU.UNITKEY = A.UNITKEY
+      left join DAFTASET D on D.ASETKEY = A.ASETKEY
+      left join JNSKIBASET JN on JN.K_BRG = LEFT(D.KDASET,9)
+      left join DAFTASET D2 on D2.ASETKEY = A.ASETKEY2
+      left join JNSKIBASET JN2 on JN2.K_BRG = LEFT(D2.KDASET,9)
+      left join KONASET K on K.KDKON = A.KDKON
+      where A.UNITKEY=#Unitkey# and A.NOREKLAS=#Noreklas# and A.KDTANS=#Kdtans#
+    </select>
+    <select id="QueryByLookupReklasdet" extends="BaseQueryReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKReklasdet" extends="BaseQueryReklasdet" parameterClass="Reklasdet" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOREKLAS=#Noreklas# and A.KDTANS=#Kdtans#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Reklasdet">
+      <parameter property="Asetkey2" column="ASETKEY2"/>
+      <parameter property="Noreg2" column="NOREG2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Statusreklas" column="STATUS"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noreklas" column="NOREKLAS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Reklasdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Reklasdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noreklas" column="NOREKLAS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

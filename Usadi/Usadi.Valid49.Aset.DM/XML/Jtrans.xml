@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jtrans" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jtrans" type="Usadi.Valid49.BO.JtransControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jtrans">
+      <result property="Id" column="ID"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Jenis" column="JENIS"/>
+      <result property="Kdtans" column="KDTANS"/>
+    </resultMap>
+    <resultMap id="return-result-Rpt" class="Jtrans">
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>      
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJtrans" parameterMap="insert-param">
+      <generate table="Jtrans"/>
+    </insert>
+    <update id="UpdateByJtrans" parameterClass="Jtrans">
+      update JTRANS set NMTRANS=#Nmtrans#, KET=#Ket#
+      where KDTANS=#Kdtans#
+    </update>
+    <update id="UpdateByValidRevJtrans" parameterClass="Jtrans">
+      update JTRANS set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJtrans" parameterClass="Jtrans">
+      update JTRANS set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJtrans" parameterMap="delete-param">
+      <generate table="Jtrans" by="KDTANS"/>
+    </delete>
+    <select id="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      select J.ID, J.KDTANS, J.NMTRANS, J.KET, J.JENIS
+      from JTRANS J
+    </select>
+    <select id="QueryByAllJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      order by J.KDTANS
+    </select>
+    <select id="QueryByPenilaianJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('201','203','204','206','301','303','304','305','306','309','311')
+      order by J.KDTANS
+    </select>
+    <select id="QueryByBastJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('102','103','107')
+      order by J.KDTANS
+    </select>
+    <select id="QueryByBakfJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('111','112')
+      order by J.KDTANS
+    </select>
+    <select id="QueryByJanjikontrakJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('116','117')
+      order by J.KDTANS
+    </select>
+    <select id="QueryByRptbastJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('101','102','103','107','111','112')
+      order by J.KDTANS
+    </select>
+    <select id="QueryByRptLookupJtrans" parameterClass="Jtrans" resultMap="return-result-Rpt">
+      SELECT j.KDTANS, j.NMTRANS FROM (
+      select j.KDTANS, j.NMTRANS from JTRANS j where j.KDTANS IN ('122','121','205', '314', '315', '999')
+      ) j
+      order by j.KDTANS
+    </select>
+    <select id="QueryByHapusskLookupJtrans" parameterClass="Jtrans" resultMap="return-result-Rpt">
+      SELECT j.KDTANS, j.NMTRANS FROM (
+      select j.KDTANS, j.NMTRANS from JTRANS j where j.KDTANS IN ('204','250','251', '252', '253')
+      ) j
+      order by j.KDTANS
+    </select>
+    <select id="QueryByManfaatJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      and J.KDTANS in('301','302','303','304','305','306') and J.JENIS='3'
+      order by J.KDTANS
+    </select>
+    <select id="QueryByLookupJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where 1=1
+      order by J.KDTANS
+    </select>
+    <select id="LoadByPKJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
+      where J.KDTANS = #Kdtans#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jtrans">
+      <parameter property="Nmtrans" column="NMTRANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Jenis" column="JENIS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jtrans">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jtrans">
+      <parameter property="Kdtans" column="KDTANS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

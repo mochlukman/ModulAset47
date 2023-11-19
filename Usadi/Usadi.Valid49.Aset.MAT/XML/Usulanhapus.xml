@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Usulanhapus" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Usulanhapus" type="Usadi.Valid49.BO.UsulanhapusControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Usulanhapus">
+      <result property="Id" column="ID"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Tglusulan" column="TGLUSULAN"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Ket" column="KET"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nousulan" column="NOUSULAN"/>
+    </resultMap>
+    <resultMap id="return-jmldata" class="Usulanhapus">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Usulanhapus">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertUsulanhapus" parameterClass="Usulanhapus">
+      insert into ASET_USULANHAPUS(UNITKEY,NOUSULAN,KDTANS,TGLUSULAN,TGLVALID,KET)
+      values(#Unitkey#, #Nousulan#, #Kdtans#, #Tglusulan#, null, #Ket#)
+    </insert>
+    <update id="UpdateByUsulanhapus" parameterClass="Usulanhapus">
+      update ASET_USULANHAPUS set TGLUSULAN=#Tglusulan#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOUSULAN=#Nousulan#
+    </update>
+    <update id="UpdateBySahUsulanhapus" parameterClass="Usulanhapus">
+      update ASET_USULANHAPUS set TGLVALID=#Tglvalid#
+      where UNITKEY=#Unitkey# and NOUSULAN=#Nousulan#
+    </update>
+    <update id="UpdateByDraftUsulanhapus" parameterClass="Usulanhapus">
+      <!--delete from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      delete from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      delete from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      delete from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      delete from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      delete from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')-->
+      update ASET_USULANHAPUS set TGLVALID = null where UNITKEY=#Unitkey# and NOUSULAN=#Nousulan#
+    </update>
+    <update id="UpdateByValidRevUsulanhapus" parameterClass="Usulanhapus">
+      update ASET_USULANHAPUS set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevUsulanhapus" parameterClass="Usulanhapus">
+      update ASET_USULANHAPUS set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByUsulanhapus" parameterMap="delete-param">
+      <generate table="Aset_usulanhapus" by="UNITKEY,NOUSULAN"/>
+    </delete>
+    <select id="BaseQueryUsulanhapus" parameterClass="Usulanhapus" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOUSULAN, A.KDTANS, A.TGLUSULAN, A.TGLVALID, A.KET
+      from ASET_USULANHAPUS A
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+    </select>
+    <select id="QueryByAllUsulanhapus" extends="BaseQueryUsulanhapus" parameterClass="Usulanhapus" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.KDTANS=#Kdtans#
+      and year(A.TGLUSULAN) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupUsulanhapus" extends="BaseQueryUsulanhapus" parameterClass="Usulanhapus" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKUsulanhapus" extends="BaseQueryUsulanhapus" parameterClass="Usulanhapus" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOUSULAN=#Nousulan#
+    </select>
+    <select id="LoadByJmldataUsulanhapus" parameterClass="Usulanhapus" resultMap="return-jmldata">
+      select COUNT(*) JMLDATA
+      from ASET_USULANHAPUSDET A
+      where A.UNITKEY=#Unitkey# and A.NOUSULAN=#Nousulan#
+    </select>
+    <select id="LoadByJmlkibUsulanhapus" parameterClass="Usulanhapus" resultMap="return-jmlkib">
+      select sum(x.NOUSULAN) as JMLKIB from (
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      union all
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      union all
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      union all
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      union all
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      union all
+      select count(NODOKUMEN) as NOUSULAN from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nousulan# and KDTANS=#Kdtans# and year(TGLDOKUMEN)=(select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')) x
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Usulanhapus">
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Tglusulan" column="TGLUSULAN"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nousulan" column="NOUSULAN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Usulanhapus">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Usulanhapus">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nousulan" column="NOUSULAN"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

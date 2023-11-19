@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Bulan" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Bulan" type="Usadi.Valid49.BO.BulanControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Bulan">
+      <result property="Kdperiode" column="KDPERIODE"/>
+      <result property="Ket_bulan" column="KET_BULAN"/>
+      <result property="Kdsemester" column="KDSEMESTER"/>
+      <result property="Kd_bulan" column="KD_BULAN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertBulan" parameterMap="insert-param">
+      <generate table="Bulan"/>
+    </insert>
+    <update id="UpdateByBulan" parameterMap="update-param">
+      <generate table="Bulan" by="KD_BULAN"/>
+    </update>
+    <update id="UpdateByValidRevBulan" parameterClass="Bulan">
+      update BULAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevBulan" parameterClass="Bulan">
+      update BULAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByBulan" parameterMap="delete-param">
+      <generate table="Bulan" by="KD_BULAN"/>
+    </delete>
+    <select id="BaseQueryBulan" parameterClass="Bulan" resultMap="return-result">
+      select rtrim(B.KD_BULAN) KD_BULAN, B.KDPERIODE, B.KET_BULAN, B.KDSEMESTER
+      from BULAN B
+    </select>
+    <select id="QueryByAllBulan" extends="BaseQueryBulan" parameterClass="Bulan" resultMap="return-result">
+      where 1=1
+      order by B.KD_BULAN
+    </select>
+    <select id="QueryByLookupBulan" extends="BaseQueryBulan" parameterClass="Bulan" resultMap="return-result">
+      where 1=1
+      order by B.KD_BULAN
+    </select>
+    <select id="LoadByPKBulan" extends="BaseQueryBulan" parameterClass="Bulan" resultMap="return-result">
+      where B.KD_BULAN = #Kd_bulan#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Bulan">
+      <parameter property="Kdperiode" column="KDPERIODE"/>
+      <parameter property="Ket_bulan" column="KET_BULAN"/>
+      <parameter property="Kdsemester" column="KDSEMESTER"/>
+      <parameter property="Kd_bulan" column="KD_BULAN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Bulan">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Bulan">
+      <parameter property="Kd_bulan" column="KD_BULAN"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

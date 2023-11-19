@@ -1,0 +1,594 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{113D7F7C-22ED-4929-96A4-72BBCCBF0F1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Usadi.Valid49.Aset.Rpt</RootNamespace>
+    <AssemblyName>Usadi.Valid49.Aset.Rpt</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Hasil_Build\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BO\DlgRptAsetbersejarah.cs" />
+    <Compile Include="BO\DlgRptAsetlancarrb.cs" />
+    <Compile Include="BO\DlgRptBabrgkr.cs" />
+    <Compile Include="BO\DlgRptSppbkr.cs" />
+    <Compile Include="BO\DlgRptSpbkr.cs" />
+    <Compile Include="BO\DlgRptBukubrgkr.cs" />
+    <Compile Include="BO\DlgRptKartusediabrgtr.cs" />
+    <Compile Include="BO\DlgRptKibarkemitraan.cs" />
+    <Compile Include="BO\DlgRptKIBmitra.cs" />
+    <Compile Include="BO\DlgRptLapbmd.cs" />
+    <Compile Include="BO\DlgRptPenyusutan.cs" />
+    <Compile Include="BO\DlgRptKibaral.cs" />
+    <Compile Include="BO\DlgRptKibaratb.cs" />
+    <Compile Include="BO\DlgRptKibarf.cs" />
+    <Compile Include="BO\DlgRptKibare.cs" />
+    <Compile Include="BO\DlgRptKibard.cs" />
+    <Compile Include="BO\DlgRptKibarc.cs" />
+    <Compile Include="BO\DlgRptKibarb.cs" />
+    <Compile Include="BO\DlgRptKibara.cs" />
+    <Compile Include="BO\DlgRptPemakaiankibc.cs" />
+    <Compile Include="BO\DlgRptPengembaliankibc.cs" />
+    <Compile Include="BO\DlgRptPengembaliankibb.cs" />
+    <Compile Include="BO\DlgRptPemakaiankibb.cs" />
+    <Compile Include="BO\DlgRptRekapAsetbersejarah.cs" />
+    <Compile Include="BO\DlgRptRekapAsetlainlain.cs" />
+    <Compile Include="BO\DlgRptRekapKIBA.cs" />
+    <Compile Include="BO\DlgRptRekapKIBB.cs" />
+    <Compile Include="BO\DlgRptRekapKIBC.cs" />
+    <Compile Include="BO\DlgRptRekapKIBD.cs" />
+    <Compile Include="BO\DlgRptRekapKIBE.cs" />
+    <Compile Include="BO\DlgRptRekapKIBF.cs" />
+    <Compile Include="BO\DlgRptRekapKIBG.cs" />
+    <Compile Include="BO\DlgRptRekapKIBmitra.cs" />
+    <Compile Include="BO\DlgRptRekapkoreksinilaijenis.cs" />
+    <Compile Include="BO\DlgRptBukubrgtr.cs" />
+    <Compile Include="BO\DlgRptRekapPersediaanrusak.cs" />
+    <Compile Include="BO\DlgRptRekaprinclapmutasi.cs" />
+    <Compile Include="BO\DlgRptRekaplapmutasijenis.cs" />
+    <Compile Include="BO\DlgRptRekaplapmutasibrg.cs" />
+    <Compile Include="BO\DlgRptRekappenghapusanjenis.cs" />
+    <Compile Include="BO\DlgRptRekappenghapusan.cs" />
+    <Compile Include="BO\DlgRptPenghapusanpemindahtanganan.cs" />
+    <Compile Include="BO\DlgRptRekapkoreksinilai.cs" />
+    <Compile Include="BO\DlgRptRekapkoreksisubro.cs" />
+    <Compile Include="BO\DlgRptKoreksi.cs" />
+    <Compile Include="BO\DlgRptRekappenguranganreklasjenis.cs" />
+    <Compile Include="BO\DlgRptRekappenguranganreklas.cs" />
+    <Compile Include="BO\DlgRptPenguranganreklas.cs" />
+    <Compile Include="BO\DlgRptRekappenambahanreklasjenis.cs" />
+    <Compile Include="BO\DlgRptRekappenambahanreklas.cs" />
+    <Compile Include="BO\DlgRptRekappemanfaatan.cs" />
+    <Compile Include="BO\DlgRptPengakhiranpemanfaatan.cs" />
+    <Compile Include="BO\DlgRptPemanfaatan.cs" />
+    <Compile Include="BO\DlgRptPenambahanreklas.cs" />
+    <Compile Include="BO\DlgRptRekappengeluaranpenerimaaninternal.cs" />
+    <Compile Include="BO\DlgRptPengeluaraninternal.cs" />
+    <Compile Include="BO\DlgRptRekappengeluaraninternal.cs" />
+    <Compile Include="BO\DlgRptRekappenerimaaninternal.cs" />
+    <Compile Include="BO\DlgRptPenerimaaninternal.cs" />
+    <Compile Include="BO\DlgRptRekappenggunaansementara.cs" />
+    <Compile Include="BO\DlgRptPengakhiranppenggunaansementara.cs" />
+    <Compile Include="BO\DlgRptPenggunaanpsp.cs" />
+    <Compile Include="BO\DlgRptRekappenerimaanhibahjenis.cs" />
+    <Compile Include="BO\DlgRptRekapgabunganpenerimaan.cs" />
+    <Compile Include="BO\DlgRptRekappenerimaanhibah.cs" />
+    <Compile Include="BO\DlgRptRekapgabunganpenerimaanjenis.cs" />
+    <Compile Include="BO\DlgRptRekappenggunaanpspjenis.cs" />
+    <Compile Include="BO\DlgRptRekappenggunaanpsp.cs" />
+    <Compile Include="BO\DlgRptRekappengadaan.cs" />
+    <Compile Include="BO\DlgRptRekapakumpenyusutan.cs" />
+    <Compile Include="BO\DlgRptRincselisihpengadaanbmd.cs" />
+    <Compile Include="BO\DlgRptRincpenguranganasettetapintra.cs" />
+    <Compile Include="BO\DlgRptRincpengadaanasettetapintra.cs" />
+    <Compile Include="BO\DlgRptPengadaanasettetappemda.cs" />
+    <Compile Include="BO\DlgRptRekapBrgSKPD.cs" />
+    <Compile Include="BO\DlgRptLabel.cs" />
+    <Compile Include="BO\DlgRptKIR.cs" />
+    <Compile Include="BO\DlgRptAppraisal.cs" />
+    <Compile Include="BO\DlgRptAsetlainlain.cs" />
+    <Compile Include="BO\DlgRptATB.cs" />
+    <Compile Include="BO\DlgRptBarekon.cs" />
+    <Compile Include="BO\DlgRptBAST.cs" />
+    <Compile Include="BO\DlgRptBukubrgatb.cs" />
+    <Compile Include="BO\DlgRptBukubrginv.cs" />
+    <Compile Include="BO\DlgRptBukupelbrg.cs" />
+    <Compile Include="BO\DlgRptDaftbmd01.cs" />
+    <Compile Include="BO\DlgRptDaftbmdbknasettetap.cs" />
+    <Compile Include="BO\DlgRptDaftbmdbrglain.cs" />
+    <Compile Include="BO\DlgRptDaftbmdinslain.cs" />
+    <Compile Include="BO\DlgRptDaftbmdpengamanan.cs" />
+    <Compile Include="BO\DlgRptDaftbmdphklain.cs" />
+    <Compile Include="BO\DlgRptDaftbmdprovriau.cs" />
+    <Compile Include="BO\DlgRptDaftbmdstatus.cs" />
+    <Compile Include="BO\DlgRptDaftbmdthnperolehan.cs" />
+    <Compile Include="BO\DlgRptDaftbrgasalusul.cs" />
+    <Compile Include="BO\DlgRptDafthapus.cs" />
+    <Compile Include="BO\DlgRptDaftinvblmbmd.cs" />
+    <Compile Include="BO\DlgRptDaftkdp.cs" />
+    <Compile Include="BO\DlgRptDaftkdpreklas.cs" />
+    <Compile Include="BO\DlgRptDaftmutasibrg.cs" />
+    <Compile Include="BO\DlgRptDaftpeliharabrg.cs" />
+    <Compile Include="BO\DlgRptDaftpengadaan.cs" />
+    <Compile Include="BO\DlgRptDaftpenyusutan.cs" />
+    <Compile Include="BO\DlgRptDaftrincbwkapitalisasi.cs" />
+    <Compile Include="BO\DlgRptKertaskerjakiba.cs" />
+    <Compile Include="BO\DlgRptKertaskerjakibb.cs" />
+    <Compile Include="BO\DlgRptKertaskerjakibc.cs" />
+    <Compile Include="BO\DlgRptKertaskerjakibd.cs" />
+    <Compile Include="BO\DlgRptKertaskerjakibe.cs" />
+    <Compile Include="BO\DlgRptKertaskerjautama.cs" />
+    <Compile Include="BO\DlgRptLapmutasibrg.cs" />
+    <Compile Include="BO\DlgRptMapping.cs" />
+    <Compile Include="BO\DlgRptMitraphk3.cs" />
+    <Compile Include="BO\DlgRptRekapbrgekstra.cs" />
+    <Compile Include="BO\DlgRptRekapbrgintra.cs" />
+    <Compile Include="BO\DlgRptRekapdaftmutasi.cs" />
+    <Compile Include="BO\DlgRptRekaplapmutasi.cs" />
+    <Compile Include="BO\DlgRptKIBG.cs" />
+    <Compile Include="BO\DlgRptKIBF.cs" />
+    <Compile Include="BO\DlgRptKIBE.cs" />
+    <Compile Include="BO\DlgRptKIBD.cs" />
+    <Compile Include="BO\DlgRptKIBC.cs" />
+    <Compile Include="BO\DlgRptKIBB.cs" />
+    <Compile Include="BO\DlgRptKIBA.cs" />
+    <Compile Include="BO\DlgRptRekapBukuInv.cs" />
+    <Compile Include="BO\DlgRptBukuInv.cs" />
+    <Compile Include="BO\DlgRptRekapPenyusutan.cs" />
+    <Compile Include="BO\DlgRptRekaprincbukuinv.cs" />
+    <Compile Include="BO\DlgRptReklasaset.cs" />
+    <Compile Include="BO\DlgRptReklasasettetap.cs" />
+    <Compile Include="BO\DlgRptReklasATB.cs" />
+    <Compile Include="BO\DlgRptRincbelanjabrg.cs" />
+    <Compile Include="BO\DlgRptRincmutasiantarpengguna.cs" />
+    <Compile Include="BO\DlgRptRincutang.cs" />
+    <Compile Include="BO\DlgRptPengadaan.cs" />
+    <Compile Include="BO\DlgRptRKBMDPemeliharaan.cs" />
+    <Compile Include="BO\DlgRptPenerimaanhibah.cs" />
+    <Compile Include="BO\DlgRptRekappengadaanasettetapjenis.cs" />
+    <Compile Include="BO\DlgRptRKBMDPengadaan.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\Daftpengadaan.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\BukuInventaris.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\BukuBrgATB.rpt" />
+    <EmbeddedResource Include="Rpt\BukuBrgInv.rpt" />
+    <EmbeddedResource Include="Rpt\BukuInv.rpt" />
+    <EmbeddedResource Include="Rpt\DaftBrgAsalUsul.rpt" />
+    <EmbeddedResource Include="Rpt\DaftRincBwKapitalisasi.rpt" />
+    <EmbeddedResource Include="Rpt\KertasKerjaUtama.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_G.rpt" />
+    <EmbeddedResource Include="Rpt\RekapRincBukuInv.rpt" />
+    <EmbeddedResource Include="Rpt\RKBMD_Pemeliharaan.rpt" />
+    <EmbeddedResource Include="Rpt\RKBMD_Pengadaan.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\ASETTAKBERWUJUD.rpt" />
+    <EmbeddedResource Include="Rpt\KERTASKERJA_KIBA.rpt" />
+    <EmbeddedResource Include="Rpt\KERTASKERJA_KIBB.rpt" />
+    <EmbeddedResource Include="Rpt\KERTASKERJA_KIBC.rpt" />
+    <EmbeddedResource Include="Rpt\KERTASKERJA_KIBD.rpt" />
+    <EmbeddedResource Include="Rpt\KERTASKERJA_KIBE.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPRINCBI.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\BAREKON.rpt" />
+    <EmbeddedResource Include="Rpt\BAST.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTKDP.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTKDP_REKLAS.rpt" />
+    <EmbeddedResource Include="Rpt\DaftMutasiBrg.rpt" />
+    <EmbeddedResource Include="Rpt\LAPMUTASIBARANG.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPBRG_EKSTRA.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPBRG_INTRA.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPDAFTMUTASI.rpt" />
+    <EmbeddedResource Include="Rpt\RINCMUTASIANTARPENGGUNA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\APPRAISAL.rpt" />
+    <EmbeddedResource Include="Rpt\BUKUPELBRG.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD01.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_BKNASETTETAP.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_BRGLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_INSLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_PENGAMANAN.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_PHKLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_PROVRIAU.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_STATUS.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTBMD_THNPEROLEHAN.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTINV_BLMBMD.rpt" />
+    <EmbeddedResource Include="Rpt\DAFTPELIHARABRG.rpt" />
+    <EmbeddedResource Include="Rpt\DaftPenyusutan.rpt" />
+    <EmbeddedResource Include="Rpt\LapMutasiBrg.rpt" />
+    <EmbeddedResource Include="Rpt\MAPPING.rpt" />
+    <EmbeddedResource Include="Rpt\MITRAPHK3.rpt" />
+    <EmbeddedResource Include="Rpt\RekapMutasi.rpt" />
+    <EmbeddedResource Include="Rpt\RINCIAN_BELANJABRG.rpt" />
+    <EmbeddedResource Include="Rpt\RINCREKLAS_01.rpt" />
+    <EmbeddedResource Include="Rpt\RINCREKLAS_ASETTETAP.rpt" />
+    <EmbeddedResource Include="Rpt\RINCREKLAS_ATB.rpt" />
+    <EmbeddedResource Include="Rpt\RINCUTANG.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\KIR.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\RekapBrgSKPD.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\ASETLAINLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\DaftBrgHapus.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_A.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_B.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_C.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_D.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_E.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_F.rpt" />
+    <EmbeddedResource Include="Rpt\Label.rpt" />
+    <EmbeddedResource Include="Rpt\RekapBukuInv.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPLAPMUTASI.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Castle.DynamicProxy">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Data, Version=3.5.2022.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CoreNET.Common.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Ext, Version=3.5.2022.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CoreNET.Common.Ext.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Lib, Version=3.5.2022.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CoreNET.Common.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.Sys, Version=3.5.2022.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CoreNET.Common.Sys.dll</HintPath>
+    </Reference>
+    <Reference Include="CoreNET.Common.UI, Version=3.5.2022.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\CoreNET.Common.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.ClientDoc.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommLayer">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.CommLayer.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonControls">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.CommonControls.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.CommonObjectModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CubeDefModel">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.CubeDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataSetConversion">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.DataSetConversion.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ObjectFactory">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.ObjectFactory.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Prompting">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.Prompting.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ReportDefModel">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.ReportDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.XmlSerialize">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.ReportAppServer.XmlSerialize.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net">
+      <HintPath>..\..\Bin\Ext.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ext.Net.Utilities">
+      <HintPath>..\..\Bin\Ext.Net.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\CoreNET\Usadi\Usadi.Valid49.Aset.Rpt\bin\Release\stdole.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreNET.Common.CR\CoreNET.Common.CR.csproj">
+      <Project>{c46f4fe0-300a-4f84-9396-3c3c93a48111}</Project>
+      <Name>CoreNET.Common.CR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Usadi.Valid49.Aset.DM\Usadi.Valid49.Aset.DM.csproj">
+      <Project>{19c88dec-8b1c-4927-a37d-171833734797}</Project>
+      <Name>Usadi.Valid49.Aset.DM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Usadi.Valid49.Aset.MAT\Usadi.Valid49.Aset.MAT.csproj">
+      <Project>{ff796f92-908d-4014-848e-f5b1a23e9e06}</Project>
+      <Name>Usadi.Valid49.Aset.MAT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Usadi.Valid49.Aset.Sys\Usadi.Valid49.Aset.Sys.csproj">
+      <Project>{46c0db41-0fc9-4ed9-977c-67aec99ede8d}</Project>
+      <Name>Usadi.Valid49.Aset.Sys</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\RKBMD_Pengadaan_opsi1.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENERIMAAN_DIVESTASI.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_HIBAH.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_INTERNAL.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_INVENTARISASI.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_kontrak.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_PEMBATALANPENGHAPUSAN.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_PENGADILAN.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_PEROLEHANLAINNYA.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_TUKARMENUKAR.rpt" />
+    <EmbeddedResource Include="Rpt\PENERIMAAN_UU.rpt" />
+    <EmbeddedResource Include="Rpt\PENGADAAN_ASETTETAP.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGADAAN_ASETTETAPINTRA.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGURANGAN_ASETTETAPINTRA_ASETLANCAR.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGURANGAN_ASETTETAPINTRA_ASETTETAP.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGURANGAN_ASETTETAPINTRA_ASETTETAPEKSTRA.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_DIVESTASI.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_HIBAH.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_INVENTARISASI.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_KONTRAK.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PEMBATALANPENGHAPUSAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PENGADILAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PEROLEHANLAINNYA.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_TUKARMENUKAR.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_UU.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_PIHAKLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_KIBB.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_KIBC.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_PSP.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_SEMENTARA.rpt" />
+    <EmbeddedResource Include="Rpt\PENGGUNAAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_DIVESTASI_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_HIBAH_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_INVENTARISASI_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_KONTRAK_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PEMBATALANPENGHAPUSAN_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PENGADILAN_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_PEROLEHANLAINNYA_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_TUKARMENUKAR_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_UU_JENIS.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGAKHIRANPENGGUNAAN_SEMENTARA.rpt" />
+    <EmbeddedResource Include="Rpt\PENGAKHIRANPENGGUNAAN_DIOPERASIKANPIHAKLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGGUNAAN_DIOPERASIKANPIHAKLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGGUNAAN_PSP.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGGUNAAN_PSP_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGGUNAAN_SEMENTARA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPPENERIMAAN_INTERNAL.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGELUARAN_INTERNAL.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGELUARAN_INTERNAL.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPPENGELUARANPENERIMAAN_INTERNAL.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PEMANFAATAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGAKHIRANPEMANFAATAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPEMANFAATAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENAMBAHAN_REKLAS.rpt" />
+    <EmbeddedResource Include="Rpt\PENGURANGAN_REKLAS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENAMBAHAN_REKLAS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENAMBAHAN_REKLAS_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGURANGAN_REKLAS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGURANGAN_REKLAS_JENIS.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\KOREKSI.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPKOREKSINILAI.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPKOREKSINILAI_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPKOREKSINILAI_SUB_RO.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_MUSNAH.rpt" />
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_PEMINDAHTANGANAN.rpt" />
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_PENGALIHANSTATUS.rpt" />
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_PERPU.rpt" />
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_PUTUSANPENGADILAN.rpt" />
+    <EmbeddedResource Include="Rpt\PENGHAPUSAN_SEBABLAIN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_MUSNAH.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_MUSNAH_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PEMINDAHTANGANAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PEMINDAHTANGANAN_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PENGALIHANSTATUS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PENGALIHANSTATUS_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PERPU.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PERPU_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PUTUSANPENGADILAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_PUTUSANPENGADILAN_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_SEBABLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_SEBABLAIN_JENIS.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPRINCSELISIH_ASETTETAPINTRA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPGABUNGANPENERIMAAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPGABUNGANPENERIMAAN_JENIS.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENYUSUTAN.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENYUSUTAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGADAAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPAKUMPENYUSUTAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\ASETLAIN_LAIN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\ASETSEJARAH.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\KIBARA.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARAL.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARATB.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARB.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARC.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARD.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARE.rpt" />
+    <EmbeddedResource Include="Rpt\KIBARF.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\KIBMITRA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGGUNAAN_DIOPERASIKANPIHAKLAIN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PENGADAAN_ASETTETAPPEMDA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\ASETLANCARRB.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPPENGADAAN.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\LAPBMD.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPLAPMUTASI_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPRINCLAPMUTASI.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\REKAPPENGHAPUSAN_SEMUA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\LAPMUTASI.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rpt\PEMAKAIANKIBB.rpt" />
+    <EmbeddedResource Include="Rpt\PEMAKAIANKIBC.rpt" />
+    <EmbeddedResource Include="Rpt\PENGEMBALIANKIBB.rpt" />
+    <EmbeddedResource Include="Rpt\PENGEMBALIANKIBC.rpt" />
+    <EmbeddedResource Include="Rpt\ASETLAINLAIN_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\ASETLANCARRB_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\ASETSEJARAH_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\BAREKON1.rpt" />
+    <EmbeddedResource Include="Rpt\BAREKON2.rpt" />
+    <EmbeddedResource Include="Rpt\BAREKON3.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_A_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_B_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_C_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_D_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_E_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_F_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_G_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\KIB_MITRA_REKAP.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPGABUNGANPENGHAPUSAN_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\REKAPPENGADAAN_ASETTETAP_JENIS.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGURANGAN_ASETTETAPINTRA_ALASANLAIN.rpt" />
+    <EmbeddedResource Include="Rpt\RINCPENGURANGAN_ASETTETAPINTRA_ASETLAINNYA.rpt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Rpt\BABRGKR.rpt" />
+    <EmbeddedResource Include="Rpt\BUKUBRGKR.rpt" />
+    <EmbeddedResource Include="Rpt\BUKUBRGTR.rpt" />
+    <EmbeddedResource Include="Rpt\KARTUSEDIABRGTR.rpt" />
+    <EmbeddedResource Include="Rpt\SPBKR.rpt" />
+    <EmbeddedResource Include="Rpt\SPPBKR.rpt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jabttd" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jabttd" type="Usadi.Valid49.BO.JabttdControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jabttd">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kddok" column="KDDOK"/>
+      <result property="Nmdok" column="NMDOK"/>
+      <result property="Nip" column="NIP"/>
+      <result property="Jabatan" column="JABATAN"/>
+      <result property="Noskpttd" column="NOSKPTTD"/>
+      <result property="Tglskpttd" column="TGLSKPTTD"/>
+      <result property="Noskstopttd" column="NOSKSTOPTTD"/>
+      <result property="Tglskstopttd" column="TGLSKSTOPTTD"/>
+      <result property="Kdposttd" column="KDPOSTTD"/>
+      <result property="Nmposttd" column="NMPOSTTD"/>
+      <result property="Idxttd" column="IDXTTD"/>
+    </resultMap>
+    <resultMap id="return-result-idxttd" class="Jabttd">
+      <result property="Idxttd" column="IDXTTD"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJabttd" parameterMap="insert-param">
+      <generate table="Jabttd"/>
+    </insert>
+    <update id="UpdateByJabttd" parameterMap="update-param">
+      <generate table="Jabttd" by="IDXTTD"/>
+    </update>
+    <update id="UpdateByValidRevJabttd" parameterClass="Jabttd">
+      update JABTTD set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJabttd" parameterClass="Jabttd">
+      update JABTTD set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJabttd" parameterMap="delete-param">
+      <generate table="Jabttd" by="IDXTTD"/>
+    </delete>
+    <select id="BaseQueryJabttd" parameterClass="Jabttd" resultMap="return-result">
+      select J.ID, J.IDXTTD, J.UNITKEY, J.KDDOK, D.NMDOK, J.NIP, J.JABATAN, J.NOSKPTTD, J.TGLSKPTTD
+      , J.NOSKSTOPTTD, J.TGLSKSTOPTTD, J.KDPOSTTD
+      , case J.KDPOSTTD when '01' then 'Kiri' when '02' then 'Tengah' when '03' then 'Kanan' end as NMPOSTTD 
+      from JABTTD J
+      left join DAFTDOK as D on D.KDDOK = J.KDDOK
+    </select>
+    <select id="QueryByAllJabttd" extends="BaseQueryJabttd" parameterClass="Jabttd" resultMap="return-result">
+      where 1=1
+      and J.UNITKEY = #Unitkey# 
+      and J.NIP = #Nip# 
+      order by J.IDXTTD
+    </select>
+    <select id="QueryByIdxttdJabttd" parameterClass="Jabttd" resultMap="return-result-idxttd">
+      SELECT CONVERT(VARCHAR,MAX(CONVERT(INT,J.IDXTTD))) IDXTTD from JABTTD as J
+    </select>
+    <select id="QueryByLookupJabttd" extends="BaseQueryJabttd" parameterClass="Jabttd" resultMap="return-result">
+      where 1=1
+      order by J.IDXTTD
+    </select>
+    <select id="LoadByPKJabttd" extends="BaseQueryJabttd" parameterClass="Jabttd" resultMap="return-result">
+      where J.IDXTTD = #Idxttd#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jabttd">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kddok" column="KDDOK"/>
+      <parameter property="Nip" column="NIP"/>
+      <parameter property="Jabatan" column="JABATAN"/>
+      <parameter property="Noskpttd" column="NOSKPTTD"/>
+      <parameter property="Tglskpttd" column="TGLSKPTTD"/>
+      <parameter property="Noskstopttd" column="NOSKSTOPTTD"/>
+      <parameter property="Tglskstopttd" column="TGLSKSTOPTTD"/>
+      <parameter property="Kdposttd" column="KDPOSTTD"/>
+      <parameter property="Idxttd" column="IDXTTD"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jabttd">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jabttd">
+      <parameter property="Idxttd" column="IDXTTD"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

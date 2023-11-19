@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Konaset" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Konaset" type="Usadi.Valid49.BO.KonasetControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Konaset">
+      <result property="Id" column="ID"/>
+      <result property="Nmkon" column="NMKON"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdkon" column="KDKON"/>
+    </resultMap>
+    <resultMap id="return-result-kdkon" class="Konaset">
+      <result property="Kdkon" column="KDKON"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKonaset" parameterMap="insert-param">
+      <generate table="Konaset"/>
+    </insert>
+    <update id="UpdateByKonaset" parameterMap="update-param">
+      <generate table="Konaset" by="KDKON"/>
+    </update>
+    <update id="UpdateByValidRevKonaset" parameterClass="Konaset">
+      update GOLONGAN set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKonaset" parameterClass="Konaset">
+      update GOLONGAN set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKonaset" parameterMap="delete-param">
+      <generate table="Konaset" by="KDKON"/>
+    </delete>
+    <select id="BaseQueryKonaset" parameterClass="Konaset" resultMap="return-result">
+      select K.ID, K.NMKON, K.KET, K.KDKON
+      from KONASET K
+    </select>
+    <select id="QueryByAllKonaset" extends="BaseQueryKonaset" parameterClass="Konaset" resultMap="return-result">
+      where 1=1
+      order by K.KDKON
+    </select>
+    <select id="QueryByKdkonKonaset" parameterClass="Konaset" resultMap="return-result-kdkon">
+      select cast(isnull(max(K.KDKON),0) as varchar) KDKON from KONASET as K
+    </select>
+    <select id="QueryByLookupKonaset" extends="BaseQueryKonaset" parameterClass="Konaset" resultMap="return-result">
+      where 1=1
+      and K.KDKON in('01','02','03','04')
+      order by K.KDKON
+    </select>
+    <select id="LoadByPKKonaset" extends="BaseQueryKonaset" parameterClass="Konaset" resultMap="return-result">
+      where K.KDKON = #Kdkon#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Konaset">
+      <parameter property="Nmkon" column="NMKON"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdkon" column="KDKON"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Konaset">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Konaset">
+      <parameter property="Kdkon" column="KDKON"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

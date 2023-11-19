@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Hapussk" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Hapussk" type="Usadi.Valid49.BO.HapusskControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Hapussk">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Noskhapus" column="NOSKHAPUS"/>
+      <result property="Tglskhapus" column="TGLSKHAPUS"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Statusdok" column="STATUSDOK"/>
+      <result property="Statusdokumen" column="STATUSDOKUMEN"/>
+      <result property="Ket" column="KET"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Hapussk">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+    <resultMap id="return-jmlkib" class="Hapussk">
+      <result property="Jmlkib" column="JMLKIB"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertHapussk" parameterClass="Hapussk">
+     insert into ASET_HAPUSSK(UNITKEY,NOSKHAPUS,TGLSKHAPUS,KET,TGLVALID, KDTANS, STATUS)
+      values(#Unitkey#,#Noskhapus#,#Tglskhapus#,#Ket#,null,#Kdtans#, #Statusdok#)
+    </insert>
+    <update id="UpdateByHapussk" parameterClass="Hapussk">
+      update ASET_HAPUSSK set TGLSKHAPUS=#Tglskhapus#, KET=#Ket#, KDTANS=#Kdtans#
+      where UNITKEY=#Unitkey# and NOSKHAPUS=#Noskhapus#
+    </update>
+    <update id="UpdateBySahHapussk" parameterClass="Hapussk">
+      update ASET_HAPUSSK set tglvalid = #Tglskhapus#
+      where UNITKEY=#Unitkey# and NOSKHAPUS=#Noskhapus#
+    </update>
+    <update id="UpdateByDraftHapussk" parameterClass="Hapussk">
+      update ASET_HAPUSSK set TGLVALID = NULL
+      where UNITKEY=#Unitkey# and NOSKHAPUS=#Noskhapus#
+    </update>
+    <delete id="DeleteByHapussk" parameterMap="delete-param">
+      <generate table="Aset_hapussk" by="UNITKEY,NOSKHAPUS"/>
+    </delete>
+    <select id="BaseQueryHapussk" parameterClass="Hapussk" resultMap="return-result">
+      select AH.ID, AH.UNITKEY, D.KDUNIT, D.NMUNIT, AH.NOSKHAPUS, AH.TGLSKHAPUS, AH.KET, AH.TGLVALID, AH.KDTANS, J.NMTRANS
+      , case AH.STATUS when 1 then 'Diterima' when 2 then 'Ditolak' end STATUSDOKUMEN
+      , AH.STATUS as STATUSDOK
+      from ASET_HAPUSSK AH
+      left join DAFTUNIT D ON d.UNITKEY = ah.UNITKEY
+      left join Jtrans J ON j.KDTANS = ah.KDTANS
+    </select>
+    <select id="QueryByAllHapussk" extends="BaseQueryHapussk" parameterClass="Hapussk" resultMap="return-result">
+      where 1=1
+      and AH.UNITKEY = #Unitkey#
+      and year(AH.TGLSKHAPUS) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByCekjmldataHapussk" parameterClass="Hapussk" resultMap="return-cekjmldata">
+      select COUNT(*) JMLDATA
+      from ASET_HAPUSSKDET A
+      where A.UNITKEY=#Unitkey# and A.NOSKHAPUS=#Noskhapus#
+    </select>
+    <select id="LoadByJmlkibHapussk" parameterClass="Hapussk" resultMap="return-jmlkib">
+      select sum(x.NOSKHAPUS) as JMLKIB from (
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#
+      union all
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#
+      union all
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#
+      union all
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#
+      union all
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#
+      union all
+      select count(NODOKUMEN) as NOSKHAPUS from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Noskhapus#) x
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Hapussk">
+      <parameter property="Id" column="ID"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskhapus" column="NOSKHAPUS"/>
+      <parameter property="Tglskhapus" column="TGLSKHAPUS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Statusdok" column="STATUS"/>
+      <parameter property="Tglvalid" column="TGLVALID"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Hapussk">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Hapussk">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskhapus" column="NOSKHAPUS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

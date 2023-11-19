@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Bapkirdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Bapkirdet" type="Usadi.Valid49.BO.BapkirdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Bapkirdet">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Ruangkey" column="RUANGKEY"/>
+      <result property="Nobapkir" column="NOBAPKIR"/>
+      <result property="Kdbapkir" column="KDBAPKIR"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Tahun" column="TAHUN"/>
+    </resultMap>
+    
+      <resultMap id="return-result-Rpt" class="Bapkirdet">
+        <result property="Kdaset" column="KDASET"/>
+        <result property="Nmaset" column="NMASET"/>
+        <result property="Tahun" column="TAHUN"/>
+        <result property="Noreg" column="NOREG"/>
+      </resultMap>
+    
+  </resultMaps>
+  <statements>
+    <insert id="InsertBapkirdet" parameterClass="Bapkirdet">
+      INSERT INTO ASET_BAPKIRDET(UNITKEY,RUANGKEY,NOBAPKIR,KDBAPKIR,ASETKEY,TAHUN,NOREG,IDBRG)
+      VALUES (#Unitkey#,#Ruangkey#,#Nobapkir#,#Kdbapkir#,#Asetkey#,#Tahun#,#Noreg#,#Idbrg#)
+    </insert>
+    <delete id="DeleteByBapkirdet" parameterMap="delete-param">
+      <generate table="ASET_BAPKIRDET" by="UNITKEY,RUANGKEY,NOBAPKIR,KDBAPKIR,ASETKEY,NOREG,IDBRG"/>
+    </delete>
+    <select id="BaseQueryBapkirdet" parameterClass="Bapkirdet" resultMap="return-result">
+      SELECT ab.ID, ab.UNITKEY, ab.RUANGKEY, ab.NOBAPKIR, ab.KDBAPKIR, ab.ASETKEY,d.KDASET, d.NMASET,
+      ab.TAHUN, ab.NOREG, ab.IDBRG
+      FROM ASET_BAPKIRDET AS ab
+      INNER JOIN DAFTASET AS d ON d.ASETKEY = ab.ASETKEY
+    </select>
+    <select id="QueryByAllBapkirdet" extends="BaseQueryBapkirdet" parameterClass="Bapkirdet" resultMap="return-result">
+      WHERE 1= 1
+      and ab.UNITKEY = #Unitkey#
+      AND ab.RUANGKEY = #Ruangkey#
+      AND ab.NOBAPKIR = #Nobapkir#
+      AND ab.KDBAPKIR = #Kdbapkir#
+      ORDER BY d.KDASET
+    </select>
+    <select id="QueryByRptLookupBapkirdet" parameterClass="Bapkirdet" resultMap="return-result-Rpt">
+      SELECT distinct d.KDASET, d.NMASET, ab.TAHUN, ab.NOREG
+      FROM ASET_BAPKIRDET AS ab
+      INNER JOIN DAFTASET AS d ON d.ASETKEY = ab.ASETKEY
+      WHERE ab.UNITKEY=#Unitkey# 
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Bapkirdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+      <parameter property="Nobapkir" column="NOBAPKIR"/>
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Kdaset" column="KDASET"/>
+      <parameter property="Nmaset" column="NMASET"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Tahun" column="TAHUN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Bapkirdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Bapkirdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+      <parameter property="Nobapkir" column="NOBAPKIR"/>
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

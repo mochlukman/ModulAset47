@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Invretur" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Invretur" type="Usadi.Valid49.BO.InvreturControl, Usadi.Valid49.Aset.MAT " />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Invretur">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Kdunit2" column="KDUNIT2"/>
+      <result property="Nmunit2" column="NMUNIT2"/>
+      <result property="Tglretur" column="TGLRETUR"/>
+      <result property="Kdgudang" column="KDGUDANG"/>
+      <result property="Nmgudang" column="NMGUDANG"/>
+      <result property="Idxttd" column="IDXTTD"/>
+      <result property="Tglvalid" column="TGLVALID"/>
+      <result property="Urairetur" column="URAIRETUR"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Ket" column="KET"/>
+      <result property="Datecreate" column="DATECREATE"/>
+      <result property="Dateupdate" column="DATEUPDATE"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noretur" column="NORETUR"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertInvretur" parameterMap="insert-param">
+      <generate table="INV_RETUR"/>
+    </insert>
+    <update id="UpdateByInvretur" parameterMap="update-param">
+      <generate table="INV_RETUR" by="UNITKEY,NORETUR"/>
+    </update>
+    <update id="UpdateByValidRevInvretur" parameterClass="Invretur">
+      update INV_RETUR set REV_BY=#Rev_by#,REV_DATE=#Rev_date#
+      where 1=1
+    </update>
+    <update id="UpdateByUnValidRevInvretur" parameterClass="Invretur">
+      update INV_RETUR set REV_BY='',REV_DATE=null
+      where 1=1
+    </update>
+    <delete id="DeleteByInvretur" parameterMap="delete-param">
+      <generate table="INV_RETUR" by="UNITKEY,NORETUR"/>
+    </delete>
+    <select id="BaseQueryInvretur" parameterClass="Invretur" resultMap="return-result">
+      select I.ID,rtrim(I.UNITKEY) as UNITKEY,rtrim(D.KDUNIT) as KDUNIT,rtrim(D.NMUNIT) as NMUNIT,
+      rtrim(I.NORETUR) as NORETUR,I.TGLRETUR,rtrim(I.UNITKEY2) as UNITKEY2,rtrim(D1.KDUNIT) as KDUNIT2,rtrim(D1.NMUNIT) as NMUNIT2,
+      rtrim(I.KDGUDANG) as KDGUDANG,rtrim(D2.NMGUDANG) as NMGUDANG,rtrim(I.IDXTTD) as IDXTTD,I.TGLVALID,
+      rtrim(I.URAIRETUR) as URAIRETUR,rtrim(I.KDTANS) as KDTANS,rtrim(I.KET) as KET,I.DATECREATE,I.DATEUPDATE
+      from INV_RETUR I
+      LEFT OUTER JOIN DAFTUNIT D ON I.UNITKEY=D.UNITKEY
+      LEFT OUTER JOIN DAFTUNIT D1 ON I.UNITKEY2=D1.UNITKEY
+      LEFT OUTER JOIN DAFTGUDANG D2 ON I.UNITKEY=D2.UNITKEY AND I.KDGUDANG=D2.KDGUDANG
+    </select>
+    <select id="QueryByAllInvretur" extends="BaseQueryInvretur" parameterClass="Invretur" resultMap="return-result">
+      where 1=1
+      AND I.UNITKEY2=#Unitkey2#
+      order by I.UNITKEY,I.NORETUR
+    </select>
+    <select id="QueryByLookupInvretur" extends="BaseQueryInvretur" parameterClass="Invretur" resultMap="return-result">
+      where 1=1
+      and I.UNITKEY = #Unitkey#
+      order by I.UNITKEY,I.NORETUR
+    </select>
+    <select id="LoadByPKInvretur" extends="BaseQueryInvretur" parameterClass="Invretur" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# AND I.UNITKEY2=#Unitkey2# and I.NORETUR = #Noretur#
+    </select>
+    <select id="LoadByIDInvretur" extends="BaseQueryInvretur" parameterClass="Invretur" resultMap="return-result">
+      where I.UNITKEY = #Unitkey# AND I.UNITKEY2=#Unitkey2# and I.NORETUR = #Noretur#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Invretur">
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Tglretur" column="TGLRETUR"/>
+      <parameter property="Kdgudang" column="KDGUDANG"/>
+      <parameter property="Idxttd" column="IDXTTD"/>
+      <parameter property="Urairetur" column="URAIRETUR"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noretur" column="NORETUR"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Invretur">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Invretur">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noretur" column="NORETUR"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Daftruang" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Daftruang" type="Usadi.Valid49.BO.DaftruangControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Daftruang">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdruang" column="KDRUANG"/>
+      <result property="Nmruang" column="NMRUANG"/>
+      <result property="Keterangan" column="KETERANGAN"/>
+      <result property="Jnsruang" column="JNSRUANG"/>
+      <result property="Nip" column="NIP"/>
+      <result property="Nama" column="NAMA"/>
+      <result property="Type" column="TYPE"/>
+      <result property="Kdlevel" column="KDLEVEL"/>
+      <result property="Nmlevel" column="NMLEVEL"/>
+      <result property="Ruangkey" column="RUANGKEY"/>
+    </resultMap>
+    <resultMap id="return-ruangkey" class="Daftruang">
+      <result property="Ruangkey" column="RUANGKEY"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertDaftruang" parameterMap="insert-param">
+      <generate table="Daftruang"/>
+    </insert>
+    <update id="UpdateByDaftruang" parameterMap="update-param">
+      <generate table="Daftruang" by="RUANGKEY"/>
+    </update>
+    <update id="UpdateByValidRevDaftruang" parameterClass="Daftruang">
+      update DAFTRUANG set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevDaftruang" parameterClass="Daftruang">
+      update DAFTRUANG set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByDaftruang" parameterMap="delete-param">
+      <generate table="Daftruang" by="RUANGKEY"/>
+    </delete>
+    <select id="BaseQueryDaftruang" parameterClass="Daftruang" resultMap="return-result">
+      select D.ID, D.RUANGKEY, D.UNITKEY, D.KDRUANG, D.NMRUANG,D.NIP,P.NAMA, D.KETERANGAN
+      , D.JNSRUANG, rtrim(D.TYPE) as TYPE, D.KDLEVEL, S.NMLEVEL
+      from DAFTRUANG D
+      left join STRURUANG as S on S.KDLEVEL = D.KDLEVEL
+      left join PEGAWAI p on p.NIP = d.NIP and p.UNITKEY = d.UNITKEY
+    </select>
+    <select id="QueryByAllDaftruang" extends="BaseQueryDaftruang" parameterClass="Daftruang" resultMap="return-result">
+      where 1=1
+      and D.UNITKEY = #Unitkey#
+      order by D.KDRUANG
+    </select>
+    <select id="QueryByLookupDaftruang" extends="BaseQueryDaftruang" parameterClass="Daftruang" resultMap="return-result">
+      where 1=1
+      order by D.KDRUANG
+    </select>
+    <select id="LoadByPKDaftruang" extends="BaseQueryDaftruang" parameterClass="Daftruang" resultMap="return-result">
+      where D.RUANGKEY = #Ruangkey#
+    </select>
+    <select id="LoadByRuangkeyDaftruang" parameterClass="Daftruang" resultMap="return-ruangkey">
+      select rtrim(cast(max(cast(left(d.RUANGKEY,len(d.RUANGKEY)-1) as int))+1 as char))+'_' RUANGKEY 
+      from DAFTRUANG AS d
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Daftruang">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdruang" column="KDRUANG"/>
+      <parameter property="Nmruang" column="NMRUANG"/>
+      <parameter property="Keterangan" column="KETERANGAN"/>
+      <parameter property="Jnsruang" column="JNSRUANG"/>
+      <parameter property="Nip" column="NIP"/>
+      <parameter property="Type" column="TYPE"/>
+      <parameter property="Kdlevel" column="KDLEVEL"/>
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Daftruang">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Daftruang">
+      <parameter property="Ruangkey" column="RUANGKEY"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

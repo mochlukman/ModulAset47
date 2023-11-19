@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kontrak" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kontrak" type="Usadi.Valid49.BO.KontrakControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kontrak">
+      <result property="Id" column="ID"/>
+      <result property="Kdp3" column="KDP3"/>
+      <result property="Nmp3" column="NMP3"/>
+      <result property="Nminst" column="NMINST"/>
+      <result property="Kdkegunit" column="KDKEGUNIT"/>
+      <result property="Tglkon" column="TGLKON"/>
+      <result property="Tglawalkontrak" column="TGLAWALKONTRAK"/>
+      <result property="Tglakhirkontrak" column="TGLAKHIRKONTRAK"/>
+      <result property="Tglslskonk" column="TGLSLSKONK"/>
+      <result property="Uraian" column="URAIAN"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Nokontrak" column="NOKONTRAK"/>
+      <result property="Unitkey" column="UNITKEY"/>
+    </resultMap>
+    <resultMap id="return-cekjmldata" class="Kontrak">
+      <result property="Jmldata" column="JMLDATA"/>
+    </resultMap>
+    <resultMap id="return-cekpagu" class="Kontrak">
+      <result property="Nilpagu" column="NILPAGU"/>
+    </resultMap>
+    <resultMap id="return-ceknilkontrak" class="Kontrak">
+      <result property="Nilkontrak" column="NILKONTRAK"/>
+    </resultMap>
+    <resultMap id="return-cekperkontrak" class="Kontrak">
+      <result property="Nilperkontrak" column="NILPERKONTRAK"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKontrak" parameterClass="Kontrak">
+      INSERT INTO KONTRAK(UNITKEY,NOKONTRAK,KDP3,KDKEGUNIT,TGLKON,TGLAWALKONTRAK,TGLAKHIRKONTRAK,TGLSLSKONK,URAIAN,NILAI)
+      Values(#Unitkey#,#Nokontrak#,#Kdp3#,#Kdkegunit#,#Tglawalkontrak#,#Tglawalkontrak#,#Tglakhirkontrak#,#Tglakhirkontrak#,#Uraian#,#Nilai#)
+    </insert>
+    <update id="UpdateByKontrak" parameterClass="Kontrak">
+      UPDATE KONTRAK
+      SET KDP3 = #Kdp3#,TGLKON = #Tglawalkontrak#,TGLAWALKONTRAK = #Tglawalkontrak#,TGLAKHIRKONTRAK = #Tglakhirkontrak#,
+      TGLSLSKONK = #Tglakhirkontrak#,URAIAN = #Uraian#,NILAI = #Nilai#
+      WHERE UNITKEY = #Unitkey# AND NOKONTRAK = #Nokontrak# AND KDKEGUNIT = #Kdkegunit#
+    </update>
+    <update id="UpdateByValidRevKontrak" parameterClass="Kontrak">
+      update KONTRAK set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKontrak" parameterClass="Kontrak">
+      update KONTRAK set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKontrak" parameterMap="delete-param">
+      <generate table="Kontrak" by="NOKONTRAK,UNITKEY,KDKEGUNIT"/>
+    </delete>
+    <select id="BaseQueryKontrak" parameterClass="Kontrak" resultMap="return-result">
+      select K.ID, K.UNITKEY, K.NOKONTRAK, K.KDP3,D.NMP3, D.NMINST, K.KDKEGUNIT, K.TGLKON, K.TGLAWALKONTRAK, K.TGLAKHIRKONTRAK,
+      K.TGLSLSKONK, K.URAIAN, K.NILAI
+      from KONTRAK K
+      INNER JOIN DAFTPHK3 D ON D.KDP3 = K.KDP3
+    </select>
+    <select id="QueryByAllKontrak" extends="BaseQueryKontrak" parameterClass="Kontrak" resultMap="return-result">
+      where 1=1
+      and K.UNITKEY=#Unitkey#
+      and K.KDKEGUNIT=#Kdkegunit#
+      and YEAR(k.TGLKON) = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA AS p WHERE p.CONFIGID = 'cur_thang')
+      order by K.NOKONTRAK
+    </select>
+    <select id="QueryByLookupKontrak" extends="BaseQueryKontrak" parameterClass="Kontrak" resultMap="return-result">
+      where 1=1
+      and K.UNITKEY=#Unitkey#
+      and K.KDKEGUNIT=#Kdkegunit#
+      and YEAR(k.TGLKON) = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA AS p WHERE p.CONFIGID = 'cur_thang')
+      order by K.NOKONTRAK
+    </select>
+    <select id="LoadByPKKontrak" extends="BaseQueryKontrak" parameterClass="Kontrak" resultMap="return-result">
+      <!--where K.NOKONTRAK = #Nokontrak#-->
+    </select>
+    <select id="LoadByCekjmldataKontrak" parameterClass="Kontrak" resultMap="return-cekjmldata">
+      SELECT ISNULL(COUNT(*),0) JMLDATA FROM KONTRAK AS k
+      INNER JOIN ASET_BERITA AS ab ON ab.UNITKEY = k.UNITKEY AND ab.NOKONTRAK = k.NOKONTRAK
+      WHERE k.UNITKEY = #Unitkey#
+      and k.KDKEGUNIT = #Kdkegunit#
+      and k.NOKONTRAK = #Nokontrak#
+    </select>
+    <select id="LoadByNilpaguKontrak" parameterClass="Kontrak" resultMap="return-cekpagu">
+      SELECT ISNULL(SUM(d.NILAI),0) NILPAGU FROM DASKR AS d
+      INNER JOIN SKDASK AS s ON s.UNITKEY = d.UNITKEY AND s.IDXDASK = d.IDXDASK AND s.THANG = d.THANG
+      INNER JOIN MATANGR AS m ON m.MTGKEY = d.MTGKEY AND m.THANG = d.THANG
+      WHERE d.UNITKEY = #Unitkey#
+      and d.KDKEGUNIT = #Kdkegunit#
+      and s.KDTAHAP = #Kdtahap#
+      and s.THANG = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA AS p WHERE p.CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByNilkontrakKontrak" parameterClass="Kontrak" resultMap="return-ceknilkontrak">
+      SELECT ISNULL(SUM(k.NILAI),0) NILKONTRAK FROM KONTRAK AS k
+      WHERE
+      k.UNITKEY = #Unitkey#
+      and k.KDKEGUNIT = #Kdkegunit#
+      and YEAR(k.TGLKON) = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA AS p WHERE p.CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByNokontrakKontrak" parameterClass="Kontrak" resultMap="return-cekperkontrak">
+      SELECT ISNULL(SUM(k.NILAI),0) NILPERKONTRAK FROM KONTRAK AS k
+      WHERE k.UNITKEY = #Unitkey#
+      and k.KDKEGUNIT = #Kdkegunit#
+      and k.NOKONTRAK = #Nokontrak#
+      and YEAR(k.TGLKON) = (SELECT RTRIM(p.CONFIGVAL) FROM PEMDA AS p WHERE p.CONFIGID = 'cur_thang')
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kontrak">
+      <parameter property="Kdp3" column="KDP3"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+      <parameter property="Tglkon" column="TGLKON"/>
+      <parameter property="Tglawalkontrak" column="TGLAWALKONTRAK"/>
+      <parameter property="Tglakhirkontrak" column="TGLAKHIRKONTRAK"/>
+      <parameter property="Tglslskonk" column="TGLSLSKONK"/>
+      <parameter property="Uraian" column="URAIAN"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Nokontrak" column="NOKONTRAK"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Kontrak">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kontrak">
+      <parameter property="Nokontrak" column="NOKONTRAK"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Kdkegunit" column="KDKEGUNIT"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

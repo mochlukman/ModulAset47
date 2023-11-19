@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Skpenggunadetbrg" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Skpenggunadetbrg" type="Usadi.Valid49.BO.SkpenggunadetbrgControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Skpenggunadetbrg">
+      <result property="Id" column="ID"/>
+      <result property="Noba" column="NOBA"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Kdpemilik" column="KDPEMILIK"/>
+      <result property="Nmpemilik" column="NMPEMILIK"/>
+      <result property="Asalusul" column="ASALUSUL"/>
+      <result property="Kdsatuan" column="KDSATUAN"/>
+      <result property="Nmsatuan" column="NMSATUAN"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Ukuran" column="UKURAN"/>
+      <result property="Bahan" column="BAHAN"/>
+      <result property="Nosertifikat" column="NOSERTIFIKAT"/>
+      <result property="Alamat" column="ALAMAT"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdkib" column="KDKIB"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <result property="Nodokumen" column="NODOKUMEN"/>
+      <result property="Unitkey2" column="UNITKEY2"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSkpenggunadetbrg" parameterMap="insert-param">
+      <generate table="Aset_skpenggunadetbrg"/>
+    </insert>
+    <update id="UpdateBySkpenggunadetbrg" parameterMap="update-param">
+      <generate table="Aset_skpenggunadetbrg" by="UNITKEY,NOSKPENGGUNA,NODOKUMEN,UNITKEY2,IDBRG"/>
+    </update>
+    <update id="UpdateByValidRevSkpenggunadetbrg" parameterClass="Skpenggunadetbrg">
+      update ASET_SKPENGGUNADETBRG set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSkpenggunadetbrg" parameterClass="Skpenggunadetbrg">
+      update ASET_SKPENGGUNADETBRG set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteBySkpenggunadetbrg" parameterMap="delete-param">
+      <generate table="Aset_skpenggunadetbrg" by="UNITKEY,NOSKPENGGUNA,NODOKUMEN,UNITKEY2,IDBRG"/>
+    </delete>
+    <select id="BaseQuerySkpenggunadetbrg" parameterClass="Skpenggunadetbrg" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOSKPENGGUNA, A.NODOKUMEN, A.UNITKEY2, A.IDBRG, A.NOBA, A.ASETKEY, DA.KDASET, DA.NMASET
+      , A.TAHUN, AA.NOREG, A.NILAI, AK.KDPEMILIK, JM.NMPEMILIK, AK.ASALUSUL, AK.KDSATUAN, S.NMSATUAN
+      , case AA.KDKIB
+      when '03' then (case AK.BERTINGKAT WHEN 1 THEN 'Bertingkat' ELSE '' END)+(case AK.BETON WHEN 1 THEN ', Beton' ELSE '' END)
+      when '04' then AK.KONSTRUKSI
+      when '05' then AK.SPESIFIKASI
+      when '06' then (case AK.BERTINGKAT WHEN 1 THEN 'Bertingkat' ELSE '' END)+(case AK.BETON WHEN 1 THEN ', Beton' ELSE '' END)
+      when '07' then AK.SPESIFIKASI
+      else AK.MERKTYPE
+      end AS SPESIFIKASI
+      , case AA.KDKIB
+      when '01' then 'Luas tanah: '+CAST(ISNULL(AK.LUASTNH,0) AS VARCHAR)
+      when '03' then 'Luas tanah: '+CAST(ISNULL(AK.LUASTNH,0) AS VARCHAR)+' '+' Luas lantai: '+CAST(ISNULL(AK.LUASLT,0) AS VARCHAR)
+      when '04' then 'Panjang: '+CAST(ISNULL(AK.PANJANG,0) AS VARCHAR)+' Lebar: '+CAST(ISNULL(AK.LEBAR,0) AS VARCHAR)+' Luas: '+CAST(ISNULL(AK.LUAS,0) AS VARCHAR)
+      when '06' then 'Luas lantai: '+CAST(ISNULL(AK.LUASLT,0) AS VARCHAR)
+      else AK.UKURAN
+      end AS UKURAN,
+      AK.BAHAN
+      , case AA.KDKIB
+      when '01' then AK.NOFIKAT
+      when '02' then ISNULL(AK.NOPABRIK,'')+' / '+ISNULL(AK.NORANGKA,'')+' / '+ISNULL(AK.NOPOLISI,'')+' / '+ISNULL(AK.NOBPKB,'')+' / '+ISNULL(AK.NOMESIN,'')
+      when '03' then AK.NODOKGDG
+      when '04' then AK.NODOKJIJ
+      when '06' then AK.NODOKKDP
+      else NULL
+      end AS NOSERTIFIKAT
+      , AK.ALAMAT, AK.KET, AA.KDKIB
+      from ASET_SKPENGGUNADETBRG A
+      left join ASET_KIB AA ON AA.IDBRG = A.IDBRG
+      left join ASET_BERITADETBRG AK ON AK.UNITKEY = AA.UNITKEY AND AK.NOBA = AA.DOKPEROLEHAN AND AK.ASETKEY = AA.ASETKEY AND AK.TAHUN = AA.TAHUN AND AK.URUTBRG = AA.URUTBRG
+      left join DAFTASET DA ON DA.ASETKEY = A.ASETKEY
+      left join JMILIK JM ON JM.KDPEMILIK = AK.KDPEMILIK
+      left join SATUAN S ON S.KDSATUAN = AK.KDSATUAN
+    </select>
+    <select id="QueryByAllSkpenggunadetbrg" extends="BaseQuerySkpenggunadetbrg" parameterClass="Skpenggunadetbrg" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOSKPENGGUNA=#Noskpengguna#
+      and A.NODOKUMEN=#Nodokumen#
+      and A.UNITKEY2=#Unitkey2#
+    </select>
+    <select id="QueryByLookupSkpenggunadetbrg" extends="BaseQuerySkpenggunadetbrg" parameterClass="Skpenggunadetbrg" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOSKPENGGUNA=#Noskpengguna#
+      and A.NODOKUMEN=#Nodokumen#
+      and A.UNITKEY2=#Unitkey2#
+    </select>
+    <select id="LoadByPKSkpenggunadetbrg" extends="BaseQuerySkpenggunadetbrg" parameterClass="Skpenggunadetbrg" resultMap="return-result">
+      where A.UNITKEY=#Unitkey#
+      and A.NOSKPENGGUNA=#Noskpengguna#
+      and A.NODOKUMEN=#Nodokumen#
+      and A.UNITKEY2=#Unitkey2#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Skpenggunadetbrg">
+      <parameter property="Noba" column="NOBA"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Skpenggunadetbrg">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Skpenggunadetbrg">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Unitkey2" column="UNITKEY2"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

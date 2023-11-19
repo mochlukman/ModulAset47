@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Skpengguna" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Skpengguna" type="Usadi.Valid49.BO.SkpenggunaControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Skpengguna">
+      <result property="Id" column="ID"/>
+      <result property="Tglskpengguna" column="TGLSKPENGGUNA"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noskpengguna" column="NOSKPENGGUNA"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertSkpengguna" parameterMap="insert-param">
+      <generate table="Aset_skpengguna"/>
+    </insert>
+    <update id="UpdateBySkpengguna" parameterClass="Skpengguna">
+      update ASET_SKPENGGUNA set TGLSKPENGGUNA=#Tglskpengguna#, KET=#Ket#
+      where UNITKEY=#Unitkey# and NOSKPENGGUNA=#Noskpengguna#
+    </update>
+    <update id="UpdateByValidRevSkpengguna" parameterClass="Skpengguna">
+      update ASET_SKPENGGUNA set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevSkpengguna" parameterClass="Skpengguna">
+      update ASET_SKPENGGUNA set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteBySkpengguna" parameterMap="delete-param">
+      <generate table="Aset_skpengguna" by="UNITKEY,NOSKPENGGUNA"/>
+    </delete>
+    <select id="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOSKPENGGUNA, A.TGLSKPENGGUNA, A.KET
+      from ASET_SKPENGGUNA A
+      left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+    </select>
+    <select id="QueryByAllSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and year(A.TGLSKPENGGUNA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="QueryByLookupSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and year(A.TGLSKPENGGUNA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+    </select>
+    <select id="LoadByPKSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
+      where A.UNITKEY = #Unitkey# and A.NOSKPENGGUNA=#Noskpengguna#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Skpengguna">
+      <parameter property="Tglskpengguna" column="TGLSKPENGGUNA"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Skpengguna">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Skpengguna">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskpengguna" column="NOSKPENGGUNA"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

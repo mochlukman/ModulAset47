@@ -1,0 +1,109 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using ChSync.Common;
+using CoreNET.Common.Base;
+using Ext.Net;
+using System.Threading;
+
+public partial class Sinkronisasi : System.Web.UI.Page
+{
+
+  protected void Page_Init(object sender, EventArgs e)
+  {
+  }
+
+  protected void Page_PreRenderComplete(object sender, EventArgs e)
+  {
+    ConfigureMode(SyncController.Instance.ServerModeEnabled);
+    this.RadioGroup2.DirectEvents.Change.Before = "return false";
+    Radio2.Checked = SyncController.Instance.ServerModeEnabled;
+    Radio1.Checked = !Radio2.Checked;
+    this.RadioGroup2.DirectEvents.Change.Before = "";
+    //OnDirectCheckChkMasterServer(null, null);
+  }
+
+  protected void Page_Load(object sender, EventArgs e)
+  {
+    Utility.CekSession();
+  }
+
+  private void ConfigureMode(bool serviceMode)
+  {
+
+	}
+
+  private void ChangeModeWorker(object state)
+  {
+    MyState s = state as MyState;
+    HttpContext.Current = s.Ctx;
+    this.Conttainer1.Disabled = true;
+    SyncController.Instance.ServerModeEnabled = Radio2.Checked;
+    this.Conttainer1.Disabled = false;
+  }
+
+  [DirectMethod(Timeout = 15 * 60 * 1000)]
+  protected void RadioCheckChanged(object sender, DirectEventArgs e)
+  {
+    if (Radio2.Checked && !SyncController.Instance.ServerModeEnabled)
+    {
+      this.Conttainer1.Disabled = true;
+      SyncController.Instance.ServerModeEnabled = Radio2.Checked;
+      this.Conttainer1.Disabled = false;
+      if (!SyncController.Instance.ServerModeEnabled)
+      {
+        Window win = new Window
+        {
+          ID = "Alert1",
+          Title = ConstantLang.INFORMATION,
+          Height = 85,
+          Width = 450,
+          Modal = true,
+          CloseAction = CloseAction.Close,
+          Html = ConstantLang.TxtLblOtherServerIsActive
+        };
+        win.Render(this.Form);
+      }
+    }
+    else
+    {
+        SyncController.Instance.ServerModeEnabled = false;
+    }
+  }
+
+  protected void RefreshProgress(object sender, DirectEventArgs e)
+  {
+    object progress = this.Session["LongActionProgress"];
+
+    if (progress != null)
+    {
+        Progress1.UpdateProgress(((int)progress) / 50f, "Please wait...");
+    }
+    else
+    {
+      ResourceManager1.AddScript("{0}.stopTask('longactionprogress');", TaskManager1.ClientID);
+      Progress1.UpdateProgress(1, "Done!");
+    }
+  }
+
+}
+
+public class MyState
+{
+  HttpContext ctx;
+
+  public HttpContext Ctx
+  {
+    get { return ctx; }
+  }
+
+
+
+  public MyState(HttpContext ctx)
+  {
+    this.ctx = ctx;
+  }
+}

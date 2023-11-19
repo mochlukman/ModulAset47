@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Kibddet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Kibddet" type="Usadi.Valid49.BO.KibddetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Kibddet">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Nodokumen" column="NODOKUMEN"/>
+      <result property="Tgldokumen" column="TGLDOKUMEN"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Kdkib" column="KDKIB"/>
+      <result property="Ket" column="KET"/>
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Kdklas" column="KDKLAS"/>
+      <result property="Kdsensus" column="KDSENSUS"/>
+      <result property="Kdstatusaset" column="KDSTATUSASET"/>
+      <result property="Kdlokpo" column="KDLOKPO"/>
+      <result property="Kdbrgpo" column="KDBRGPO"/>
+      <result property="Thang" column="THANG"/>
+      <result property="Uraitrans" column="URAITRANS"/>
+      <result property="Nilaitrans" column="NILAITRANS"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Uruttrans" column="URUTTRANS"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertKibddet" parameterMap="insert-param">
+      <generate table="Aset_kibddet"/>
+    </insert>
+    <update id="UpdateByKibddet" parameterMap="update-param">
+      <generate table="Aset_kibddet" by="IDBRG,URUTTRANS"/>
+    </update>
+    <update id="UpdateByValidRevKibddet" parameterClass="Kibddet">
+      update ASET_KIBDDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKibddet" parameterClass="Kibddet">
+      update ASET_KIBDDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKibddet" parameterMap="delete-param">
+      <generate table="Aset_kibddet" by="IDBRG,URUTTRANS"/>
+    </delete>
+    <select id="BaseQueryKibddet" parameterClass="Kibddet" resultMap="return-result">
+      select A.ID, A.IDBRG, A.URUTTRANS, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.ASETKEY, A.TAHUN, A.NOREG, A.NODOKUMEN, A.TGLDOKUMEN, A.NILAI
+      , A.UMEKO, A.KDTANS, J.NMTRANS, A.KDKIB, A.KET, A.KDKON, A.KDKLAS, A.KDSENSUS, A.KDSTATUSASET, A.KDLOKPO, A.KDBRGPO, A.THANG
+      , CASE WHEN LEFT(A.KDTANS,1) IN('0','1') THEN J.NMTRANS+' (+)' WHEN LEFT(A.KDTANS,1)='2' THEN J.NMTRANS+' (-)' ELSE J.NMTRANS  END AS URAITRANS
+      , CASE WHEN LEFT(A.KDTANS,1) IN('0','1','3') THEN A.NILAI WHEN LEFT(A.KDTANS,1)='2' THEN -1*A.NILAI END AS NILAITRANS
+      from ASET_KIBDDET A
+      left join DAFTUNIT D on D.UNITKEY=A.UNITKEY
+      left join JTRANS J on J.KDTANS=A.KDTANS
+    </select>
+    <select id="QueryByAllKibddet" extends="BaseQueryKibddet" parameterClass="Kibddet" resultMap="return-result">
+      where 1=1
+      and A.IDBRG=#Idbrg#  
+      and A.UNITKEY=#Unitkey# 
+      and A.ASETKEY=#Asetkey#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Kibddet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Nodokumen" column="NODOKUMEN"/>
+      <parameter property="Tgldokumen" column="TGLDOKUMEN"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Umeko" column="UMEKO"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Kdkib" column="KDKIB"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Kdkon" column="KDKON"/>
+      <parameter property="Kdklas" column="KDKLAS"/>
+      <parameter property="Kdsensus" column="KDSENSUS"/>
+      <parameter property="Kdstatusaset" column="KDSTATUSASET"/>
+      <parameter property="Kdlokpo" column="KDLOKPO"/>
+      <parameter property="Kdbrgpo" column="KDBRGPO"/>
+      <parameter property="Thang" column="THANG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Kibddet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Kibddet">
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Uruttrans" column="URUTTRANS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

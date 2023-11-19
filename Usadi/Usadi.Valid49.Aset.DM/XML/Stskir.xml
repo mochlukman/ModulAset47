@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Stskir" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Stskir" type="Usadi.Valid49.BO.StskirControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Stskir">
+      <result property="Id" column="ID"/>
+      <result property="Nmbapkir" column="NMBAPKIR"/>
+      <result property="Jnstranskir" column="JNSTRANSKIR"/>
+      <result property="Kdbapkir" column="KDBAPKIR"/>
+    </resultMap>
+    <resultMap id="return-result-kdbapkir" class="Stskir">
+      <result property="Kdbapkir" column="KDBAPKIR"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertStskir" parameterMap="insert-param">
+      <generate table="Stskir"/>
+    </insert>
+    <update id="UpdateByStskir" parameterMap="update-param">
+      <generate table="Stskir" by="KDBAPKIR"/>
+    </update>
+    <update id="UpdateByValidRevStskir" parameterClass="Stskir">
+      update STSKIR set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevStskir" parameterClass="Stskir">
+      update STSKIR set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByStskir" parameterMap="delete-param">
+      <generate table="Stskir" by="KDBAPKIR"/>
+    </delete>
+    <select id="BaseQueryStskir" parameterClass="Stskir" resultMap="return-result">
+      select S.ID, S.KDBAPKIR, S.NMBAPKIR
+      , case when S.JNSTRANSKIR = '1' then 'Masuk' when S.JNSTRANSKIR = '0' then 'Keluar' end as JNSTRANSKIR
+      from STSKIR S
+    </select>
+    <select id="QueryByAllStskir" extends="BaseQueryStskir" parameterClass="Stskir" resultMap="return-result">
+      where 1=1
+      order by S.KDBAPKIR
+    </select>
+    <select id="QueryByKdbapkirStskir" parameterClass="Stskir" resultMap="return-result-kdbapkir">
+      select cast(isnull(max(S.KDBAPKIR),0) as varchar) KDBAPKIR from STSKIR as S
+    </select>
+    <select id="QueryByLookupStskir" extends="BaseQueryStskir" parameterClass="Stskir" resultMap="return-result">
+      where 1=1
+      order by S.KDBAPKIR
+    </select>
+    <select id="LoadByPKStskir" extends="BaseQueryStskir" parameterClass="Stskir" resultMap="return-result">
+      <!--where S.KDBAPKIR = #Kdbapkir#-->
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Stskir">
+      <parameter property="Nmbapkir" column="NMBAPKIR"/>
+      <parameter property="Jnstranskir" column="JNSTRANSKIR"/>
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Stskir">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Stskir">
+      <parameter property="Kdbapkir" column="KDBAPKIR"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

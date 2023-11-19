@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Atribusidetbrg" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Atribusidetbrg" type="Usadi.Valid49.BO.AtribusidetbrgControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Atribusidetbrg">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Generated" column="GENERATED"/>
+      <result property="Jumlah" column="JUMLAH"/>
+      <result property="Nilaiba" column="NILAIBA"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdnmaset" column="KDNMASET"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noatribusi" column="NOATRIBUSI"/>
+      <result property="Noba" column="NOBA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Urutbrg" column="URUTBRG"/>
+    </resultMap>
+    <resultMap id="return-result-urutbrg" class="Atribusidetbrg">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Generated" column="GENERATED"/>
+      <result property="Blokid" column="BLOKID"/>
+      <result property="Jumlah" column="JUMLAH"/>
+      <result property="Nilaiba" column="NILAIBA"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Kdnmaset" column="KDNMASET"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noatribusi" column="NOATRIBUSI"/>
+      <result property="Noba" column="NOBA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Urutbrg" column="URUTBRG"/>
+    </resultMap>
+    <resultMap id="return-result-idbrg" class="Atribusidetbrg">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Generated" column="GENERATED"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Noatribusi" column="NOATRIBUSI"/>
+      <result property="Noba" column="NOBA"/>
+      <result property="Mtgkey" column="MTGKEY"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Urutbrg" column="URUTBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertAtribusidetbrg" parameterMap="insert-param">
+      <generate table="Aset_atribusidetbrg"/>
+    </insert>
+    <update id="UpdateByAtribusidetbrg" parameterClass="Atribusidetbrg">
+      update ASET_ATRIBUSIDETBRG set NILAI=(#Nilai#/#Jumlah#), GENERATED='1'
+      where UNITKEY=#Unitkey# and NOATRIBUSI=#Noatribusi# and NOBA=#Noba# and MTGKEY=#Mtgkey# and URUTBRG=#Urutbrg#
+    </update>
+    <update id="UpdateByNilairekAtribusidetbrg" parameterClass="Atribusidetbrg">
+      update ASET_ATRIBUSIDET
+      set NILAI = (select ISNULL(SUM(A.NILAI),0) from ASET_ATRIBUSIDETBRG A where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi#
+      and A.NOBA=#Noba# and A.MTGKEY=#Mtgkey#)
+      WHERE UNITKEY=#Unitkey# AND NOATRIBUSI=#Noatribusi# AND NOBA=#Noba# AND MTGKEY=#Mtgkey#
+    </update>
+    <update id="UpdateByValidRevAtribusidetbrg" parameterClass="Atribusidetbrg">
+      update ASET_ATRIBUSIDETBRG set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevAtribusidetbrg" parameterClass="Atribusidetbrg">
+      update ASET_ATRIBUSIDETBRG set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByAtribusidetbrg" parameterMap="delete-param">
+      <generate table="Aset_atribusidetbrg" by="UNITKEY,NOATRIBUSI,NOBA,MTGKEY,IDBRG,URUTBRG"/>
+    </delete>
+    <select id="BaseQueryAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOATRIBUSI, A.NOBA, A.MTGKEY, A.IDBRG, A.URUTBRG, A.ASETKEY, D.KDASET, D.NMASET
+      , AB.JUMLAH, AB.NILAI AS NILAIBA, A.NILAI, A.GENERATED, LTRIM(RTRIM(D.KDASET))+' - '+LTRIM(RTRIM(D.NMASET)) AS KDNMASET
+      from ASET_ATRIBUSIDETBRG A
+      left join ASET_BERITADETBRG AB on AB.UNITKEY = A.UNITKEY and AB.NOBA = A.NOBA and AB.ASETKEY = A.ASETKEY and  AB.URUTBRG = A.URUTBRG
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+    </select>
+    <select id="QueryByAllAtribusidetbrg" extends="BaseQueryAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOATRIBUSI=#Noatribusi#
+      and A.NOBA=#Noba#
+      and A.MTGKEY=#Mtgkey#
+    </select>
+    <select id="QueryByIdbrgAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result-idbrg">
+      select A.ID, A.UNITKEY, A.NOATRIBUSI, A.NOBA, A.MTGKEY, A.IDBRG, A.URUTBRG, A.ASETKEY, D.KDASET, D.NMASET, AA.TAHUN, AA.NOREG, A.NILAI, A.GENERATED
+      from ASET_ATRIBUSIDETBRG A
+      left join ASET_KIB AA ON AA.IDBRG = A.IDBRG
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+      where A.UNITKEY=#Unitkey#
+      and A.NOATRIBUSI=#Noatribusi#
+      and A.NOBA=#Noba#
+      and A.MTGKEY=#Mtgkey#
+      and A.URUTBRG=#Urutbrg#
+    </select>
+    <select id="QueryByUrutbrgAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result-urutbrg">
+      select row_number () over (order by A.URUTBRG) ID, A.UNITKEY, A.NOATRIBUSI, A.NOBA, A.MTGKEY, A.URUTBRG, A.ASETKEY
+      , D.KDASET, D.NMASET, LTRIM(RTRIM(D.KDASET))+' - '+LTRIM(RTRIM(D.NMASET)) AS KDNMASET, AB.JUMLAH, AB.NILAI AS NILAIBA
+      , sum(A.NILAI) NILAI, A.GENERATED, #Blokid# BLOKID
+      from ASET_ATRIBUSIDETBRG A
+      left join ASET_BERITADETBRG AB on AB.UNITKEY = A.UNITKEY and AB.NOBA = A.NOBA and AB.ASETKEY = A.ASETKEY and  AB.URUTBRG = A.URUTBRG
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+      where A.UNITKEY=#Unitkey#
+      and A.NOATRIBUSI=#Noatribusi#
+      and A.NOBA=#Noba#
+      and A.MTGKEY=#Mtgkey#
+      group by A.UNITKEY, A.NOATRIBUSI, A.NOBA, A.MTGKEY, A.URUTBRG, A.ASETKEY, D.KDASET, D.NMASET, AB.JUMLAH, AB.NILAI, A.NILAI, A.GENERATED
+    </select>
+    <select id="QueryByRenovAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOATRIBUSI, A.NOBA, A.MTGKEY, A.IDBRG, A.ASETKEY, D.KDASET, D.NMASET, A.URUTBRG
+      , 1 JUMLAH, X.NILAIRENOV AS NILAIBA, A.NILAI, A.GENERATED, LTRIM(RTRIM(D.KDASET))+' - '+LTRIM(RTRIM(D.NMASET)) AS KDNMASET
+      from ASET_ATRIBUSIDETBRG A
+      left join (
+      select A.UNITKEY, A.NOBARENOV, A.ASETKEY, A.NILAIRENOV, ROW_NUMBER () OVER (order by A.UNITKEY, A.IDBRG, A.ASETKEY) URUTBRG
+      from ASET_HISTRENOVDET A
+      ) X ON X.UNITKEY = A.UNITKEY AND X.NOBARENOV = A.NOBA AND X.ASETKEY = A.ASETKEY AND X.URUTBRG = A.URUTBRG
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+      where A.UNITKEY=#Unitkey#
+      and A.NOATRIBUSI=#Noatribusi#
+      and A.NOBA=#Noba#
+      and A.MTGKEY=#Mtgkey#
+    </select>
+    <select id="QueryByLookupAtribusidetbrg" extends="BaseQueryAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result">
+      where 1=1
+    </select>
+    <select id="LoadByPKAtribusidetbrg" extends="BaseQueryAtribusidetbrg" parameterClass="Atribusidetbrg" resultMap="return-result">
+      where A.UNITKEY=#Unitkey# and A.NOATRIBUSI=#Noatribusi# and A.NOBA=#Noba# and A.MTGKEY=#Mtgkey# and A.IDBRG=#Idbrg# and A.URUTBRG=#Urutbrg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Atribusidetbrg">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Generated" column="GENERATED"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noatribusi" column="NOATRIBUSI"/>
+      <parameter property="Noba" column="NOBA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Urutbrg" column="URUTBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Atribusidetbrg">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Atribusidetbrg">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noatribusi" column="NOATRIBUSI"/>
+      <parameter property="Noba" column="NOBA"/>
+      <parameter property="Mtgkey" column="MTGKEY"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Urutbrg" column="URUTBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

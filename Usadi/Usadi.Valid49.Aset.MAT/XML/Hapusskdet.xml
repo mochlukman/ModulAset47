@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Hapusskdet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Hapusskdet" type="Usadi.Valid49.BO.HapusskdetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Hapusskdet">
+      <result property="Id" column="ID"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Kdunit" column="KDUNIT"/>
+      <result property="Nmunit" column="NMUNIT"/>
+      <result property="Noskhapus" column="NOSKHAPUS"/>
+      <result property="Kdtans" column="KDTANS"/>
+      <result property="Nmtrans" column="NMTRANS"/>
+      <result property="Asetkey" column="ASETKEY"/>      
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Tahun" column="TAHUN"/>
+      <result property="Noreg" column="NOREG"/>
+      <result property="Idbrg" column="IDBRG"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Nopindahtangan" column="NOPINDAHTANGAN"/>
+      <result property="Tglpindahtangan" column="TGLPINDAHTANGAN"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertHapusskdet" parameterClass="Hapusskdet">
+      insert into ASET_HAPUSSKDET(UNITKEY,NOSKHAPUS,KDTANS,ASETKEY,TAHUN,NOREG,IDBRG,NILAI,NOPINDAHTANGAN)
+      values (#Unitkey#,#Noskhapus#,#Kdtans#,#Asetkey#,#Tahun#,#Noreg#,#Idbrg#,#Nilai#,#Nopindahtangan#)
+    </insert>
+    <update id="UpdateByHapusskdet" parameterMap="update-param">
+      <generate table="Hapusskdet" by="UNITKEY,NOSKHAPUS,KDTANS,ASETKEY,TAHUN,NOREG"/>
+    </update>
+    <delete id="DeleteByHapusskdet" parameterMap="delete-param">
+      <generate table="Aset_hapusskdet" by="UNITKEY,NOSKHAPUS,KDTANS,ASETKEY,TAHUN,NOREG"/>
+    </delete>
+    <select id="BaseQueryHapusskdet" parameterClass="Hapusskdet" resultMap="return-result">
+      select AH.ID, AH.UNITKEY, D.KDUNIT, D.NMUNIT, AH.NOSKHAPUS, AH.KDTANS, J.NMTRANS, AH.ASETKEY, D2.KDASET, D2.NMASET
+      , AH.TAHUN, AH.NOREG, AH.IDBRG, AH.NILAI, AH.NOPINDAHTANGAN, AP.TGLPINDAHTANGAN
+      from ASET_HAPUSSKDET AH
+      left join ASET_PINDAHTANGAN AP ON AP.NOPINDAHTANGAN = AH.NOPINDAHTANGAN AND AP.KDTANS = AH.KDTANS AND AP.UNITKEY = AH.UNITKEY
+      left join DAFTASET D2 ON D2.ASETKEY = AH.ASETKEY
+      left join JTRANS J ON J.KDTANS = AH.KDTANS
+      left join DAFTUNIT D ON D.UNITKEY = AH.UNITKEY
+    </select>
+    <select id="QueryByAllHapusskdet" extends="BaseQueryHapusskdet" parameterClass="Hapusskdet" resultMap="return-result">
+      where 1=1
+      and AH.UNITKEY = #Unitkey#
+      and AH.NOSKHAPUS = #Noskhapus#
+    </select>
+    <select id="QueryByLookupHapusskdet" extends="BaseQueryHapusskdet" parameterClass="Hapusskdet" resultMap="return-result">
+      where 1=1
+      and AH.UNITKEY = #Unitkey#
+      and AH.NOSKHAPUS = #Noskhapus#
+    </select>
+    <select id="LoadByPKHapusskdet" extends="BaseQueryHapusskdet" parameterClass="Hapusskdet" resultMap="return-result">
+      where AH.UNITKEY = #Unitkey#
+      and AH.NOSKHAPUS = #Noskhapus#
+      and AH.KDTANS = #Kdtans#
+      and AH.ASETKEY = #Asetkey#
+      and AH.TAHUN = #Tahun#
+      and AH.NOREG = #Noreg#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Hapusskdet">
+      <parameter property="Id" column="ID"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskhapus" column="NOSKHAPUS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Nmtrans" column="NMTRANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Nopindahtangan" column="NOPINDAHTANGAN"/>
+      <parameter property="Tglpindahtangan" column="TGLPINDAHTANGAN"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Hapusskdet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Hapusskdet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Noskhapus" column="NOSKHAPUS"/>
+      <parameter property="Kdtans" column="KDTANS"/>
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Tahun" column="TAHUN"/>
+      <parameter property="Noreg" column="NOREG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

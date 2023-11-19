@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Webusergroup" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+      <typeAlias alias="Webusergroup" type="Usadi.Valid49.BO.WebusergroupControl" />
+    </alias>
+    <resultMaps>
+      <resultMap id="return-result" class="Webusergroup">
+        <result property="Groupid" column="GROUPID"/>
+        <result property="Userid" column="USERID"/>
+      </resultMap>
+    </resultMaps>
+    <statements>
+      <insert id="InsertWebusergroup" parameterMap="insert-param">
+        <generate table="WEBUSERGROUP"/>
+      </insert>
+      <update id="UpdateByWebusergroup" parameterMap="update-param">
+        <generate table="WEBUSERGROUP" by="GROUPID,USERID"/>
+      </update>
+      <update id="UpdateByValidRevWebusergroup" parameterClass="Webusergroup">
+        update WEBUSERGROUP set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+      </update>
+      <update id="UpdateByUnValidRevWebusergroup" parameterClass="Webusergroup">
+        update WEBUSERGROUP set REV_BY='' and REV_DATE=null
+      </update>
+      <delete id="DeleteByWebusergroup" parameterMap="delete-param">
+        <generate table="WEBUSERGROUP" by="GROUPID,USERID"/>
+      </delete>
+      <select id="BaseQueryWebusergroup" parameterClass="Webusergroup" resultMap="return-result">
+        select rtrim(W.GROUPID) as GROUPID,rtrim(W.USERID) as USERID
+        from WEBUSERGROUP W
+      </select>
+      <select id="QueryByAllWebusergroup" extends="BaseQueryWebusergroup" parameterClass="Webusergroup" resultMap="return-result">
+        where 1=1
+        order by W.GROUPID,W.USERID
+      </select>
+      <select id="QueryByLookupWebusergroup" extends="BaseQueryWebusergroup" parameterClass="Webusergroup" resultMap="return-result">
+        where 1=1
+        order by W.GROUPID,W.USERID
+      </select>
+      <select id="LoadByPKWebusergroup" extends="BaseQueryWebusergroup" parameterClass="Webusergroup" resultMap="return-result">
+        where W.GROUPID = #Groupid# and W.USERID = #Userid#
+      </select>
+    </statements>
+    <parameterMaps>
+      <parameterMap id="insert-param" class="Webusergroup">
+        <parameter property="Groupid" column="GROUPID"/>
+        <parameter property="Userid" column="USERID"/>
+      </parameterMap>
+      <parameterMap id="update-param" extends="insert-param" class="Webusergroup">
+      </parameterMap>
+      <parameterMap id="delete-param" class="Webusergroup">
+        <parameter property="Groupid" column="GROUPID"/>
+        <parameter property="Userid" column="USERID"/>
+      </parameterMap>
+    </parameterMaps>
+</sqlMap>
+

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jlokasi" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jlokasi" type="Usadi.Valid49.BO.JlokasiControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jlokasi">
+      <result property="Id" column="ID"/>
+      <result property="Uraijlok" column="URAIJLOK"/>
+      <result property="Ket" column="KET"/>
+      <result property="Jenis" column="KDLEVEL"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJlokasi" parameterMap="insert-param">
+      <generate table="JLOKASI"/>
+    </insert>
+    <resultMap id="return-result-jenis" class="Struaset">
+      <result property="Jenis" column="KDLEVEL"/>
+    </resultMap>
+    <update id="UpdateByJlokasi" parameterMap="update-param">
+      <generate table="JLOKASI" by="KDJLOK"/>
+    </update>
+    <update id="UpdateByValidRevJlokasi" parameterClass="Jlokasi">
+      update JLOKASI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJlokasi" parameterClass="Jlokasi">
+      update JLOKASI set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJlokasi" parameterMap="delete-param">
+      <generate table="JLOKASI" by="KDJLOK"/>
+    </delete>
+    <select id="BaseQueryJlokasi" parameterClass="Jlokasi" resultMap="return-result">
+      select J.ID, J.KDJLOK as KDLEVEL, J.URAIJLOK, J.KET
+      from JLOKASI J
+    </select>
+    <select id="QueryByAllJlokasi" extends="BaseQueryJlokasi" parameterClass="Jlokasi" resultMap="return-result">
+      where 1=1
+      order by J.KDJLOK
+    </select>
+    <select id="QueryByLookupJlokasi" extends="BaseQueryJlokasi" parameterClass="Jlokasi" resultMap="return-result">
+      where 1=1
+      order by J.KDJLOK
+    </select>
+    <select id="LoadByPKJlokasi" extends="BaseQueryJlokasi" parameterClass="Jlokasi" resultMap="return-result">
+      where J.KDJLOK = #Kdjlok#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jlokasi">
+      <parameter property="Uraijlok" column="URAIJLOK"/>
+      <parameter property="Ket" column="KET"/>
+      <parameter property="Jenis" column="KDJLOK"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jlokasi">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jlokasi">
+      <parameter property="Jenis" column="KDJLOK"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

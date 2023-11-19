@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Jklas" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Jklas" type="Usadi.Valid49.BO.JklasControl, Usadi.Valid49.Aset.DM" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Jklas">
+      <result property="Id" column="ID"/>
+      <result property="Uraiklas" column="URAIKLAS"/>
+      <result property="Kdklas" column="KDKLAS"/>
+    </resultMap>
+    <resultMap id="return-result-kdklas" class="Jklas">
+      <result property="Kdklas" column="KDKLAS"/>
+    </resultMap>
+    <resultMap id="return-result-Rpt" class="Jklas">
+      <result property="Uraiklas" column="URAIKLAS"/>
+      <result property="Kdklas" column="KDKLAS"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <insert id="InsertJklas" parameterMap="insert-param">
+      <generate table="Jklas"/>
+    </insert>
+    <update id="UpdateByJklas" parameterMap="update-param">
+      <generate table="Jklas" by="KDKLAS"/>
+    </update>
+    <update id="UpdateByValidRevJklas" parameterClass="Jklas">
+      update JKLAS set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevJklas" parameterClass="Jklas">
+      update JKLAS set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByJklas" parameterMap="delete-param">
+      <generate table="Jklas" by="KDKLAS"/>
+    </delete>
+    <select id="BaseQueryJklas" parameterClass="Jklas" resultMap="return-result">
+      select J.ID, J.KDKLAS, J.URAIKLAS
+      from JKLAS J
+    </select>
+    <select id="QueryByAllJklas" extends="BaseQueryJklas" parameterClass="Jklas" resultMap="return-result">
+      where 1=1
+      order by J.KDKLAS
+    </select>
+    <select id="QueryByKdklasJklas" parameterClass="Jklas" resultMap="return-result-kdklas">
+      select cast(isnull(max(J.KDKLAS),0) as varchar) KDKLAS from JKLAS as J
+    </select>
+    <select id="QueryByLookupJklas" extends="BaseQueryJklas" parameterClass="Jklas" resultMap="return-result">
+      where 1=1
+      order by J.KDKLAS
+    </select>
+    <select id="LoadByPKJklas" extends="BaseQueryJklas" parameterClass="Jklas" resultMap="return-result">
+      <!--where J.KDKLAS = #Kdklas#-->
+    </select>
+    <select id="QueryByRptLookupJklas" parameterClass="Jklas" resultMap="return-result-Rpt">
+      SELECT s.KDKLAS,s.URAIKLAS FROM (
+        SELECT j.KDKLAS,j.URAIKLAS FROM JKLAS AS j
+        UNION ALL
+        SELECT '99','Semua'
+      ) s
+      ORDER BY s.KDKLAS
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Jklas">
+      <parameter property="Uraiklas" column="URAIKLAS"/>
+      <parameter property="Kdklas" column="KDKLAS"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Jklas">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Jklas">
+      <parameter property="Kdklas" column="KDKLAS"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

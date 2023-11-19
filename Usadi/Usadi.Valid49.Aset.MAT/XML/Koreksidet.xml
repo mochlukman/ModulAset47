@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Koreksidet" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <alias>
+    <typeAlias alias="Koreksidet" type="Usadi.Valid49.BO.KoreksidetControl, Usadi.Valid49.Aset.MAT" />
+  </alias>
+  <resultMaps>
+    <resultMap id="return-result" class="Koreksidet">
+      <result property="Id" column="ID"/>
+      <result property="Asetkey" column="ASETKEY"/>
+      <result property="Kdaset" column="KDASET"/>
+      <result property="Nmaset" column="NMASET"/>
+      <result property="Nilai" column="NILAI"/>
+      <result property="Nilaikoreksi" column="NILAIKOREKSI"/>
+      <result property="Nilaikoreksiganda" column="NILAIKOREKSIGANDA"/>
+      <result property="Umekokoreksi" column="UMEKOKOREKSI"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Unitkey" column="UNITKEY"/>
+      <result property="Nobakoreksi" column="NOBAKOREKSI"/>
+      <result property="Idbrg" column="IDBRG"/>
+    </resultMap>
+  </resultMaps>
+  <statements>
+    <!--<insert id="InsertKoreksidet" parameterMap="insert-param">
+      <generate table="Aset_koreksidet"/>
+    </insert>-->
+    <insert id="InsertKoreksidet" parameterClass="Koreksidet">
+      INSERT INTO ASET_KOREKSIDET(ASETKEY,NILAI,NILAIKOREKSI,UMEKOKOREKSI,UNITKEY,NOBAKOREKSI,IDBRG)
+      VALUES (#Asetkey#,#Nilai#,(CASE WHEN #Kdtans#='228' THEN #Nilai# ELSE #Nilaikoreksi# END),#Umekokoreksi#,#Unitkey#,#Nobakoreksi#,#Idbrg#)
+    </insert>
+    <update id="UpdateByKoreksidet" parameterClass="Koreksidet">
+      update ASET_KOREKSIDET
+      set NILAIKOREKSI=#Nilaikoreksi#
+      where UNITKEY=#Unitkey# and NOBAKOREKSI=#Nobakoreksi# and IDBRG=#Idbrg#
+    </update>
+    <update id="UpdateByValidRevKoreksidet" parameterClass="Koreksidet">
+      update ASET_KOREKSIDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    </update>
+    <update id="UpdateByUnValidRevKoreksidet" parameterClass="Koreksidet">
+      update ASET_KOREKSIDET set REV_BY='' and REV_DATE=null
+    </update>
+    <delete id="DeleteByKoreksidet" parameterMap="delete-param">
+      <generate table="Aset_koreksidet" by="UNITKEY,NOBAKOREKSI,IDBRG"/>
+    </delete>
+    <select id="BaseQueryKoreksidet" parameterClass="Koreksidet" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOBAKOREKSI, A.IDBRG, A.ASETKEY, D.KDASET, D.NMASET, A.NILAI,
+      (CASE WHEN #Kdtans#='228' THEN A.NILAI ELSE A.NILAIKOREKSI END) NILAIKOREKSI,A.NILAIKOREKSI NILAIKOREKSIGANDA, A.UMEKOKOREKSI,
+      (D.KDASET+' - '+D.NMASET + CHAR(13) + 'Tahun : ' + AK.TAHUN + CHAR(13) + 'Register : ' + AK.NOREG + CHAR(13) + 'Nilai : '
+      + replace(dbo.SplitMoney(LTRIM(CAST(A.NILAI as CHAR(30)))),'..','.')) as SPESIFIKASI
+      from ASET_KOREKSIDET A
+      left join ASET_KIBSPESIFIKASI AK ON AK.IDBRG = A.IDBRG AND AK.UNITKEY = A.UNITKEY AND AK.ASETKEY = A.ASETKEY
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+    </select>
+    <select id="QueryByAllKoreksidet" extends="BaseQueryKoreksidet" parameterClass="Koreksidet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOBAKOREKSI=#Nobakoreksi#
+    </select>
+    <select id="QueryByLookupKoreksidet" extends="BaseQueryKoreksidet" parameterClass="Koreksidet" resultMap="return-result">
+      where 1=1
+      and A.UNITKEY=#Unitkey#
+      and A.NOBAKOREKSI=#Nobakoreksi#
+    </select>
+    <select id="LoadByPKKoreksidet" parameterClass="Koreksidet" resultMap="return-result">
+      select A.ID, A.UNITKEY, A.NOBAKOREKSI, A.IDBRG, A.ASETKEY, D.KDASET, D.NMASET, A.NILAI,
+      (CASE WHEN #Kdtans#='130' THEN A.NILAI ELSE A.NILAIKOREKSI END) NILAIKOREKSI,A.NILAI NILAIKOREKSIGANDA, A.UMEKOKOREKSI,
+      (D.KDASET+' - '+D.NMASET + CHAR(13) + 'Tahun : ' + AK.TAHUN + CHAR(13) + 'Register : ' + AK.NOREG + CHAR(13) + 'Nilai : '
+      + replace(dbo.SplitMoney(LTRIM(CAST(A.NILAI as CHAR(30)))),'..','.')) as SPESIFIKASI
+      from ASET_KOREKSIDET A
+      left join ASET_KIBSPESIFIKASI AK ON AK.IDBRG = A.IDBRG AND AK.UNITKEY = A.UNITKEY AND AK.ASETKEY = A.ASETKEY
+      left join DAFTASET D ON D.ASETKEY = A.ASETKEY
+      where A.UNITKEY=#Unitkey# and A.NOBAKOREKSI=#Nobakoreksi#
+    </select>
+  </statements>
+  <parameterMaps>
+    <parameterMap id="insert-param" class="Koreksidet">
+      <parameter property="Asetkey" column="ASETKEY"/>
+      <parameter property="Nilai" column="NILAI"/>
+      <parameter property="Nilaikoreksi" column="NILAIKOREKSI"/>
+      <parameter property="Umekokoreksi" column="UMEKOKOREKSI"/>
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobakoreksi" column="NOBAKOREKSI"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+    <parameterMap id="update-param" extends="insert-param" class="Koreksidet">
+    </parameterMap>
+    <parameterMap id="delete-param" class="Koreksidet">
+      <parameter property="Unitkey" column="UNITKEY"/>
+      <parameter property="Nobakoreksi" column="NOBAKOREKSI"/>
+      <parameter property="Idbrg" column="IDBRG"/>
+    </parameterMap>
+  </parameterMaps>
+</sqlMap>
+

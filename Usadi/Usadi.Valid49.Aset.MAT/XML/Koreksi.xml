@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="Koreksi" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <alias>
+        <typeAlias alias="Koreksi" type="Usadi.Valid49.BO.KoreksiControl, Usadi.Valid49.Aset.MAT" />
+    </alias>
+    <resultMaps>
+        <resultMap id="return-result" class="Koreksi">
+            <result property="Id" column="ID"/>
+            <result property="Tglbakoreksi" column="TGLBAKOREKSI"/>
+            <result property="Uraibakoreksi" column="URAIBAKOREKSI"/>
+            <result property="Kdtans" column="KDTANS"/>
+            <result property="Tglvalid" column="TGLVALID"/>
+            <result property="Kdunit" column="KDUNIT"/>
+            <result property="Nmunit" column="NMUNIT"/>
+            <result property="Nmtrans" column="NMTRANS"/>
+            <result property="Unitkey" column="UNITKEY"/>
+            <result property="Nobakoreksi" column="NOBAKOREKSI"/>
+        </resultMap>
+        <resultMap id="return-cekjmldata" class="Koreksi">
+            <result property="Jmldata" column="JMLDATA"/>
+        </resultMap>
+        <resultMap id="return-jmlkib" class="Koreksi">
+            <result property="Jmlkib" column="JMLKIB"/>
+        </resultMap>
+        <resultMap id="return-noba" class="Koreksi">
+            <result property="Nobakoreksi" column="NOBAKOREKSI"/>
+        </resultMap>
+    </resultMaps>
+    <statements>
+        <insert id="InsertKoreksi" parameterClass="Koreksi">
+            insert into ASET_KOREKSI(UNITKEY,NOBAKOREKSI,TGLBAKOREKSI,URAIBAKOREKSI,KDTANS,TGLVALID)
+            values(#Unitkey#, #Nobakoreksi#, #Tglbakoreksi#, #Uraibakoreksi#, #Kdtans#, null)
+        </insert>
+        <update id="UpdateByKoreksi" parameterClass="Koreksi">
+            update ASET_KOREKSI
+            set TGLBAKOREKSI=#Tglbakoreksi#, URAIBAKOREKSI=#Uraibakoreksi#
+            where UNITKEY=#Unitkey# and NOBAKOREKSI=#Nobakoreksi#
+        </update>
+        <update id="UpdateBySahKoreksi" parameterClass="Koreksi">
+            update ASET_KOREKSI set TGLVALID=#Tglvalid#
+            where UNITKEY=#Unitkey# and NOBAKOREKSI=#Nobakoreksi#
+        </update>
+        <update id="UpdateByDraftKoreksi" parameterClass="Koreksi">
+            update ASET_KOREKSI set TGLVALID=null
+            where UNITKEY=#Unitkey# and NOBAKOREKSI=#Nobakoreksi#
+        </update>
+        <update id="UpdateByValidRevKoreksi" parameterClass="Koreksi">
+            update ASET_KOREKSI set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+        </update>
+        <update id="UpdateByUnValidRevKoreksi" parameterClass="Koreksi">
+            update ASET_KOREKSI set REV_BY='' and REV_DATE=null
+        </update>
+        <delete id="DeleteByKoreksi" parameterMap="delete-param">
+            <generate table="Aset_koreksi" by="UNITKEY,NOBAKOREKSI"/>
+        </delete>
+        <select id="BaseQueryKoreksi" parameterClass="Koreksi" resultMap="return-result">
+            select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOBAKOREKSI, A.TGLBAKOREKSI, A.URAIBAKOREKSI, A.KDTANS, J.NMTRANS, A.TGLVALID
+            from ASET_KOREKSI A
+            left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
+            left join JTRANS J ON J.KDTANS = A.KDTANS
+        </select>
+        <select id="QueryByAllKoreksi" extends="BaseQueryKoreksi" parameterClass="Koreksi" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+            and year(A.TGLBAKOREKSI) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByLookupKoreksi" extends="BaseQueryKoreksi" parameterClass="Koreksi" resultMap="return-result">
+            where 1=1
+            and A.UNITKEY=#Unitkey#
+            and A.KDTANS=#Kdtans#
+            and year(A.TGLBAKOREKSI) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+        </select>
+        <select id="QueryByNobaKoreksi" parameterClass="Koreksi" resultMap="return-noba">
+            select A.NOBAKOREKSI
+            from ASET_KOREKSI A
+            where 1=1
+            and A.NOBAKOREKSI=#Nobakoreksi#
+        </select>
+        <select id="LoadByPKKoreksi" extends="BaseQueryKoreksi" parameterClass="Koreksi" resultMap="return-result">
+            where A.UNITKEY=#Unitkey# and A.KDTANS=#Kdtans#
+        </select>
+        <select id="LoadByJmldataKoreksi" parameterClass="Koreksi" resultMap="return-cekjmldata">
+            select COUNT(*) JMLDATA
+            from ASET_KOREKSIDET A
+            where A.UNITKEY=#Unitkey# 
+            and A.NOBAKOREKSI=#Nobakoreksi#
+        </select>
+        <select id="LoadByJmlkibKoreksi" parameterClass="Koreksi" resultMap="return-jmlkib">
+            select sum(x.NOBAKOREKSI) as JMLKIB from (
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBADET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBBDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBCDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBDDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBEDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#
+            union all
+            select count(NODOKUMEN) as NOBAKOREKSI from ASET_KIBGDET where UNITKEY=#Unitkey# and NODOKUMEN=#Nobakoreksi# and KDTANS=#Kdtans#) x
+        </select>
+    </statements>
+    <parameterMaps>
+        <parameterMap id="insert-param" class="Koreksi">
+            <parameter property="Tglbakoreksi" column="TGLBAKOREKSI"/>
+            <parameter property="Uraibakoreksi" column="URAIBAKOREKSI"/>
+            <parameter property="Kdtans" column="KDTANS"/>
+            <parameter property="Tglvalid" column="TGLVALID"/>
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Nobakoreksi" column="NOBAKOREKSI"/>
+        </parameterMap>
+        <parameterMap id="update-param" extends="insert-param" class="Koreksi">
+        </parameterMap>
+        <parameterMap id="delete-param" class="Koreksi">
+            <parameter property="Unitkey" column="UNITKEY"/>
+            <parameter property="Nobakoreksi" column="NOBAKOREKSI"/>
+        </parameterMap>
+    </parameterMaps>
+</sqlMap>
+
