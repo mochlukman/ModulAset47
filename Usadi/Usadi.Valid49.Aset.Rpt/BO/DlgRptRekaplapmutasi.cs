@@ -140,8 +140,6 @@ namespace Usadi.Valid49.BO
       });
       hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Kelaset=Kelompok Aset"), ParameterRow.MODE_SELECT,
        listkelaset, "Kdpar=Nmpar", 54).SetEnable(enableFilter));
-      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Level=Level"),
-       GetList(new StruasetLookupControl()), "Level=Nmlevel", 54).SetEnable(enableFilter));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglawal=Tanggal Awal"), true).SetEnable(true));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglakhir=Tanggal Akhir"), true).SetEnable(true));
 
@@ -220,7 +218,6 @@ namespace Usadi.Valid49.BO
       Params["@Kelompok"] = Kelaset;
       Params["@tglawal"] = Tglawal;
       Params["@tglakhir"] = Tglakhir;
-      Params["@kdlevel"] = Level;
       Params["@kdklas"] = Kdklas;
       Params["@subunit"] = Subunit;
 
