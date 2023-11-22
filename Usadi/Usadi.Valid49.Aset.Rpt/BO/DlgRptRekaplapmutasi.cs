@@ -137,6 +137,7 @@ namespace Usadi.Valid49.BO
          new ParamControl() { Kdpar="11",Nmpar="Aset Lancar"}
         ,new ParamControl() { Kdpar="13",Nmpar="Aset Tetap"}
         ,new ParamControl() { Kdpar="15",Nmpar="Aset Lainnya"}
+        ,new ParamControl() { Kdpar="99",Nmpar="Semua"}
       });
       hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Kelaset=Kelompok Aset"), ParameterRow.MODE_SELECT,
        listkelaset, "Kdpar=Nmpar", 54).SetEnable(enableFilter));
