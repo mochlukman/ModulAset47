@@ -294,12 +294,7 @@ namespace Usadi.Valid49.BO
         @KDTANS = N'{20}',
         @JUMLAH = N'{21}',
         @NILAI = N'{22}',
-        @NILINSERT = N'{23}',        
-        @UTARA = N'{24}',
-        @TIMUR = N'{25}',
-        @SELATAN = N'{26}',
-        @BARAT = N'{27}',
-        @LOKASI = N'{28}'
+        @NILINSERT = N'{23}'
         ";
             sql = string.Format(sql, Unitkey, Asetkey, Tahun, Kdpemilik, Asalusul, Pengguna, Ket, Kdkon, Merktype, Ukuran, Bahan
               , Kdwarna, Nopabrik, Norangka, Nopolisi, Nobpkb, Nomesin, Kdsatuan, Noba, Tglperolehan.ToString("yyyy-MM-dd"), Kdtans
