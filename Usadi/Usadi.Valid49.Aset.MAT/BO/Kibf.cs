@@ -409,8 +409,11 @@ namespace Usadi.Valid49.BO
 
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Nilai"), true, 35).SetEnable(enable).SetEditable(false)
         .SetAllowEmpty(false).SetGroup(GROUP_3));
-
-      hpars.Add(new ParameterRowUploadFile(this, true));
+      if (Entrysa == "Y")
+      {
+        hpars.Add(new ParameterRowUploadFile(this, true));
+      }
+      //hpars.Add(new ParameterRowUploadFile(this, true));
       return hpars;
     }
 
