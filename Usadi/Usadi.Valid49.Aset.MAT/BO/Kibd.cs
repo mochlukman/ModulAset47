@@ -367,8 +367,7 @@ namespace Usadi.Valid49.BO
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglperolehan=Tanggal Perolehan"), false).SetEnable(enable).SetGroup(GROUP_1));
 
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkon=Kondisi"),
-      GetList(new KonasetLookupControl()), "Kdkon=Nmkon", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false)
-      .SetEditable(false).SetGroup(GROUP_1));
+      GetList(new KonasetLookupControl()), "Kdkon=Nmkon", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_1));
 
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdhak=Hak"),
       GetList(new JhakLookupControl()), "Kdhak=Nmhak", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_1));
@@ -407,8 +406,11 @@ namespace Usadi.Valid49.BO
 
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Nilai"), true, 50).SetEnable(enable).SetEditable(false)
         .SetAllowEmpty(false).SetGroup(GROUP_3));
-
-      hpars.Add(new ParameterRowUploadFile(this, true));
+      if (Entrysa == "Y")
+      {
+        hpars.Add(new ParameterRowUploadFile(this, true));
+      }
+      //hpars.Add(new ParameterRowUploadFile(this, true));
       return hpars;
     }
 
