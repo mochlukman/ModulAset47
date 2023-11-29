@@ -148,7 +148,7 @@ namespace Usadi.Valid49.BO
         }
         else
         {
-          cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
+          cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
         }
 
         cViewListProperties.AllowMultiDelete = true;
@@ -419,8 +419,11 @@ namespace Usadi.Valid49.BO
 
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Nilai"), true, 50).SetEnable(enable).SetEditable(false)
         .SetAllowEmpty(false).SetGroup(GROUP_3));
-
-      hpars.Add(new ParameterRowUploadFile(this, true));
+      if (Entrysa == "Y")
+      {
+        hpars.Add(new ParameterRowUploadFile(this, true));
+      }
+      //hpars.Add(new ParameterRowUploadFile(this, true));
       return hpars;
     }
 
