@@ -139,7 +139,7 @@ namespace Usadi.Valid49.BO
         }
         else
         {
-          cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
+          cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
         }
 
         cViewListProperties.AllowMultiDelete = true;
