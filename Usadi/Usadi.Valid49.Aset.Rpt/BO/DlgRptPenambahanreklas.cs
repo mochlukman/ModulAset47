@@ -82,7 +82,7 @@ namespace Usadi.Valid49.BO
       XMLName = ConstantTablesAsetDM.XMLDAFTUNIT;
       SetDefaultDate(RANGE_MONTH);
       Kdklas = "01";
-      Subunit = "1"; 
+      Subunit = "1";
     }
 
     ViewListProperties cViewListProperties = null;
@@ -112,6 +112,22 @@ namespace Usadi.Valid49.BO
           }
         };
         return new ImageCommand[] { cmd1 };
+      }
+    }
+    public ImageCommand[] Cmds1
+    {
+      get
+      {
+        ImageCommand cmd2 = new ImageCommand()
+        {
+          CommandName = "LinkExcel",
+          Icon = Icon.PageExcel,
+          ToolTip =
+          {
+            Text = "Klik tombol ini untuk mencetak data"
+          }
+        };
+        return new ImageCommand[] { cmd2 };
       }
     }
 
@@ -179,6 +195,20 @@ namespace Usadi.Valid49.BO
         return ConstantDict.Translate(XMLName) + " " + Kdunit + "|" + url;
       }
     }
+    public string LinkExcel
+    {
+      get
+      {
+        string app = GlobalAsp.GetRequestApp();
+        string id = GlobalAsp.GetRequestId();
+        string idprev = GlobalAsp.GetRequestId();
+        string kode = GlobalAsp.GetRequestKode();
+        string idx = GlobalAsp.GetRequestIndex();
+        string strenable = "&enable=" + ((Status == 0) ? 1 : 0);
+        string url = string.Format("Page/PageRpt.aspx?passdc=1&app={0}&i=1&id={1}&idprev={2}&kode={3}&idx={4}&val=0" + strenable, app, id, idprev, kode, idx);
+        return ConstantDict.Translate(XMLName) + " " + Kdunit + "|" + url;
+      }
+    }
 
     public string GetURLReport(int n)
     {
@@ -203,7 +233,18 @@ namespace Usadi.Valid49.BO
       Params["@subunit"] = Subunit;
 
 
-      string pdfurl = ReportUtils.ExportPDF("Usadi.Valid49.Aset.Rpt.Rpt.PENAMBAHAN_REKLAS.rpt", CS, Params);
+      //string pdfurl = ReportUtils.ExportPDF("Usadi.Valid49.Aset.Rpt.Rpt.PENAMBAHAN_REKLAS.rpt", CS, Params);
+      //return pdfurl;
+      string pdfurl;
+      if (n == 0)
+      {
+        pdfurl = ReportUtils.ExportPDF("Usadi.Valid49.Aset.Rpt.Rpt.PENAMBAHAN_REKLAS.rpt", CS, Params);
+      }
+      else
+      {
+        CS[ReportUtils.PDFNAME] = "PENAMBAHAN_REKLAS_" + (string)GlobalAsp.GetSessionUser().GetValue("Userid") + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
+        pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.PENAMBAHAN_REKLAS.rpt", CS, Params);
+      }
       return pdfurl;
     }
 
@@ -218,8 +259,9 @@ namespace Usadi.Valid49.BO
 
     public List<RptPars> GetReports()
     {
-      RptPars rptPar = new RptPars() { Title = "Laporan Penambahan Reklasifikasi BMD", RptClass = LinkPdf };
-      return new List<RptPars>(new RptPars[] { rptPar });
+      RptPars rptPar = new RptPars() { Title = "Pdf", RptClass = LinkPdf };
+      RptPars rptPar1 = new RptPars() { Title = "Excel", RptClass = LinkExcel };
+      return new List<RptPars>(new RptPars[] { rptPar, rptPar1 });
     }
 
     public void Print(int n)
