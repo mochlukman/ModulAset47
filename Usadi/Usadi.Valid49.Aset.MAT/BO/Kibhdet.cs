@@ -101,6 +101,7 @@ namespace Usadi.Valid49.BO
                 Idbrg = ((KibhControl)bo).Idbrg;
                 Unitkey = ((KibhControl)bo).Unitkey;
                 Asetkey = ((KibhControl)bo).Asetkey;
+                Noreg = ((KibhControl)bo).Noreg;
             }
         }
         public override DataControlFieldCollection GetColumns()

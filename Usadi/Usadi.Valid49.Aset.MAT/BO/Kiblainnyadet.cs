@@ -95,34 +95,34 @@ namespace Usadi.Valid49.BO
 
             return columns;
         }
-        //public new IList View()
-        //{
-        //  IList list = this.View(BaseDataControl.ALL);
-        //  return list;
-        //}
-        public new IList View()
-        {
-            string sql = @"
-        exec [dbo].[REGISTER_KIBLAINNYA]
-		    @UNITKEY = N'{0}',
-		    @ASETKEY = N'{1}'
-      ";
+    public new IList View()
+    {
+      IList list = this.View(BaseDataControl.ALL);
+      return list;
+    }
+    //  public new IList View()
+    //  {
+    //      string sql = @"
+    //  exec [dbo].[REGISTER_KIBLAINNYA]
+    //@UNITKEY = N'{0}',
+    //@ASETKEY = N'{1}'
+    //";
 
-            sql = string.Format(sql, Unitkey, Asetkey);
-            string[] fields = new string[] { "Id", "Idbrg", "Unitkey", "Kdunit", "Nmunit", "Asetkey", "Kdaset", "Nmaset", "Tglperolehan"
-        , "Tahun", "Noreg", "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul", "Pengguna", "Kdsatuan", "Nmsatuan"
-        , "Spesifikasi", "Ukuran", "Bahan", "Nosertifikat", "Alamat", "Ket", "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib"  };
-            List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
-            List<KiblainnyaControl> ListData = new List<KiblainnyaControl>();
+    //      sql = string.Format(sql, Unitkey, Asetkey);
+    //      string[] fields = new string[] { "Id", "Idbrg", "Unitkey", "Kdunit", "Nmunit", "Asetkey", "Kdaset", "Nmaset", "Tglperolehan"
+    //  , "Tahun", "Noreg", "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul", "Pengguna", "Kdsatuan", "Nmsatuan"
+    //  , "Spesifikasi", "Ukuran", "Bahan", "Nosertifikat", "Alamat", "Ket", "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib"  };
+    //      List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
+    //      List<KiblainnyaControl> ListData = new List<KiblainnyaControl>();
 
-            foreach (KiblainnyaControl dc in list)
-            {
-                ListData.Add(dc);
-            }
-            return ListData;
-        }
+    //      foreach (KiblainnyaControl dc in list)
+    //      {
+    //          ListData.Add(dc);
+    //      }
+    //      return ListData;
+    //  }
 
-        public new IList View(string label)
+    public new IList View(string label)
         {
             IList list = ((BaseDataControl)this).View(label);
             List<KiblainnyadetControl> ListData = new List<KiblainnyadetControl>();

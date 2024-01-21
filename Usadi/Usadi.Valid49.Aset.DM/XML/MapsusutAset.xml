@@ -50,7 +50,7 @@
       from DAFTASET D
       where 1=1
       and D.TYPE = 'D'
-      and (LEFT(D.KDASET,6)='1.3.7.' OR LEFT(D.KDASET,6)='1.5.5.')
+      and (LEFT(D.KDASET,6)='1.3.7.' OR LEFT(D.KDASET,12)='1.5.3.01.02.' OR LEFT(D.KDASET,12)='1.5.4.01.02.')
       order by D.KDASET
     </select>
     <select id="QueryByLookupMapsusutAset" extends="BaseQueryMapsusutAset" parameterClass="MapsusutAset" resultMap="return-result">

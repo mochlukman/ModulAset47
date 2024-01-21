@@ -75,14 +75,7 @@ namespace Usadi.Valid49.BO
             }
             else
             {
-                if (Entrysa == "Y")
-                {
-                    cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
-                }
-                else
-                {
-                    cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
-                }
+                cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_DEL;
                 cViewListProperties.AllowMultiDelete = true;
             }
 

@@ -81,14 +81,7 @@ namespace Usadi.Valid49.BO
             }
             else
             {
-                if (Entrysa == "Y")
-                {
-                    cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
-                }
-                else
-                {
-                    cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
-                }
+                cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
                 cViewListProperties.AllowMultiDelete = true;
             }
 
@@ -101,6 +94,7 @@ namespace Usadi.Valid49.BO
                 Idbrg = ((KibbControl)bo).Idbrg;
                 Unitkey = ((KibbControl)bo).Unitkey;
                 Asetkey = ((KibbControl)bo).Asetkey;
+                Noreg = ((KibbControl)bo).Noreg;
             }
         }
         public override DataControlFieldCollection GetColumns()

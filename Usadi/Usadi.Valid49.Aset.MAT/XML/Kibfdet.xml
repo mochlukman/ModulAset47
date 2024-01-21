@@ -64,9 +64,10 @@
     </select>
     <select id="QueryByAllKibfdet" extends="BaseQueryKibfdet" parameterClass="Kibfdet" resultMap="return-result">
       where 1=1
-      and A.IDBRG=#Idbrg# 
-      and A.UNITKEY=#Unitkey# 
+      and A.IDBRG=#Idbrg#
+      and A.UNITKEY=#Unitkey#
       and A.ASETKEY=#Asetkey#
+      and A.NOREG=#Noreg#
     </select>
     <select id="LoadByMaxuruttransKibfdet" parameterClass="Kibfdet" resultMap="return-maxuruttrans">
       select max(cast(URUTTRANS as INT)) MAXURUTTRANS from ASET_KIBFDET where IDBRG=#Idbrg#

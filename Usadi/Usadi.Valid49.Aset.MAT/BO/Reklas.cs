@@ -309,7 +309,19 @@ namespace Usadi.Valid49.BO
                                 sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
                                 BaseDataAdapter.ExecuteCmd(this, sql);
                             }
-                            else
+                            else if (Kdtans == "130") // Reklas Aset Tetap Lain to aset tetap (Masuk)
+                            {
+                              string sql = @"
+                exec [dbo].[WSPX_REKLASALAT]
+                @UNITKEY = N'{0}',
+                @NOREKLAS = N'{1}',
+                @TGLREKLAS = N'{2}',
+                @KDTANS = N'{3}'
+                ";
+                              sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
+                              BaseDataAdapter.ExecuteCmd(this, sql);
+                            }
+              else
                             {
                                 string sql = @"
                 exec [dbo].[WSPX_REKLAS]
@@ -329,43 +341,53 @@ namespace Usadi.Valid49.BO
         }
         public new int Delete()
         {
-            bool cekjmlkib = false;
 
-            ReklasControl cReklascekkib = new ReklasControl();
-            cReklascekkib.Unitkey = Unitkey;
-            cReklascekkib.Noreklas = Noreklas;
-            cReklascekkib.Kdtans = Kdtans;
-            cReklascekkib.Load("Jmlkib");
-            Jmlkib = cReklascekkib.Jmlkib;
+          //tidak usah pake cekjml kib
+            //bool cekjmlkib = false;
 
-            cekjmlkib = (Jmlkib >= 1);
+            //ReklasControl cReklascekkib = new ReklasControl();
+            //cReklascekkib.Unitkey = Unitkey;
+            //cReklascekkib.Noreklas = Noreklas;
+            //cReklascekkib.Kdtans = Kdtans;
+            //cReklascekkib.Load("Jmlkib");
+            //Jmlkib = cReklascekkib.Jmlkib;
+
+            //cekjmlkib = (Jmlkib >= 1);
 
             int n = 0;
             if (Valid)
             {
-                if (cekjmlkib == true)
-                {
-                    throw new Exception("Aset sudah di reklas, pengesahan tidak dapat dicabut.");
-                }
-
+                //if (cekjmlkib == true)
+                //{
+                //    throw new Exception("Aset sudah di reklas, pengesahan tidak dapat dicabut.");
+                //}
+                string sql = @"
+                      exec [dbo].[WSP_DEL_REKLAS]
+                      @UNITKEY = N'{0}',
+                      @NOREKLAS = N'{1}'
+                      ";
+                sql = string.Format(sql, Unitkey, Noreklas);
+                BaseDataAdapter.ExecuteCmd(this, sql);
                 return ((BaseDataControlUI)this).Update("Draft");
             }
             else
             {
-                try
-                {
-                    Status = -1;
-                    base.Delete();
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message.Contains("REFERENCE"))
-                    {
-                        string msg = "Hapus rincian barang terlebih dahulu";
-                        msg = string.Format(msg);
-                        throw new Exception(msg);
-                    }
-                }
+                 Status = -1;
+                 base.Delete();
+                //try
+                //{
+                //    Status = -1;
+                //    base.Delete();
+                //}
+                //catch (Exception ex)
+                //{
+                //    if (ex.Message.Contains("REFERENCE"))
+                //    {
+                //        string msg = "Hapus rincian barang terlebih dahulu";
+                //        msg = string.Format(msg);
+                //        throw new Exception(msg);
+                //    }
+                //}
             }
             return n;
         }

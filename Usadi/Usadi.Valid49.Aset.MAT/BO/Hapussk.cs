@@ -325,9 +325,11 @@ namespace Usadi.Valid49.BO
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle(""), typeof(string), EditCmd, 5, HorizontalAlign.Center).SetVisible(enable));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Stricon"), typeof(CommandColumn), Cmds, 5, HorizontalAlign.Center));
 
-            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Noskhapus=Nomor Dokumen"), typeof(string), 30, HorizontalAlign.Left));
-            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglskhapus=Tanggal Dokumen"), typeof(DateTime), 20, HorizontalAlign.Center));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Noskhapus=Nomor SK Penghapusan"), typeof(string), 30, HorizontalAlign.Left));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglskhapus=Tanggal SK Penghapusan"), typeof(DateTime), 25, HorizontalAlign.Center));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglvalid=Tanggal Pengesahan"), typeof(DateTime), 20, HorizontalAlign.Center));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nmtrans= Jenis Penghapusan"), typeof(string), 40, HorizontalAlign.Left));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Statusdokumen=Status"), typeof(string), 15, HorizontalAlign.Center));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Ket=Keterangan"), typeof(string), 70, HorizontalAlign.Left));
 
             return columns;

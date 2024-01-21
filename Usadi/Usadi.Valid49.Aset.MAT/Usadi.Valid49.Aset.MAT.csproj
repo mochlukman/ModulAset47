@@ -60,8 +60,8 @@
     <Compile Include="BO\Bapkirdet.cs" />
     <Compile Include="BO\Bapkir.cs" />
     <Compile Include="BO\InvbastLookup.cs" />
-    <Compile Include="BO\InvspbLookup.cs" />
     <Compile Include="BO\InvpenyaluranLookup.cs" />
+    <Compile Include="BO\InvspbLookup.cs" />
     <Compile Include="BO\SpbLookup.cs" />
     <Compile Include="BO\Berita\Berita125Lainnya.cs" />
     <Compile Include="BO\Berita\Berita124Pembatalan.cs" />

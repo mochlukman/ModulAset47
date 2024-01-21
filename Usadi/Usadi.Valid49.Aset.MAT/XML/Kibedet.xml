@@ -60,9 +60,10 @@
     </select>
     <select id="QueryByAllKibedet" extends="BaseQueryKibedet" parameterClass="Kibedet" resultMap="return-result">
       where 1=1
-      and A.IDBRG=#Idbrg#  
-      and A.UNITKEY=#Unitkey# 
+      and A.IDBRG=#Idbrg#
+      and A.UNITKEY=#Unitkey#
       and A.ASETKEY=#Asetkey#
+      and A.NOREG=#Noreg#
     </select>
   </statements>
   <parameterMaps>

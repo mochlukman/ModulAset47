@@ -23,11 +23,11 @@
 
     <nav class="navbar">
       <ul>
-         <li class="big"><a href="#"><img src="Res/img/logpemda.png" alt="SiGawai"/> </a></li>
+         <li class="big"><a href="https://quantum.intermatika.id/"><img class="medium" src="Res/img/Quantum.png" alt="Quantum"/> </a>Selamat Datang !</li>
       </ul>
       <ul>
         <li >
-            <a href="https://api.whatsapp.com/send?phone=6285175366682&text=Hallo%2C%20Boleh%20Saya%20Minta%20Informasi%20Detil%20Tentang%20SIPKD%20BMD%3F" target="_blank" class="image-link">
+            <a href="https://api.whatsapp.com/send?phone=6285175366682&text=Hallo%2C%20Boleh%20Saya%20Minta%20Informasi%20Detil%20Tentang%20SIPKD%20BMD%3F" target="_blank"  class="image-link">
             <img class="medium" src="Res/img/whatsapp.png" alt="phone_icon"/> 
             <img class="small" src="Res/img/butuhbantuan.png" alt="butuh bantuan"/>
             </a>
@@ -41,8 +41,8 @@
               <img id="rafiki" src="Res/img/bg_sipkdbmd.png"" alt="SiGawai"  />
                  <br />
               <img id="sigawai" src="Res/img/sipkd_bmd.png" alt="SiGawai"/>
-              <h2>Sistem Informasi Barang Milik Daerah</h2>
-              <p>Versi 1.0523</p>
+              <h2>Sistem Informasi Pengelolaan Barang Milik Daerah</h2>
+              <p>Version 1.0523</p>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
          <div class="title-container">
           <div class="title">Log in</div>
           <div class="title-image-container">
-            <img src="Res/img/Quantum.png" alt="quantumlogo"/>
+            <img src="Res/img/logopemda.png" alt="quantumlogo"/>
           </div>
         </div>
 
@@ -61,13 +61,13 @@
           <ext:ResourceManager ID="ResourceManager1" runat="server" ShowWarningOnAjaxFailure="false" />
           <input name="utxt_Code" runat="server" type="hidden" id="utxt_Code" />
             <Items Cls ="container">
-                <label class ="lblUser"> Username </label>
+                <label class ="lblUser"> User name </label>
               <ext:TextField
                 ID="txtUser"
                 runat="server"
                 AllowBlank="false"
-                BlankText="Your username is required."
-                EmptyText="Username"
+                BlankText="Your user name is required."
+                EmptyText="User name"
                 AutoScroll="false"
                 AnchorHorizontal="100%" 
                 Cls="ExtTextField" />
@@ -93,7 +93,7 @@
                 <DirectEvents>
                   <Click OnEvent="btnLogin_Click" Before="
                                 if (!#{txtUser}.validate() || !#{txtPwd}.validate()) {
-                                    Ext.Msg.alert('Error','The Username and Password fields are both required');
+                                    Ext.Msg.alert('Error','The User name and Password fields are both required');
                                     // return false to prevent the btnLogin_Click Ajax Click event from firing.
                                     return false; 
                                 };return validateLogin();" >
@@ -105,15 +105,15 @@
         </form>
 
             <div class="info">
-                <p>Untuk permintaan Username dan Password </p>
+                <p>Untuk permintaan User name dan Password </p>
                 <p>Hubungi Admin SIPKD BMD </p>
             </div>
-           <%-- <h5>Ikuti Kami </h5>
+            <!--<h5>Ikuti Kami </h5>
             <div class="image-container">
               <a href="https://www.facebook.com" target="_blank"><img src="Res/img/facebook_logo.png" alt="facebooklogo"/></a>
               <a href="https://www.instagram.com" target="_blank"><img src="Res/img/instagram_logo.png" alt="instagramlogo"/></a>
               <a href="https://www.youtube.com" target="_blank"><img src="Res/img/youtube_logo.png" alt="youtubelogo"/></a>
-            </div>--%>
+            </div>-->
         </div>
       </div>
     </div>

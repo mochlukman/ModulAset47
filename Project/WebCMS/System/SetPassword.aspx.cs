@@ -23,13 +23,20 @@ public partial class pSistem_SetPassword : System.Web.UI.Page
     bool error = true;
     if (newPassword.Value.Trim().Equals(confirmPassword.Value.Trim())
       && !string.IsNullOrEmpty(newPassword.Value.Trim())
-      && !string.IsNullOrEmpty(currentPassword.Value.Trim()))
+      && !string.IsNullOrEmpty(currentPassword.Value.Trim())
+      && newPassword.Value.Trim().Length>6)
     {
       error = false;
     }
 
     if (error)
     {
+      if (newPassword.Value.Trim().Length < 8)
+      {
+        string msg1 = "Panjang karakter password minimal 8 karakter";
+        X.Msg.Alert(GlobalAsp.GetConfigLabelInfo(), msg1).Show();
+        return;
+      }
       string msg = "Cek kembali data yang anda isikan";
       X.Msg.Alert(GlobalAsp.GetConfigLabelInfo(), msg).Show();
       return;
