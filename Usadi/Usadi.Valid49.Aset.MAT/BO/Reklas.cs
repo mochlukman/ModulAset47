@@ -309,7 +309,7 @@ namespace Usadi.Valid49.BO
                                 sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
                                 BaseDataAdapter.ExecuteCmd(this, sql);
                             }
-                            else if (Kdtans == "130") // Reklas Aset Tetap Lain to aset tetap (Masuk)
+                            else if (Kdtans == "216") // Reklas Aset Tetap Lain to aset tetap (Masuk)
                             {
                               string sql = @"
                 exec [dbo].[WSPX_REKLASALAT]
@@ -412,7 +412,8 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "130";
+          //Kdtans = "130";
+          Kdtans = "216";
         }
     }
     #endregion ReklasAsetLainToAsettetap
