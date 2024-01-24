@@ -96,7 +96,7 @@
     <select id="QueryByObjekAsetlainnyaDaftaset" extends="BaseQueryDaftaset" parameterClass="Daftaset" resultMap="return-result">
       <![CDATA[
        where 1=1
-      and left(D.KDASET,6) = '1.5.4.'
+      and left(D.KDASET,6) = '1.5.4.' and D.KDASET NOT LIKE '1.5.4.01.02.%'
       and D.MTGLEVEL = '6'
       order by D.KDASET
       ]]>
