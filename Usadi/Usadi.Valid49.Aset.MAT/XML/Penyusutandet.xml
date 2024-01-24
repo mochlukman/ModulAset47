@@ -62,7 +62,7 @@
     </select>
     <select id="QueryByAllPenyusutandet" extends="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
       where 1=1
-      and A.IDBRG=#Idbrg# AND A.KD_BULAN=#Bulan#
+      and A.IDBRG=#Idbrg# AND A.KD_BULAN=#Bulan# AND A.KDTAHUN=#Kdtahun#
     </select>
     <select id="QueryByLookupPenyusutandet" extends="BaseQueryPenyusutandet" parameterClass="Penyusutandet" resultMap="return-result">
       where 1=1

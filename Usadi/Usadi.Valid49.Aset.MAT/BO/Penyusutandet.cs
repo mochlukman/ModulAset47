@@ -38,8 +38,9 @@ namespace Usadi.Valid49.BO
     public string Ket_bulan { get; set; }
     public string Nmtrans { get; set; }
     public new int Bulan { get; set; }
+    public int Kdtahun { get;  set; }
     public string Kdbulan { get; set; }
-   public int Tahunhitung { get; set; }
+    public int Tahunhitung { get; set; }
     public string Idbrg { get; set; }
     public string Unitkey { get; set; }
     public string Asetkey { get; set; }
@@ -91,6 +92,8 @@ namespace Usadi.Valid49.BO
       {
         Idbrg = ((PenyusutanControl)bo).Idbrg;
         Bulan = Int32.Parse(((PenyusutanControl)bo).Kd_bulan.Trim());
+        Tahun= ((PenyusutanControl)bo).Tahun;
+        Kdtahun = Int32.Parse(((PenyusutanControl)bo).Kdtahun.Trim());
       }
     }
     public new IList View()
