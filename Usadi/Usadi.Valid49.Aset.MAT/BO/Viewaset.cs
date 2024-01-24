@@ -463,7 +463,7 @@ namespace Usadi.Valid49.BO
             //hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkib=Jenis KIB"),
             //GetList(new JnskibTransLookupControl()), "Kdkib=Nmkib", 48).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
             //hpars.Add(DaftasetKibLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
-            if (Kdtans == "130")
+            if (Kdtans == "130" || Kdtans == "216")
             {
                 hpars.Add(DaftasetObjekAsetlainnyaLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
             }
