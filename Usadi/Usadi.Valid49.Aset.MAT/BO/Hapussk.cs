@@ -216,6 +216,10 @@ namespace Usadi.Valid49.BO
             {
                 throw new Exception("Gagal menyimpan data : Proses penghapusan hanya untuk tahun anggaran berjalan.");
             }
+            if (Kdtans == "")
+            {
+              throw new Exception("Gagal menyimpan data : Jenis Penghapusan Tidak Boleh Kosong");
+            }
             base.Insert();
         }
         public new int Update()
