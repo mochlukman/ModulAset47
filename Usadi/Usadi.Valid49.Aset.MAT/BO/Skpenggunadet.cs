@@ -280,17 +280,20 @@ namespace Usadi.Valid49.BO
         //{
         //  throw new Exception("Aset sudah masuk ke KIB SKPD pengguna, pengesahan tidak dapat dicabut");
         //}
-        string sql = @"
-              exec [dbo].[WSP_DEL_SKPENGGUNADET]
-              @UNITKEY = N'{0}',
-              @NOSKPENGGUNA = N'{1}',
-              @NODOKUMEN = N'{2}',
-              @UNITKEY2 = N'{3}'
-              ";
-        sql = string.Format(sql, Unitkey, Noskpengguna, Nodokumen, Unitkey2);
-        BaseDataAdapter.ExecuteCmd(this, sql);
+        //string sql = @"
+        //      exec [dbo].[WSP_DEL_SKPENGGUNADET]
+        //      @UNITKEY = N'{0}',
+        //      @NOSKPENGGUNA = N'{1}',
+        //      @NODOKUMEN = N'{2}',
+        //      @UNITKEY2 = N'{3}'
+        //      ";
+        //sql = string.Format(sql, Unitkey, Noskpengguna, Nodokumen, Unitkey2);
+        //BaseDataAdapter.ExecuteCmd(this, sql);
 
-        return ((BaseDataControlUI)this).Update("Draft");
+        //return ((BaseDataControlUI)this).Update("Draft");
+        {
+          throw new Exception("Gagal menghapus data: Status dokumen ini sudah disahkan/diverifikasi");
+        }
       }
       else
       {
@@ -457,6 +460,11 @@ namespace Usadi.Valid49.BO
             throw new Exception("Gagal mengubah data : Dokumen SK pengguna ini sudah di sahkan dan masuk ke KIB");
           }
           else
+          if (Statusdok == 0)//status 0
+          {
+            throw new Exception("Gagal memvalidasi SK PENGGUNA !!! : Status tidak boleh 0, harus di pilih!!!");
+          }
+          else
           {
             if (Statusdok == 1) //status diterima
             {
@@ -495,22 +503,31 @@ namespace Usadi.Valid49.BO
     }
     public new int Delete()
     {
-      bool cekjmlkib = false;
+      //bool cekjmlkib = false;
 
-      SkpenggunadetControl cSkpenggunadetCekjmlkib = new SkpenggunadetControl();
-      cSkpenggunadetCekjmlkib.Noskpengguna = Noskpengguna;
-      cSkpenggunadetCekjmlkib.Nodokumen = Nodokumen;
-      cSkpenggunadetCekjmlkib.Load("Jmlkib");
-      Jmlkib = cSkpenggunadetCekjmlkib.Jmlkib;
+      //SkpenggunadetControl cSkpenggunadetCekjmlkib = new SkpenggunadetControl();
+      //cSkpenggunadetCekjmlkib.Noskpengguna = Noskpengguna;
+      //cSkpenggunadetCekjmlkib.Nodokumen = Nodokumen;
+      //cSkpenggunadetCekjmlkib.Load("Jmlkib");
+      //Jmlkib = cSkpenggunadetCekjmlkib.Jmlkib;
 
-      cekjmlkib = (Jmlkib >= 1);
+      //cekjmlkib = (Jmlkib >= 1);
 
       if (Valid)
       {
-        if (cekjmlkib == true)
-        {
-          throw new Exception("Aset sudah masuk ke KIB SKPD pengguna, pengesahan tidak dapat dicabut");
-        }
+        //if (cekjmlkib == true)
+        //{
+        //  throw new Exception("Aset sudah masuk ke KIB SKPD pengguna, pengesahan tidak dapat dicabut");
+        //}
+        string sql = @"
+              exec [dbo].[WSP_DEL_SKPENGGUNADET]
+              @UNITKEY = N'{0}',
+              @NOSKPENGGUNA = N'{1}',
+              @NODOKUMEN = N'{2}',
+              @UNITKEY2 = N'{3}'
+              ";
+        sql = string.Format(sql, Unitkey, Noskpengguna, Nodokumen, Unitkey2);
+        BaseDataAdapter.ExecuteCmd(this, sql);
 
         return ((BaseDataControlUI)this).Update("Draft");
       }
