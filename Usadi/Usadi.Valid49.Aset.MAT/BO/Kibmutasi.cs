@@ -177,7 +177,7 @@ namespace Usadi.Valid49.BO
     }
     public new void Insert()
     {
-      if (Unitkey2 == Unitkey)
+      if (Unitkey2.Trim() == Unitkey.Trim())
       {
         throw new Exception("Gagal menyimpan data : Unit Tujuan tidak boleh sama dengan Unit Asal.");
       }
@@ -326,7 +326,8 @@ namespace Usadi.Valid49.BO
       }
       else
       {
-        cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT;
+        cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
+        cViewListProperties.AllowMultiDelete = true;
       }
 
       return cViewListProperties;
@@ -409,6 +410,32 @@ namespace Usadi.Valid49.BO
           }
         }
       }
+      return n;
+    }
+    public new int Delete()
+    {
+      int n = 0;
+      if (Valid)
+      {
+        
+        string sql = @"
+                      exec [dbo].[WSP_DEL_MUTASI]
+                      @UNITKEY = N'{0}',
+                      @UNITKEY2 = N'{1}',
+                      @NOMUTASIKEL = N'{2}'
+                      ";
+        sql = string.Format(sql, Unitkey,Unitkey2,Nomutasikel);
+        BaseDataAdapter.ExecuteCmd(this, sql);
+        return ((BaseDataControlUI)this).Update("Draft");
+      }
+      //else
+      //{
+      //  //Status = -1;
+      //  //base.Delete();
+      //  //string msg = "Nomor Mutasi Belum di Valid!!!";
+      //  //msg = string.Format(msg);
+      //  //throw new Exception(msg);
+      //}
       return n;
     }
   }
