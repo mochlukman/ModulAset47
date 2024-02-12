@@ -42,7 +42,8 @@ namespace Usadi.Valid49.BO
         public string Unitkey { get; set; }
         public string Asetkey { get; set; }
         public string Idbrg { get; set; }
-        public string Blokid
+        public string Kuncisusut { get; set; }
+    public string Blokid
         {
             get
             {
@@ -391,10 +392,28 @@ namespace Usadi.Valid49.BO
             cViewListProperties.IDProperty = "Kd_bulan";
             cViewListProperties.ReadOnlyFields = new String[] { "Unitkey", "Kdtahun" };
             cViewListProperties.EntryStyle = ViewListProperties.ENTRY_STYLE_FORM;
-            cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
+            //cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
             cViewListProperties.PageSize = 15;
             cViewListProperties.AllowMultiDelete = true;
-            return cViewListProperties;
+
+            WebsetControl cWebset = new WebsetControl();
+            cWebset.Kdset = "kuncisusut";
+            cWebset.Load("PK");
+            Kuncisusut = cWebset.Valset.ToUpper();
+
+            if (Kuncisusut == "Y")
+            {
+              cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
+
+            }
+            else
+            {
+              cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
+              
+            }
+      
+
+      return cViewListProperties;
         }
         public new IList View()
         {
