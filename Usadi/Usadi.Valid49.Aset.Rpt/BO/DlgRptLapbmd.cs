@@ -235,7 +235,7 @@ namespace Usadi.Valid49.BO
       else
       {
         CS[ReportUtils.PDFNAME] = "LAPBMD_" + (string)GlobalAsp.GetSessionUser().GetValue("Userid") + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
-        pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.REKAPRINCLAPMUTASI.rpt", CS, Params);
+        pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.LAPBMD.rpt", CS, Params);
       } 
       return pdfurl;
     }
