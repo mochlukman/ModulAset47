@@ -395,22 +395,27 @@ namespace Usadi.Valid49.BO
             //cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
             cViewListProperties.PageSize = 15;
             cViewListProperties.AllowMultiDelete = true;
+            cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
 
-            WebsetControl cWebset = new WebsetControl();
-            cWebset.Kdset = "kuncisusut";
-            cWebset.Load("PK");
-            Kuncisusut = cWebset.Valset.ToUpper();
+            //PemdaControl cPemda = new PemdaControl();
+            //cPemda.Configid = "cur_thang";
+            //cPemda.Load("PK");
 
-            if (Kuncisusut == "Y")
-            {
-              cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
+            //WebsetControl cWebset = new WebsetControl();
+            //cWebset.Kdset = "kuncisusut";
+            //cWebset.Load("PK");
+            //Kuncisusut = cWebset.Valset.ToUpper();
 
-            }
-            else
-            {
-              cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
+            //if (Kuncisusut == "Y" || Kdtahun.Trim()!= cPemda.Configval.Trim())
+            //{
+            //  cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
+
+            //}
+            //else
+            //{
+            //  cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
               
-            }
+            //}
       
 
       return cViewListProperties;
@@ -511,6 +516,19 @@ namespace Usadi.Valid49.BO
         }
         public new int Delete()
         {
+            PemdaControl cPemda = new PemdaControl();
+            cPemda.Configid = "cur_thang";
+            cPemda.Load("PK");
+            WebsetControl cWebset = new WebsetControl();
+            cWebset.Kdset = "kuncisusut";
+            cWebset.Load("PK");
+            Kuncisusut = cWebset.Valset.ToUpper();
+
+            if (Kuncisusut == "Y" && Kdtahun.Trim() != cPemda.Configval.Trim())
+            {
+              throw new Exception("Gagal menghapus : hitung penyusutan sudah di kunci !!!");
+            }
+
             int n = 0;
             if (Valid)
             {
