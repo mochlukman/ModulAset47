@@ -132,7 +132,7 @@ namespace Usadi.Valid49.BO
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Stricon"), typeof(CommandColumn), Cmds, 5, HorizontalAlign.Center));
 
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nodokumen=No Dokumen Kontrak"), typeof(string), 30, HorizontalAlign.Left));
-            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nminst=Mitra Pemanfaatan"), typeof(string), 50, HorizontalAlign.Left));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nmp3=Mitra Pemanfaatan"), typeof(string), 50, HorizontalAlign.Left));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglawal=Tanggal Awal"), typeof(DateTime), 20, HorizontalAlign.Center));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglakhir=Tanggal Akhir"), typeof(DateTime), 20, HorizontalAlign.Center));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglvalid=Tanggal Pengesahan"), typeof(DateTime), 20, HorizontalAlign.Center));
@@ -220,7 +220,7 @@ namespace Usadi.Valid49.BO
         public new int Update()
         {
             int n = 0;
-            Kdp3 = Kdpengguna;
+            //Kdp3 = Kdpengguna;
             if (IsValidEdit())
             {
                 n = ((BaseDataControlUI)this).Update();
