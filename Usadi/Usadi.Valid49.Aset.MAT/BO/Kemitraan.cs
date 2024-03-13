@@ -240,14 +240,14 @@ namespace Usadi.Valid49.BO
                     else
                     {
                         string sql = @"
-            exec [dbo].[WSP_VALKEMITRAAN]
-            @UNITKEY = N'{0}',
-            @NODOKUMEN = N'{1}',
-            @TGLAWAL = N'{2}',
-            @TGLAKHIR = N'{3}',
-            @KDP3 = N'{4}',
-            @KDTANS = N'{5}'
-            ";
+                        exec [dbo].[WSP_VALKEMITRAAN]
+                        @UNITKEY = N'{0}',
+                        @NODOKUMEN = N'{1}',
+                        @TGLAWAL = N'{2}',
+                        @TGLAKHIR = N'{3}',
+                        @KDP3 = N'{4}',
+                        @KDTANS = N'{5}'
+                        ";
 
                         sql = string.Format(sql, Unitkey, Nodokumen, Tglawal.ToString("yyyy-MM-dd"), Tglakhir.ToString("yyyy-MM-dd"), Kdp3, Kdtans);
                         BaseDataAdapter.ExecuteCmd(this, sql);
@@ -354,7 +354,8 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "301";
+            //219 Disewakan (Keluar)
+            Kdtans = "219"; // "301";
         }
     }
     #endregion Sewa
@@ -365,7 +366,7 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "302";
+            Kdtans = "220"; //  Pinjam Pakai(Keluar) "302";
         }
     }
     #endregion Pinjampakai
@@ -376,7 +377,7 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "303";
+            Kdtans = "221"; //  KSP(Keluar) "303";
         }
     }
     #endregion KSP
@@ -387,7 +388,7 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "304";
+            Kdtans = "222"; //  KSPI(Keluar) "304";
         }
     }
     #endregion KSPI
@@ -398,7 +399,7 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "305";
+            Kdtans = "223"; // BGS(Keluar)"305";
         }
     }
     #endregion BGS
@@ -409,7 +410,7 @@ namespace Usadi.Valid49.BO
     {
         public new void SetPageKey()
         {
-            Kdtans = "306";
+            Kdtans = "224";//  BSG(Keluar)"306";
         }
     }
     #endregion BSG
