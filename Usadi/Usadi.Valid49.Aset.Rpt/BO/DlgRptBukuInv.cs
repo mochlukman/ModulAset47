@@ -31,12 +31,20 @@ namespace Usadi.Valid49.BO
       set { _Kdpar = value; }
     }
     #endregion
-    #region Property Kdklas
-    private string _Kdklas;
-    public string Kdklas
+    #region Property Nmkib
+    private string _Nmkib;
+    public string Nmkib
     {
-      get { return _Kdklas; }
-      set { _Kdklas = value; }
+      get { return _Nmkib; }
+      set { _Nmkib = value; }
+    }
+    #endregion
+    #region Property Kdkib
+    private string _Kdkib;
+    public string Kdkib
+    {
+      get { return _Kdkib; }
+      set { _Kdkib = value; }
     }
     #endregion
     #region Property Tglawal
@@ -55,58 +63,33 @@ namespace Usadi.Valid49.BO
       set { _Tglakhir = value; }
     }
     #endregion
-    #region Property Asetkey
-    private string _Asetkey;
-    public string Asetkey
+    #region Property Kelaset
+    private string _Kelaset;
+    public string Kelaset
     {
-      get { return _Asetkey; }
-      set { _Asetkey = value; }
+      get { return _Kelaset; }
+      set { _Kelaset = value; }
     }
     #endregion
-    #region Property Kdaset
-    private string _Kdaset;
-    public string Kdaset
+    #region Property Kdkel
+    private string _Kdkel;
+    public string Kdkel
     {
-      get { return _Kdaset; }
-      set { _Kdaset = value; }
+      get { return _Kdkel; }
+      set { _Kdkel = value; }
     }
     #endregion
-    #region Property Nmaset
-    private string _Nmaset;
-    public string Nmaset
-    {
-      get { return _Nmaset; }
-      set { _Nmaset = value; }
-    }
-    #endregion
-    #region Property Kdkib
-    private string _Kdkib;
-    public string Kdkib
-    {
-      get { return _Kdkib; }
-      set { _Kdkib = value; }
-    }
-    #endregion
-    #region Property Kddana
-    private string _Kddana;
-    public string Kddana
-    {
-      get { return _Kddana; }
-      set { _Kddana = value; }
-    }
-    #endregion
-
+    public string Golkib { get; set; }
+    public string Kdklas { get; set; }
+    public string Uraiklas { get; set; }
     public DlgRptBukuInvControl()
     {
-      PemdaControl cPemda = new PemdaControl();
-      cPemda.Configid = "cur_thang";
-      cPemda.Load("PK");
-
       XMLName = ConstantTablesAsetDM.XMLDAFTUNIT;
-      Subunit = "1";
+      SetDefaultDate(RANGE_MONTH);
       Kdklas = "01";
-      Tglawal = new DateTime(1900, 1, 1);
-      Tglakhir = new DateTime((Int32.Parse(cPemda.Configval)), 12, 31);
+      Subunit = "1";
+      Tglawal = Convert.ToDateTime("01/01/1900");
+      Kelaset = "11";
     }
 
     ViewListProperties cViewListProperties = null;
@@ -138,7 +121,6 @@ namespace Usadi.Valid49.BO
         return new ImageCommand[] { cmd1 };
       }
     }
-
     public ImageCommand[] Cmds1
     {
       get
@@ -162,24 +144,22 @@ namespace Usadi.Valid49.BO
       bool enableFilter = string.IsNullOrEmpty(GlobalAsp.GetRequestIdPrev());
       HashTableofParameterRow hpars = new HashTableofParameterRow();
       hpars.Add(DaftunitLookupControl.Instance.GetLookupParameterRow(this, false));
-      //hpars.Add(DaftasetTetapLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(enableFilter));
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdklas=Kelas Aset"),
         GetList(new JklasRptLookupControl()), "Kdklas=Uraiklas", 54).SetEnable(enableFilter));
-
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglawal=Tanggal Awal"), true).SetEnable(true));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglakhir=Tanggal Akhir"), true).SetEnable(true));
-
+      //hpars.Add(new ParameterRowDate(this, ParameterRow.MODE_DATE).SetEnable(enableFilter));
       ArrayList list = new ArrayList(new ParamControl[] {
-          new ParamControl() {  Kdpar="1",Nmpar="Ya"}
-          ,new ParamControl() { Kdpar="0",Nmpar="Tidak"}
-        });
+         new ParamControl() { Kdpar="1",Nmpar="Ya"}
+        ,new ParamControl() { Kdpar="0",Nmpar="Tidak"}
+      });
       hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Subunit=Subunit"), ParameterRow.MODE_SELECT,
         list, "Kdpar=Nmpar", 26).SetEnable(enableFilter));
 
       return hpars;
     }
 
-    
+
     public new void SetFilterKey(BaseBO bo)
     {
       if (typeof(IDataControlMenu).IsInstanceOfType(bo))
@@ -190,16 +170,13 @@ namespace Usadi.Valid49.BO
       }
     }
 
-        
-
     public new HashTableofParameterRow GetFilters()
     {
       bool enableFilter = string.IsNullOrEmpty(GlobalAsp.GetRequestIdPrev());
-      HashTableofParameterRow hpars = new HashTableofParameterRow();      
-
+      HashTableofParameterRow hpars = new HashTableofParameterRow();
       return hpars;
     }
-    
+
     public string LinkPdf
     {
       get
@@ -214,7 +191,6 @@ namespace Usadi.Valid49.BO
         return ConstantDict.Translate(XMLName) + " " + Kdunit + "|" + url;
       }
     }
-
     public string LinkExcel
     {
       get
@@ -242,15 +218,19 @@ namespace Usadi.Valid49.BO
       CS[ReportUtils.RPTNAME] = "BukuInventaris.rpt";
       CS[ReportUtils.PDFNAME] = "BukuInventaris_" + (string)GlobalAsp.GetSessionUser().GetValue("Userid") + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
 
+
       Hashtable Params = new Hashtable();
       Params["@unitkey"] = Unitkey;
-      Params["@tglawal"] = Tglawal;
-      Params["@tglakhir"] = Tglakhir;
-      Params["@kdklas"] = Kdklas;
+      Params["@Kdklas"] = Kdklas;
+      Params["@tglawal"] = Tglawal; //Tgl1;   //Tglawal;
+      Params["@tglakhir"] = Tglakhir; //Tgl2; //Tglakhir;
       Params["@subunit"] = Subunit;
 
+
+      //string pdfurl = ReportUtils.ExportPDF("Usadi.Valid49.Aset.Rpt.Rpt.PENGADAAN.rpt", CS, Params);
+
       string pdfurl;
-      if(n == 0)
+      if (n == 0)
       {
         pdfurl = ReportUtils.ExportPDF("Usadi.Valid49.Aset.Rpt.Rpt.BukuInventaris.rpt", CS, Params);
       }
@@ -258,10 +238,11 @@ namespace Usadi.Valid49.BO
       {
         CS[ReportUtils.PDFNAME] = "BukuInventaris_" + (string)GlobalAsp.GetSessionUser().GetValue("Userid") + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
         pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.BukuInventaris.rpt", CS, Params);
-      } 
-      return pdfurl;
-    }
+      }
 
+      return pdfurl;
+
+    }
 
     public new void SetPageKey()
     {
@@ -274,6 +255,8 @@ namespace Usadi.Valid49.BO
 
     public List<RptPars> GetReports()
     {
+      //RptPars rptPar = new RptPars() { Title = "Pengadaan BMD dari APBD", RptClass = LinkPdf };
+      //return new List<RptPars>(new RptPars[] { rptPar });
       RptPars rptPar = new RptPars() { Title = "Pdf", RptClass = LinkPdf };
       RptPars rptPar1 = new RptPars() { Title = "Excel", RptClass = LinkExcel };
       return new List<RptPars>(new RptPars[] { rptPar, rptPar1 });
@@ -283,6 +266,6 @@ namespace Usadi.Valid49.BO
     {
     }
   }
-  #endregion DlgRptRegBukuInv
+  #endregion DlgRptBukuInv
 }
 
