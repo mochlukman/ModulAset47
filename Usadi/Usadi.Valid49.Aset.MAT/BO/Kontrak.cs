@@ -63,6 +63,13 @@ namespace Usadi.Valid49.BO
       Tahun = dcUser.Tahun;
       Tahunsa = dcUser.Tahun;
       #endregion
+      Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, 28);
+      Tgl1 = Tglsa;
+      Tgl2 = Tglsa;
+      Tglkon = Tglsa;
+      Tglslskonk = Tglsa;
+      Tglakhirkontrak = Tglsa;
+      Tglawalkontrak = Tglsa;
     }
     public new IProperties GetProperties()
     {
@@ -130,7 +137,15 @@ namespace Usadi.Valid49.BO
     }
     public new void SetPrimaryKey()
     {
-      Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, DateTime.Today.Day);
+      if (DateTime.DaysInMonth(DateTime.Today.Year, 2) == 29)
+      {
+        Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, 28);
+      }
+      else
+      {
+        Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, DateTime.Today.Day);
+      }
+      //Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, DateTime.Today.Day);
       Tglawalkontrak = Tglsa;
       Tglakhirkontrak = Tglsa;
     }
