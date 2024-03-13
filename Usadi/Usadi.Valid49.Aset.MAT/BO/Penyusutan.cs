@@ -397,16 +397,12 @@ namespace Usadi.Valid49.BO
             cViewListProperties.AllowMultiDelete = true;
             cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
 
-            //PemdaControl cPemda = new PemdaControl();
-            //cPemda.Configid = "cur_thang";
-            //cPemda.Load("PK");
-
             //WebsetControl cWebset = new WebsetControl();
             //cWebset.Kdset = "kuncisusut";
             //cWebset.Load("PK");
             //Kuncisusut = cWebset.Valset.ToUpper();
 
-            //if (Kuncisusut == "Y" || Kdtahun.Trim()!= cPemda.Configval.Trim())
+            //if (Kuncisusut == "Y")
             //{
             //  cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_READONLY;
 
@@ -414,7 +410,6 @@ namespace Usadi.Valid49.BO
             //else
             //{
             //  cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_ADD_EDIT_DEL;
-              
             //}
       
 
@@ -526,13 +521,21 @@ namespace Usadi.Valid49.BO
 
             if (Kuncisusut == "Y" && Kdtahun.Trim() != cPemda.Configval.Trim())
             {
-              throw new Exception("Gagal menghapus : hitung penyusutan sudah di kunci !!!");
+              throw new Exception("Gagal menghapus : Hitung penyusutan sudah di kunci !!!");
             }
 
             int n = 0;
             if (Valid)
             {
-                return ((BaseDataControlUI)this).Update("Draft");
+                if (Kuncisusut == "Y" && Kdtahun.Trim() != cPemda.Configval.Trim())
+                {
+                  throw new Exception("Gagal menghapus : Hitung penyusutan sudah di kunci !!!");
+                }
+                else
+                {
+                  return ((BaseDataControlUI)this).Update("Draft");
+                }
+                
             }
             else
             {
