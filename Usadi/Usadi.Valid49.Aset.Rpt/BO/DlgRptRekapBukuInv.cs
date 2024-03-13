@@ -55,6 +55,8 @@ namespace Usadi.Valid49.BO
       set { _Tglakhir = value; }
     }
     #endregion 
+    public string Level { get; set; }
+    public string Nmlevel { get; set; }
 
     public DlgRptRekapBukuInvControl()
     {
@@ -121,7 +123,10 @@ namespace Usadi.Valid49.BO
       bool enableFilter = string.IsNullOrEmpty(GlobalAsp.GetRequestIdPrev());
       HashTableofParameterRow hpars = new HashTableofParameterRow();
       hpars.Add(DaftunitLookupControl.Instance.GetLookupParameterRow(this, false));
-
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdklas=Kelas Aset"),
+        GetList(new JklasRptLookupControl()), "Kdklas=Uraiklas", 54).SetEnable(enableFilter));
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Level=Level"),
+       GetList(new StruasetLookupControl()), "Level=Nmlevel", 54).SetEnable(enableFilter));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglawal=Tanggal Awal"), true).SetEnable(true));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglakhir=Tanggal Akhir"), true).SetEnable(true));
 
@@ -199,8 +204,10 @@ namespace Usadi.Valid49.BO
 
       Hashtable Params = new Hashtable();
       Params["@unitkey"] = Unitkey;
+      Params["@Kdklas"] = Kdklas;
       Params["@tglawal"] = Tglawal;
       Params["@tglakhir"] = Tglakhir;
+      Params["@kdlevel"] = Level;
       Params["@subunit"] = Subunit;
 
       string pdfurl;
