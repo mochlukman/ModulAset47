@@ -43,7 +43,7 @@
     </select>
     <select id="QueryByPenilaianJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
       where 1=1
-      and J.KDTANS in('201','203','204','206','301','303','304','305','306','309','311')
+      and J.KDTANS in('201','203','204','206','219','220','221','222','224','309','311')
       order by J.KDTANS
     </select>
     <select id="QueryByBastJtrans" extends="BaseQueryJtrans" parameterClass="Jtrans" resultMap="return-result">
