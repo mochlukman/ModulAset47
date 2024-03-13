@@ -52,6 +52,7 @@
     <Compile Include="BO\DlgRptAsetbersejarah.cs" />
     <Compile Include="BO\DlgRptAsetlancarrb.cs" />
     <Compile Include="BO\DlgRptBabrgkr.cs" />
+    <Compile Include="BO\DlgRptRekapitulasiBrg.cs" />
     <Compile Include="BO\DlgRptSppbkr.cs" />
     <Compile Include="BO\DlgRptSpbkr.cs" />
     <Compile Include="BO\DlgRptBukubrgkr.cs" />
@@ -589,6 +590,7 @@
     <EmbeddedResource Include="Rpt\KARTUSEDIABRGTR.rpt" />
     <EmbeddedResource Include="Rpt\SPBKR.rpt" />
     <EmbeddedResource Include="Rpt\SPPBKR.rpt" />
+    <None Include="Rpt\KIBARMITRA.rpt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
