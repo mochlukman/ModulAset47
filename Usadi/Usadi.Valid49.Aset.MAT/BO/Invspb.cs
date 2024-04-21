@@ -93,7 +93,7 @@ namespace Usadi.Valid49.BO
 
             if (Valid)
             {
-                return ((BaseDataControlUI)this).Update("Valid");
+                return ((BaseDataControlUI)this).Update("ValidRev");
             }
             return n;
         }
