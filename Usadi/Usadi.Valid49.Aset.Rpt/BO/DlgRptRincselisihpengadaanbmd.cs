@@ -63,8 +63,18 @@ namespace Usadi.Valid49.BO
       set { _Tglakhir = value; }
     }
     #endregion 
+    #region Property Kelaset
+    private string _Kelaset;
+    public string Kelaset
+    {
+      get { return _Kelaset; }
+      set { _Kelaset = value; }
+    }
+    #endregion
     public string Kdklas { get; set; }
     public string Uraiklas { get; set; }
+    public string Level { get; set; }
+    public string Nmlevel { get; set; }
     public DlgRptRincselisihpengadaanbmdControl()
     {
       XMLName = ConstantTablesAsetDM.XMLDAFTUNIT;
@@ -109,8 +119,19 @@ namespace Usadi.Valid49.BO
       bool enableFilter = string.IsNullOrEmpty(GlobalAsp.GetRequestIdPrev());
       HashTableofParameterRow hpars = new HashTableofParameterRow();
       hpars.Add(DaftunitLookupControl.Instance.GetLookupParameterRow(this, false));
+      ArrayList listkelaset = new ArrayList(new ParamControl[] {
+         new ParamControl() { Kdpar="11",Nmpar="Aset Lancar"}
+        ,new ParamControl() { Kdpar="13",Nmpar="Aset Tetap"}
+        ,new ParamControl() { Kdpar="15",Nmpar="Aset Lainnya"}
+      });
+      hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Kelaset=Kelompok Aset"), ParameterRow.MODE_SELECT,
+       listkelaset, "Kdpar=Nmpar", 54).SetEnable(enableFilter));
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdklas=Kelas Aset"),
         GetList(new JklasRptLookupControl()), "Kdklas=Uraiklas", 54).SetEnable(enableFilter));
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkib=Jenis KIB"),
+        GetList(new JnskibAstetapLookupControl()), "Kdkib=Nmkib", 54).SetEnable(enableFilter));
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Level=Level"),
+       GetList(new StruasetLookupControl()), "Level=Nmlevel", 54).SetEnable(enableFilter));
       //hpars.Add(new ParameterRowDate(this, ParameterRow.MODE_DATE_RANGE).SetEnable(enableFilter));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglawal=Tanggal Awal"), true).SetEnable(true));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglakhir=Tanggal Akhir"), true).SetEnable(true));
@@ -174,7 +195,10 @@ namespace Usadi.Valid49.BO
 
       Hashtable Params = new Hashtable();
       Params["@unitkey"] = Unitkey;
+      Params["@Kelompok"] = Kelaset;
       Params["@Kdklas"] = Kdklas;
+      Params["@Jenisaset"] = Kdkib;
+      Params["@kdlevel"] = Level;
       Params["@tglawal"] = Tglawal;
       Params["@tglakhir"] = Tglakhir;
       Params["@subunit"] = Subunit;
