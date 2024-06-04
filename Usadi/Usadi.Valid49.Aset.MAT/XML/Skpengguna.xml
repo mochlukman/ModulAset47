@@ -12,6 +12,9 @@
       <result property="Nmunit" column="NMUNIT"/>
       <result property="Unitkey" column="UNITKEY"/>
       <result property="Noskpengguna" column="NOSKPENGGUNA"/>
+      <result property="Kdtahun" column="KDTAHUN"/>
+      <result property="Nodokumen" column="NODOKUMEN"/>
+      <result property="Tgldokumen" column="TGLDOKUMEN"/>
     </resultMap>
   </resultMaps>
   <statements>
@@ -32,8 +35,8 @@
       <generate table="Aset_skpengguna" by="UNITKEY,NOSKPENGGUNA"/>
     </delete>
     <select id="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
-      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOSKPENGGUNA, A.TGLSKPENGGUNA, A.KET
-      from ASET_SKPENGGUNA A
+      select A.ID, A.UNITKEY, D.KDUNIT, D.NMUNIT, A.NOSKPENGGUNA, A.TGLSKPENGGUNA,as1.NODOKUMEN,as1.TGLDOKUMEN,A.KET, CAST(YEAR(A.TGLSKPENGGUNA) AS CHAR(4)) AS KDTAHUN
+      from ASET_SKPENGGUNA A LEFT JOIN ASET_SKPENGGUNADET AS as1 ON as1.UNITKEY = A.UNITKEY AND as1.NOSKPENGGUNA = A.NOSKPENGGUNA
       left join DAFTUNIT D ON D.UNITKEY = A.UNITKEY
     </select>
     <select id="QueryByAllSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
@@ -43,8 +46,9 @@
     </select>
     <select id="QueryByLookupSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
       where 1=1
-      and A.UNITKEY=#Unitkey#
+      and A.UNITKEY=#Unitkey# AND as1.NODOKUMEN IS NOT NULL
       and year(A.TGLSKPENGGUNA) = (select CONFIGVAL from PEMDA where CONFIGID = 'cur_thang')
+      order by A.TGLSKPENGGUNA desc
     </select>
     <select id="LoadByPKSkpengguna" extends="BaseQuerySkpengguna" parameterClass="Skpengguna" resultMap="return-result">
       where A.UNITKEY = #Unitkey# and A.NOSKPENGGUNA=#Noskpengguna#

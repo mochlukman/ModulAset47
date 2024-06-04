@@ -25,6 +25,10 @@ namespace Usadi.Valid49.BO
     public DateTime Tglsa { get; set; }
     public string Unitkey { get; set; }
     public string Noskpengguna { get; set; }
+    public string Kdtahun { get; set; }
+    public string Nodokumen { get; set; }
+    public DateTime Tgldokumen { get; set; }
+
     public string Blokid
     {
       get
@@ -75,7 +79,7 @@ namespace Usadi.Valid49.BO
     {
       ViewListProperties cViewListProperties = (ViewListProperties)base.GetProperties();
       cViewListProperties.TitleList = ConstantDict.Translate(XMLName);
-      cViewListProperties.PrimaryKeys = new String[] { "Unitkey", "Noskpengguna" };
+      cViewListProperties.PrimaryKeys = new String[] { "Unitkey", "Noskpengguna","Kdtahun" };
       cViewListProperties.IDKey = "Id";
       cViewListProperties.IDProperty = "Id";
       cViewListProperties.ReadOnlyFields = new String[] { "Unitkey" };
@@ -107,9 +111,12 @@ namespace Usadi.Valid49.BO
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle(""), typeof(string), EditCmd, 5, HorizontalAlign.Center).SetVisible(enable));
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Stricon"), typeof(CommandColumn), Cmds, 5, HorizontalAlign.Center));
 
-      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Noskpengguna=Nomor Dokumen"), typeof(string), 50, HorizontalAlign.Left));
-      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglskpengguna=Tanggal Dokumen"), typeof(DateTime), 25, HorizontalAlign.Center));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Noskpengguna=Nomor SK Pengguna"), typeof(string), 50, HorizontalAlign.Left));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tglskpengguna=Tanggal SK Pengguna"), typeof(DateTime), 25, HorizontalAlign.Center));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nodokumen=Nomor Dokumen"), typeof(string), 50, HorizontalAlign.Left));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Tgldokumen=Tanggal Dokumen"), typeof(DateTime), 25, HorizontalAlign.Center));
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Ket=Keterangan"), typeof(string), 70, HorizontalAlign.Left));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Kdtahun=Tahun"), typeof(string), 20, HorizontalAlign.Left));
       return columns;
     }
     public new void SetFilterKey(BaseBO bo)
@@ -130,6 +137,7 @@ namespace Usadi.Valid49.BO
       Tahunsa = (Int32.Parse(cPemda.Configval));
       Tglsa = new DateTime(Tahunsa, DateTime.Today.Month, DateTime.Today.Day);
       Tglskpengguna = Tglsa;
+      
     }
     public new HashTableofParameterRow GetFilters()
     {
