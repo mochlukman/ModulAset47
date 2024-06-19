@@ -240,7 +240,7 @@ namespace Usadi.Valid49.BO
       else
       {
         CS[ReportUtils.PDFNAME] = "REKAPPENGADAAN_" + (string)GlobalAsp.GetSessionUser().GetValue("Userid") + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".xls";
-        pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.REKAPPENGADAAN_.rpt", CS, Params);
+        pdfurl = ReportUtils.ExportExcel("Usadi.Valid49.Aset.Rpt.Rpt.REKAPPENGADAAN.rpt", CS, Params);
       }
       return pdfurl;
     }
