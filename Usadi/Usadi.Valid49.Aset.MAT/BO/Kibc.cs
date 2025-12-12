@@ -70,6 +70,8 @@ namespace Usadi.Valid49.BO
     public int Jmlskpengguna { get; set; }
     public string Entrysa { get; set; }
     public string Lokasi { get; set; }
+    public string Koordinat { get; set; }
+
     public string Blokid
     {
       get
@@ -187,6 +189,7 @@ namespace Usadi.Valid49.BO
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Alamat"), typeof(string), 50, HorizontalAlign.Left));
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Ket=Keterangan"), typeof(string), 100, HorizontalAlign.Left));
       columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Lokasi=Lokasi"), typeof(string), 100, HorizontalAlign.Left));
+      columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Koordinat=Koordinat"), typeof(string), 100, HorizontalAlign.Left));
 
       return columns;
     }
@@ -286,11 +289,12 @@ namespace Usadi.Valid49.BO
         @JUMLAH = N'{21}',
         @NILAI = N'{22}',
         @NILINSERT = N'{23}',       
-        @LOKASI = N'{24}'
+        @LOKASI = N'{24}',
+        @KOORDINAT = N'{25}'
         ";
       sql = string.Format(sql, Unitkey, Asetkey, Tahun, Kdpemilik, Asalusul, Pengguna, Ket, Kdhak, Luastnh, Alamat, Kdsatuan, Kdkon
         , Bertingkat, Beton, Luaslt, Nodokgdg, Tgdokgdg.ToString("yyyy-MM-dd"), Nokdtanah, Noba, Tglperolehan.ToString("yyyy-MM-dd")
-        , Kdtans, Jumlah, Nilai, Nilinsert, Lokasi);
+        , Kdtans, Jumlah, Nilai, Nilinsert, Lokasi,Koordinat);
       BaseDataAdapter.ExecuteCmd(this, sql);
     }
     public new int Update()
@@ -402,6 +406,7 @@ namespace Usadi.Valid49.BO
         listBeton, "Kdpar=Nmpar", 70).SetEnable(enable).SetEditable(enable).SetGroup(GROUP_2));
 
       hpars.Add(new ParameterRowMemo(this, ConstantDict.GetColumnTitle("Lokasi"), true, 3).SetEnable(enable).SetAllowEmpty(true).SetGroup(GROUP_2).SetLength(200));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Koordinat"), true, 90).SetEnable(enable).SetGroup(GROUP_2).SetLength(200));
 
       hpars.Add(new ParameterRowMemo(this, ConstantDict.GetColumnTitle("Ket=Keterangan"), true, 3).SetEnable(enable).SetAllowEmpty(true)
         .SetGroup(GROUP_2).SetLength(200));

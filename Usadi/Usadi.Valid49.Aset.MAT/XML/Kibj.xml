@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<sqlMap namespace="Kiba" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<sqlMap namespace="Kibj" xmlns="http://ibatis.apache.org/mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <alias>
-    <typeAlias alias="Kiba" type="Usadi.Valid49.BO.KibaControl, Usadi.Valid49.Aset.MAT" />
+    <typeAlias alias="Kibj" type="Usadi.Valid49.BO.KibjControl, Usadi.Valid49.Aset.MAT" />
   </alias>
   <resultMaps>
-    <resultMap id="return-result" class="Kiba">
+    <resultMap id="return-result" class="Kibj">
       <result property="Id" column="ID"/>
       <result property="Unitkey" column="UNITKEY"/>
       <result property="Kdunit" column="KDUNIT"/>
@@ -44,8 +44,43 @@
       <result property="Barat" column="BARAT"/>
       <result property="Lokasi" column="LOKASI"/>
       <result property="Koordinat" column="KOORDINAT"/>
+      <!--kibb-->
+      <result property="Kdkon" column="KDKON"/>
+      <result property="Nmkon" column="NMKON"/> 
+      <result property="Merktype" column="MERKTYPE"/>
+      <result property="Ukuran" column="UKURAN"/>
+      <result property="Bahan" column="BAHAN"/>
+      <result property="Kdwarna" column="KDWARNA"/>
+      <result property="Nmwarna" column="NMWARNA"/>
+      <result property="Nopabrik" column="NOPABRIK"/>
+      <result property="Norangka" column="NORANGKA"/>
+      <result property="Nopolisi" column="NOPOLISI"/>
+      <result property="Nobpkb" column="NOBPKB"/>
+      <result property="Nomesin" column="NOMESIN"/>
+      <!--kibc-->
+      <result property="Umeko" column="UMEKO"/>
+      <result property="Bertingkat" column="BERTINGKAT"/>
+      <result property="Beton" column="BETON"/>
+      <result property="Luaslt" column="LUASLT"/>
+      <result property="Nodokgdg" column="NODOKGDG"/>
+      <result property="Tgdokgdg" column="TGDOKGDG"/>
+      <result property="Nokdtanah" column="NOKDTANAH"/>
+      <!--kibd-->
+      <result property="Konstruksi" column="KONSTRUKSI"/>
+      <result property="Panjang" column="PANJANG"/>
+      <result property="Lebar" column="LEBAR"/>
+      <result property="Luas" column="LUAS"/>
+      <result property="Nodokjij" column="NODOKJIJ"/>
+      <result property="Tgdokjij" column="TGDOKJIJ"/>
+      <!--kibe-->
+      <result property="Jdlpenerbit" column="JDLPENERBIT"/>
+      <result property="Bkpencipta" column="BKPENCIPTA"/>
+      <result property="Spesifikasi" column="SPESIFIKASI"/>
+      <result property="Asaldaerah" column="ASALDAERAH"/>
+      <result property="Pencipta" column="PENCIPTA"/>
+      <result property="Jenis" column="JENIS"/>
     </resultMap>
-    <resultMap id="return-result-kdtanah" class="Kiba">
+    <resultMap id="return-result-kdtanah" class="Kibj">
       <result property="Id" column="ID"/>
       <result property="Idbrg" column="IDBRG"/>
       <result property="Asetkey" column="ASETKEY"/>
@@ -60,55 +95,59 @@
       <result property="Nokdtanah" column="NOKDTANAH"/>
       <result property="Nmkdtanah" column="NMKDTANAH"/>
     </resultMap>
-    <resultMap id="return-minuruthist" class="Kiba">
+    <resultMap id="return-minuruthist" class="Kibj">
       <result property="Minuruthist" column="MINURUTHIST"/>
     </resultMap>
-    <resultMap id="return-jmlkibdet" class="Kiba">
+    <resultMap id="return-jmlkibdet" class="Kibj">
       <result property="Jmlkibdet" column="JMLKIBDET"/>
     </resultMap>
-    <resultMap id="return-jmlskpengguna" class="Kiba">
+    <resultMap id="return-jmlskpengguna" class="Kibj">
       <result property="Jmlskpengguna" column="JMLSKPENGGUNA"/>
     </resultMap>
   </resultMaps>
   <statements>
-    <insert id="InsertKiba" parameterMap="insert-param">
-      <generate table="Aset_kibadet"/>
+    <insert id="InsertKibj" parameterMap="insert-param">
+      <generate table="Aset_Kibjdet"/>
     </insert>
-    <update id="UpdateByKiba" parameterClass="Kiba">
+    <update id="UpdateByKibj" parameterClass="Kibj">
       update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, PENGGUNA=#Pengguna#, KET=#Ket#, KDHAK=#Kdhak#
       , LUASTNH=#Luastnh#, ALAMAT=#Alamat#, NOFIKAT=#Nofikat#, TGFIKAT=#Tgfikat#,
       UTARA=#Utara#, TIMUR=#Timur#, SELATAN=#Selatan#, BARAT=#Barat#, LOKASI=#Lokasi#,KOORDINAT=#Koordinat#
+      ,MERKTYPE=#Merktype#,KDSATUAN=#Kdsatuan#,UKURAN=#Ukuran#,BAHAN=#Bahan#,KDWARNA=#Kdwarna#,NOPABRIK=#Nopabrik#,NORANGKA=#Norangka#,NOPOLISI=#Nopolisi#,NOBPKB=#Nobpkb#,NOMESIN=#Nomesin#
+      ,BERTINGKAT=#Bertingkat#,BETON=#Beton#,LUASLT=#Luaslt#,NODOKGDG=#Nodokgdg#,NOKDTANAH=#Nokdtanah#
+      ,KONSTRUKSI=#Konstruksi#,PANJANG=#Panjang#,LEBAR=#Lebar#,LUAS=#Luas#,NODOKJIJ=#Nodokjij#
+      ,JDLPENERBIT=#Jdlpenerbit#,BKPENCIPTA=#Bkpencipta#,SPESIFIKASI=#Spesifikasi#,ASALDAERAH=#Asaldaerah#,PENCIPTA=#Pencipta#,JENIS=#Jenis#
       where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
     </update>
-    <update id="UpdateByStatuspenggunaKiba" parameterClass="Kiba">
+    <update id="UpdateByStatuspenggunaKibj" parameterClass="Kibj">
       update ASET_KIB set STATUSPENGGUNA = '0' where IDBRG=#Idbrg#
     </update>
-    <update id="UpdateByValidRevKiba" parameterClass="Kiba">
-      update ASET_KIBADET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
+    <update id="UpdateByValidRevKibj" parameterClass="Kibj">
+      update ASET_KIBJDET set REV_BY=#Rev_by# and REV_DATE=#Rev_date#
     </update>
-    <update id="UpdateByUnValidRevKiba" parameterClass="Kiba">
-      update ASET_KIBADET set REV_BY='' and REV_DATE=null
+    <update id="UpdateByUnValidRevKibj" parameterClass="Kibj">
+      update ASET_KIBJDET set REV_BY='' and REV_DATE=null
     </update>
-    <delete id="DeleteByKiba" parameterMap="delete-param">
+    <delete id="DeleteByKibj" parameterMap="delete-param">
       <generate table="Aset_kib" by="IDBRG"/>
     </delete>
-    <delete id="DeleteBySpesifikasiKiba" parameterClass="Kiba">
+    <delete id="DeleteBySpesifikasiKibj" parameterClass="Kibj">
       delete from ASET_KIBSPESIFIKASI where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
     </delete>
-    <delete id="DeleteByKibKiba" parameterClass="Kiba">
+    <delete id="DeleteByKibKibj" parameterClass="Kibj">
       delete from ASET_KIB where IDBRG=#Idbrg# and UNITKEY=#Unitkey# and ASETKEY=#Asetkey#
     </delete>
-    <select id="BaseQueryKiba" parameterClass="Kiba" resultMap="return-result">
+    <select id="BaseQueryKibj" parameterClass="Kibj" resultMap="return-result">
     </select>
-    <select id="QueryByAllKiba" parameterClass="Kiba" resultMap="return-result">
-      exec REGISTER_KIBA #Asetkey#, #Unitkey#, #Kdkib#
+    <select id="QueryByAllKibj" parameterClass="Kibj" resultMap="return-result">
+      exec REGISTER_KIBJ #Asetkey#, #Unitkey#, #Kdkib#
     </select>
-    <select id="QueryByKdtanahKiba" parameterClass="Kiba" resultMap="return-result-kdtanah">
+    <select id="QueryByKdtanahKibj" parameterClass="Kibj" resultMap="return-result-kdtanah">
       select AA.ID, X.IDBRG, X.ASETKEY, DA.KDASET, DA.NMASET, A.TGLPEROLEHAN, AA.TAHUN, AA.NOREG, X.NILAI
       , AA.ALAMAT, AA.KET, X.IDBRG as NOKDTANAH, AA.ALAMAT AS NMKDTANAH,AA.KOORDINAT
       FROM (
       select A.IDBRG, A.UNITKEY, A.ASETKEY, SUM((CASE WHEN LEFT(A.KDTANS,1)=2 THEN -1*A.NILAI ELSE A.NILAI END)) AS NILAI
-      from ASET_KIBADET A
+      from ASET_KIBJDET A
       where A.UNITKEY=#Unitkey# AND A.KDKIB=#Kdkib#
       group by A.IDBRG, A.UNITKEY, A.ASETKEY
       ) X
@@ -117,18 +156,18 @@
       inner join DAFTASET DA ON DA.ASETKEY = X.ASETKEY
       where X.NILAI > 0
     </select>
-    <select id="LoadByMinuruthistKiba" parameterClass="Kiba" resultMap="return-minuruthist">
+    <select id="LoadByMinuruthistKibj" parameterClass="Kibj" resultMap="return-minuruthist">
       select min(cast(URUTHIST as int)) MINURUTHIST from ASET_KIBSPESIFIKASI where IDBRG = #Idbrg#
     </select>
-    <select id="LoadByJmlkibdetKiba" parameterClass="Kiba" resultMap="return-jmlkibdet">
-      select COUNT(*) JMLKIBDET from ASET_KIBADET where IDBRG=#Idbrg# and URUTTRANS=#Uruthist#
+    <select id="LoadByJmlkibdetKibj" parameterClass="Kibj" resultMap="return-jmlkibdet">
+      select COUNT(*) JMLKIBDET from ASET_KIBJDET where IDBRG=#Idbrg# and URUTTRANS=#Uruthist#
     </select>
-    <select id="LoadByJmlskpenggunaKiba" parameterClass="Kiba" resultMap="return-jmlskpengguna">
+    <select id="LoadByJmlskpenggunaKibj" parameterClass="Kibj" resultMap="return-jmlskpengguna">
       select COUNT(*) JMLSKPENGGUNA from ASET_SKPENGGUNADETBRG A where A.IDBRG=#Idbrg#
     </select>
   </statements>
   <parameterMaps>
-    <parameterMap id="insert-param" class="Kiba">
+    <parameterMap id="insert-param" class="Kibj">
       <parameter property="Unitkey" column="UNITKEY"/>
       <parameter property="Asetkey" column="ASETKEY"/>
       <parameter property="Tahun" column="TAHUN"/>
@@ -150,7 +189,7 @@
       <parameter property="Barat" column="BARAT"/>
       <parameter property="Lokasi" column="LOKASI"/>
     </parameterMap>
-    <parameterMap id="update-param" class="Kiba">
+    <parameterMap id="update-param" class="Kibj">
       <parameter property="Kdpemilik" column="KDPEMILIK"/>
       <parameter property="Asalusul" column="ASALUSUL"/>
       <parameter property="Pengguna" column="PENGGUNA"/>
@@ -167,7 +206,7 @@
       <parameter property="Barat" column="BARAT"/>
       <parameter property="Lokasi" column="LOKASI"/>
     </parameterMap>
-    <parameterMap id="delete-param" class="Kiba">
+    <parameterMap id="delete-param" class="Kibj">
       <parameter property="Idbrg" column="IDBRG"/>
       <parameter property="Uruttrans" column="URUTTRANS"/>
       <parameter property="Uruthist" column="URUTHIST"/>

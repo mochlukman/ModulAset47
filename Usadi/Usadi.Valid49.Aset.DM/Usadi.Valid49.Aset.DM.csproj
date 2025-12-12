@@ -64,8 +64,10 @@
     <Compile Include="BO\DaftasetNonoperasioanlLookup.cs" />
     <Compile Include="BO\DaftasetObjekAsetlainnyaLookup.cs" />
     <Compile Include="BO\DaftasetObjekLookup.cs" />
+    <Compile Include="BO\DaftasetObjekInvestasiLookup.cs" />
     <Compile Include="BO\DaftasetObjekPersediaanLookup.cs" />
     <Compile Include="BO\DaftasetObjeksusutLookup.cs" />
+    <Compile Include="BO\DaftasetInvestasiLookup.cs" />
     <Compile Include="BO\DaftasetPersediaanLookup.cs" />
     <Compile Include="BO\DaftasetRkbmdPemeliharaanLookup.cs" />
     <Compile Include="BO\DaftasetRusakberatLookup.cs" />

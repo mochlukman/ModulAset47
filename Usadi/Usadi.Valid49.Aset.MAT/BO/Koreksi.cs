@@ -30,17 +30,19 @@ namespace Usadi.Valid49.BO
         public DateTime Tglsa { get; set; }
         public string Unitkey { get; set; }
         public string Nobakoreksi { get; set; }
-        public string Blokid
-        {
-            get
-            {
-                WebuserControl cWebuserGetid = new WebuserControl();
-                cWebuserGetid.Userid = GlobalAsp.GetSessionUser().GetUserID();
-                cWebuserGetid.Load("PK");
 
-                return cWebuserGetid.Blokid;
+        public string Noreg { get; set; }
+        public string Blokid
+            {
+                get
+                {
+                    WebuserControl cWebuserGetid = new WebuserControl();
+                    cWebuserGetid.Userid = GlobalAsp.GetSessionUser().GetUserID();
+                    cWebuserGetid.Load("PK");
+
+                    return cWebuserGetid.Blokid;
+                }
             }
-        }
         public ImageCommand[] Cmds
         {
             get

@@ -52,6 +52,8 @@
     <Compile Include="BO\DlgRptAsetbersejarah.cs" />
     <Compile Include="BO\DlgRptAsetlancarrb.cs" />
     <Compile Include="BO\DlgRptBabrgkr.cs" />
+    <Compile Include="BO\DlgRptBmdNonSkpengguna.cs" />
+    <Compile Include="BO\DlgRptBmdSkpengguna.cs" />
     <Compile Include="BO\DlgRptRekapitulasiBrg.cs" />
     <Compile Include="BO\DlgRptSppbkr.cs" />
     <Compile Include="BO\DlgRptSpbkr.cs" />
@@ -591,6 +593,8 @@
     <EmbeddedResource Include="Rpt\SPBKR.rpt" />
     <EmbeddedResource Include="Rpt\SPPBKR.rpt" />
     <None Include="Rpt\KIBARMITRA.rpt" />
+    <EmbeddedResource Include="Rpt\PENETAPAN_PENGGUNA.rpt" />
+    <EmbeddedResource Include="Rpt\PENETAPAN_NONPENGGUNA.rpt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

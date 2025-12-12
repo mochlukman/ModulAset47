@@ -81,10 +81,13 @@
             where A.UNITKEY=#Unitkey# and A.KDTANS=#Kdtans#
         </select>
         <select id="LoadByJmldataKoreksi" parameterClass="Koreksi" resultMap="return-cekjmldata">
-            select COUNT(*) JMLDATA
-            from ASET_KOREKSIDET A
-            where A.UNITKEY=#Unitkey# 
-            and A.NOBAKOREKSI=#Nobakoreksi#
+            SELECT SUM(JMLDATA) JMLDATA FROM (
+            select COUNT(*) JMLDATA from ASET_KOREKSIDETSPEK A 
+            where A.UNITKEY=#Unitkey#  and A.NOBAKOREKSI=#Nobakoreksi# 
+            UNION ALL
+            select COUNT(*) JMLDATA  from ASET_KOREKSIDET A 
+            where A.UNITKEY=#Unitkey#  and A.NOBAKOREKSI=#Nobakoreksi# 
+            ) X 
         </select>
         <select id="LoadByJmlkibKoreksi" parameterClass="Koreksi" resultMap="return-jmlkib">
             select sum(x.NOBAKOREKSI) as JMLKIB from (

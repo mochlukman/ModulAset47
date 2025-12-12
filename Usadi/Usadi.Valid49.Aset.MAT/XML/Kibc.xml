@@ -46,6 +46,7 @@
       <result property="Uruthist" column="URUTHIST"/>
       <result property="Idbrg" column="IDBRG"/>
       <result property="Lokasi" column="LOKASI"/>
+      <result property="Koordinat" column="KOORDINAT"/>
     </resultMap>
     <resultMap id="return-kdtanah" class="Kibc">
       <result property="Nmkdtanah" column="NMKDTANAH"/>
@@ -68,7 +69,7 @@
       update ASET_KIBSPESIFIKASI set KDPEMILIK=#Kdpemilik#, ASALUSUL=#Asalusul#, PENGGUNA=#Pengguna#, KET=#Ket#
       , KDHAK=#Kdhak#, BERTINGKAT=#Bertingkat#, BETON=#Beton#, LUASLT=#Luaslt#, ALAMAT=#Alamat#
       , NODOKGDG=#Nodokgdg#, TGDOKGDG=#Tgdokgdg#, LUASTNH=#Luastnh#, NOKDTANAH=#Nokdtanah#, KDSATUAN=#Kdsatuan#
-      , LOKASI=#Lokasi#
+      , LOKASI=#Lokasi#, KOORDINAT=#Koordinat#
       where IDBRG=#Idbrg# and URUTHIST=#Uruthist#
     </update>
     <update id="UpdateByStatuspenggunaKibc" parameterClass="Kibc">

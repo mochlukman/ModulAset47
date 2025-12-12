@@ -13,9 +13,9 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Usadi.Valid49.BO
 {
-    #region Usadi.Valid49.BO.KibaControl, Usadi.Valid49.Aset.MAT
+    #region Usadi.Valid49.BO.KibjControl, Usadi.Valid49.Aset.MAT
     [Serializable]
-    public class KibaControl : BaseDataControlAsetMAT, IDataControlUIEntry, IHasJSScript
+    public class KibjControl : BaseDataControlAsetMAT, IDataControlUIEntry, IHasJSScript
     {
      #region Properties
         public new string Path
@@ -78,51 +78,95 @@ namespace Usadi.Valid49.BO
         public string Barat { get; set; }
         public string Lokasi { get; set; }
         public string Koordinat { get; set; }
+        //kibb
+        public decimal Umeko { get; set; }
+        public string Kdkon { get; set; }
+        public string Nmkon { get; set; }
+        public string Merktype { get; set; }
+        public string Ukuran { get; set; }
+        public string Bahan { get; set; }
+        public string Kdwarna { get; set; }
+        public string Nmwarna { get; set; }
+        public string Nopabrik { get; set; }
+        public string Norangka { get; set; }
+        public string Nopolisi { get; set; }
+        public string Nobpkb { get; set; }
+        public string Nomesin { get; set; }
+        //kibc
+        public string Bertingkat { get; set; }
+        public string Beton { get; set; }
+        public decimal Luaslt { get; set; }
+        public string Nodokgdg { get; set; }
+        public DateTime Tgdokgdg { get; set; }
+        //kibd
+        public string Konstruksi { get; set; }
+        public decimal Panjang { get; set; }
+        public decimal Lebar { get; set; }
+        public decimal Luas { get; set; }
+        public string Nodokjij { get; set; }
+        public DateTime Tgdokjij { get; set; }
+        //kibe
+        public string Jdlpenerbit { get; set; }
+        public string Bkpencipta { get; set; }
+        public string Spesifikasi { get; set; }
+        public string Asaldaerah { get; set; }
+        public string Pencipta { get; set; }
+        public string Jenis { get; set; }
+        //kibf
+        public string Kdfisik { get; set; }
+        public string Nmfisik { get; set; }
+        public string Nodokkdp { get; set; }
+        public DateTime Tgdokkdp { get; set; }
+        public DateTime Tgmulai { get; set; }
+        public int Idtermin { get; set; }
+        public decimal Prosenfisik { get; set; }
+        public decimal Prosenbiaya { get; set; }
+        public int Jmldata { get; set; }
 
-    public string Blokid
-        {
-            get
+        public string Blokid
             {
-                WebuserControl cWebuserGetid = new WebuserControl();
-                cWebuserGetid.Userid = GlobalAsp.GetSessionUser().GetUserID();
-                cWebuserGetid.Load("PK");
+                get
+                {
+                    WebuserControl cWebuserGetid = new WebuserControl();
+                    cWebuserGetid.Userid = GlobalAsp.GetSessionUser().GetUserID();
+                    cWebuserGetid.Load("PK");
 
-                return cWebuserGetid.Blokid;
+                    return cWebuserGetid.Blokid;
+                }
             }
-        }
-    public ImageCommand[] Cmds
-    {
-      get
-      {
-        ImageCommand cmd1 = new ImageCommand()
+        public ImageCommand[] Cmds
         {
-          CommandName = "ViewTransaksi",
-          Icon = Icon.PageCopy
-        };
-        cmd1.ToolTip.Text = "Klik Untuk Menampilkan Rincian Transaksi";
-        return new ImageCommand[] { cmd1 };
-      }
-    }
-    public string ViewTransaksi
-    {
-      get
-      {
-        string app = GlobalAsp.GetRequestApp();
-        string id = GlobalAsp.GetRequestId();
-        string idprev = GlobalAsp.GetRequestId();
-        string kode = GlobalAsp.GetRequestKode();
-        string idx = GlobalAsp.GetRequestIndex();
-        string strenable = "&enable=" + ((Status == 0) ? 1 : 0);
-        string url = string.Format("PageTabular.aspx?passdc=1&app={0}&i={1}&id={2}&idprev={3}&kode={4}&idx={5}" + strenable, app, 11, id, idprev, kode, idx);
-        return "" + Nmaset + "; Tahun " + Tahun + "; Register " + Noreg + "; " + Alamat + ":" + url;
-      }
-    }
+          get
+          {
+            ImageCommand cmd1 = new ImageCommand()
+            {
+              CommandName = "ViewTransaksi",
+              Icon = Icon.PageCopy
+            };
+            cmd1.ToolTip.Text = "Klik Untuk Menampilkan Rincian Transaksi";
+            return new ImageCommand[] { cmd1 };
+          }
+        }
+        public string ViewTransaksi
+        {
+          get
+          {
+            string app = GlobalAsp.GetRequestApp();
+            string id = GlobalAsp.GetRequestId();
+            string idprev = GlobalAsp.GetRequestId();
+            string kode = GlobalAsp.GetRequestKode();
+            string idx = GlobalAsp.GetRequestIndex();
+            string strenable = "&enable=" + ((Status == 0) ? 1 : 0);
+            string url = string.Format("PageTabular.aspx?passdc=1&app={0}&i={1}&id={2}&idprev={3}&kode={4}&idx={5}" + strenable, app, 11, id, idprev, kode, idx);
+            return "" + Nmaset + "; Tahun " + Tahun + "; Register " + Noreg + "; " + Alamat + ":" + url;
+          }
+        }
     #endregion Properties 
 
     #region Methods 
-    public KibaControl()
+    public KibjControl()
     {
-      XMLName = ConstantTablesAsetMAT.XMLKIBA;
+      XMLName = ConstantTablesAsetMAT.XMLKIBJ;
       Ss10userControl dcUser = (Ss10userControl)GlobalAsp.GetSessionUser();
       Tahun = dcUser.Tahun;
       Tahunsa = dcUser.Tahun;
@@ -205,7 +249,7 @@ namespace Usadi.Valid49.BO
     }
     public new void SetPageKey()
     {
-      Kdkib = ConstantTablesAsetMAT.KDKIBA;
+      Kdkib = ConstantTablesAsetMAT.KDKIBJ;
     }
     public new void SetFilterKey(BaseBO bo)
     {
@@ -244,8 +288,8 @@ namespace Usadi.Valid49.BO
     public new IList View(string label)
     {
       IList list = ((BaseDataControl)this).View(label);
-      List<KibaControl> ListData = new List<KibaControl>();
-      foreach (KibaControl dc in list)
+      List<KibjControl> ListData = new List<KibjControl>();
+      foreach (KibjControl dc in list)
       {
         ListData.Add(dc);
       }
@@ -270,7 +314,7 @@ namespace Usadi.Valid49.BO
       }
 
       string sql = @"
-        exec [dbo].[KIBA_INSERT]
+        exec [dbo].[KIBJ_INSERT]
         @UNITKEY = N'{0}',
         @ASETKEY = N'{1}',
         @TAHUN = N'{2}',
@@ -317,21 +361,21 @@ namespace Usadi.Valid49.BO
     }
     public new int Delete()
     {
-      KibaControl cKibaGetjmlkibdet = new KibaControl();
-      cKibaGetjmlkibdet.Idbrg = Idbrg;
-      cKibaGetjmlkibdet.Uruthist = Uruthist;
-      cKibaGetjmlkibdet.Load("Jmlkibdet");
+      KibjControl cKibjGetjmlkibdet = new KibjControl();
+      cKibjGetjmlkibdet.Idbrg = Idbrg;
+      cKibjGetjmlkibdet.Uruthist = Uruthist;
+      cKibjGetjmlkibdet.Load("Jmlkibdet");
 
-      KibaControl cKibaGetminuruthist = new KibaControl();
-      cKibaGetminuruthist.Idbrg = Idbrg;
-      cKibaGetminuruthist.Load("Minuruthist");
+      KibjControl cKibjGetminuruthist = new KibjControl();
+      cKibjGetminuruthist.Idbrg = Idbrg;
+      cKibjGetminuruthist.Load("Minuruthist");
 
-      KibaControl cKibaGetjmlskpengguna = new KibaControl();
-      cKibaGetjmlskpengguna.Idbrg = Idbrg;
-      cKibaGetjmlskpengguna.Load("Jmlskpengguna");
+      KibjControl cKibjGetjmlskpengguna = new KibjControl();
+      cKibjGetjmlskpengguna.Idbrg = Idbrg;
+      cKibjGetjmlskpengguna.Load("Jmlskpengguna");
 
       int n = 0;
-      if (cKibaGetjmlkibdet.Jmlkibdet != 0)
+      if (cKibjGetjmlkibdet.Jmlkibdet != 0)
       {
         throw new Exception("Hapus rincian transaksi terlebih dahulu");
       }
@@ -340,11 +384,11 @@ namespace Usadi.Valid49.BO
         Status = -1;
         base.Delete("Spesifikasi");
 
-        if (Uruthist == cKibaGetminuruthist.Minuruthist)
+        if (Uruthist == cKibjGetminuruthist.Minuruthist)
         {
           base.Update("Statuspengguna");
 
-          if (cKibaGetjmlskpengguna.Jmlskpengguna == 0)
+          if (cKibjGetjmlskpengguna.Jmlskpengguna == 0)
           {
             base.Delete("Kib"); //hapus entrian saldo awal
           }
@@ -355,7 +399,11 @@ namespace Usadi.Valid49.BO
 
     public const string GROUP_1 = "A. Spesifikasi 1";
     public const string GROUP_2 = "B. Spesifikasi 2";
-    public const string GROUP_3 = "C. Nilai";
+    public const string GROUP_3 = "C. Spesifikasi 3";
+    public const string GROUP_4 = "D. Spesifikasi 4";
+    public const string GROUP_5 = "E. Spesifikasi 5";
+    public const string GROUP_6 = "F. Spesifikasi 6";
+    public const string GROUP_7 = "G. Nilai";
 
     public override HashTableofParameterRow GetEntries()
     {
@@ -364,27 +412,23 @@ namespace Usadi.Valid49.BO
 
       Jumlah = 1;
       Nilinsert = "2";
-
+      //Spesifikasi 1
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdpemilik=Pemilik"),
       GetList(new JmilikLookupControl()), "Kdpemilik=Nmpemilik", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_1));
-
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tglperolehan=Tanggal Perolehan"), false).SetEnable(enable).SetGroup(GROUP_1));
-
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdhak=Hak"),
       GetList(new JhakLookupControl()), "Kdhak=Nmhak", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_1));
-
       hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdsatuan=Satuan"),
       GetList(new SatuanLookupControl()), "Kdsatuan=Nmsatuan", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_1));
-
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Bahan"), true, 50).SetEnable(enable).SetGroup(GROUP_1));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Ukuran"), true, 50).SetEnable(enable).SetGroup(GROUP_1));
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Asalusul=Asal Usul"), true, 90).SetEnable(enable).SetGroup(GROUP_1).SetLength(50));
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Pengguna"), true, 90).SetEnable(enable).SetGroup(GROUP_1).SetLength(90));
       hpars.Add(new ParameterRowMemo(this, ConstantDict.GetColumnTitle("Alamat"), true, 3).SetEnable(enable).SetAllowEmpty(true).SetGroup(GROUP_1).SetLength(200));
-
+      //Spesifikasi 2
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nofikat=Nomor Sertifikat"), true, 50).SetEnable(enable).SetGroup(GROUP_2).SetLength(50));
       hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tgfikat=Tanggal Sertifikat"), true).SetEnable(enable).SetGroup(GROUP_2));
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Luastnh=Luas Tanah"), true, 50).SetEnable(enable).SetGroup(GROUP_2).SetLength(50));
-      
-
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Utara"), true, 90).SetEnable(enable).SetGroup(GROUP_2).SetLength(200));
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Timur"), true, 90).SetEnable(enable).SetGroup(GROUP_2).SetLength(200));
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Selatan"), true, 90).SetEnable(enable).SetGroup(GROUP_2).SetLength(200));
@@ -392,19 +436,65 @@ namespace Usadi.Valid49.BO
       hpars.Add(new ParameterRowMemo(this, ConstantDict.GetColumnTitle("Lokasi"), true, 3).SetEnable(enable).SetAllowEmpty(true).SetGroup(GROUP_2).SetLength(200));
       hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Koordinat"), true, 90).SetEnable(enable).SetGroup(GROUP_2).SetLength(200));
       hpars.Add(new ParameterRowMemo(this, ConstantDict.GetColumnTitle("Ket=Keterangan"), true, 3).SetEnable(enable).SetAllowEmpty(true).SetGroup(GROUP_2).SetLength(200));
+      //Spesifikasi 3
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkon=Kondisi"),
+            GetList(new KonasetLookupControl()), "Kdkon=Nmkon", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdwarna=Warna"),
+            GetList(new WarnaLookupControl()), "Kdwarna=Nmwarna", 50).SetAllowRefresh(false).SetEnable(enable).SetAllowEmpty(false).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Merktype=Merk/Type"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nopabrik=No. Pabrik"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nomesin=No. Mesin"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Norangka=No. Rangka"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nopolisi=No. Polisi"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nobpkb=No. BPKB"), true, 50).SetEnable(enable).SetGroup(GROUP_3));
+      //Spesifikasi 4
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nodokgdg=Nomor Dokumen"), true, 50).SetEnable(enable).SetGroup(GROUP_4).SetLength(30));
+      hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tgdokgdg=Tanggal Dokumen"), true).SetEnable(enable).SetGroup(GROUP_4));
+      hpars.Add(KdtanahLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(enable)
+        .SetAllowEmpty(true).SetGroup(GROUP_4));
+      hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Luaslt=Luas Lantai"), true, 50).SetEnable(enable).SetGroup(GROUP_4));
+      ArrayList listBertingkat = new ArrayList(new ParamControl[] {
+        new ParamControl() {  Kdpar="1",Nmpar="Bertingkat "}
+        ,new ParamControl() { Kdpar="0",Nmpar="Tidak "}
+      });
+      hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Bertingkat=Bertingkat"), ParameterRow.MODE_TYPE,
+        listBertingkat, "Kdpar=Nmpar", 70).SetEnable(enable).SetEditable(enable).SetGroup(GROUP_4));
+      ArrayList listBeton = new ArrayList(new ParamControl[] {
+        new ParamControl() {  Kdpar="1",Nmpar="Beton "}
+        ,new ParamControl() { Kdpar="0",Nmpar="Tidak "}
+      });
+      hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Beton=Beton"), ParameterRow.MODE_TYPE,
+        listBeton, "Kdpar=Nmpar", 70).SetEnable(enable).SetEditable(enable).SetGroup(GROUP_4));
 
+      //Spesifikasi 5
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Nodokjij=Nomor Dokumen"), true, 50).SetEnable(enable).SetGroup(GROUP_5).SetLength(30));
+      hpars.Add(new ParameterRowDate(this, ConstantDict.GetColumnTitle("Tgdokjij=Tanggal Dokumen"), true).SetEnable(enable).SetGroup(GROUP_5));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Konstruksi"), true, 50).SetEnable(enable).SetGroup(GROUP_5).SetLength(50));
+      hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Panjang"), true, 50).SetEnable(enable).SetGroup(GROUP_5));
+      hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Lebar"), true, 50).SetEnable(enable).SetGroup(GROUP_5));
+      hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Luas"), true, 50).SetEnable(enable).SetGroup(GROUP_5));
+
+      //Spesifikasi 6
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Jdlpenerbit=Buku Judul/Penerbit"), true, 90).SetEnable(enable)
+        .SetGroup(GROUP_6));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Bkpencipta=Buku Pencipta"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Spesifikasi"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Asaldaerah=Asal Daerah"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Pencipta"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Jenis"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      //hpars.Add(new ParameterRowTextBox(this, ConstantDict.GetColumnTitle("Ukuran"), true, 90).SetEnable(enable).SetGroup(GROUP_6));
+      //Spesifikasi 7
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Jumlah=Jumlah Barang"), true, 15).SetEnable(enable).SetEditable(false)
-        .SetAllowEmpty(false).SetGroup(GROUP_3));
-
+        .SetAllowEmpty(false).SetGroup(GROUP_7));
       ArrayList list = new ArrayList(new ParamControl[] {
         new ParamControl() {  Kdpar="1",Nmpar="Nilai Total "}
         ,new ParamControl() { Kdpar="2",Nmpar="Nilai Satuan "}
       });
       hpars.Add(new ParameterRow(ConstantDict.GetColumnTitleEntry("Nilinsert=Tipe Nilai"), ParameterRow.MODE_TYPE,
-        list, "Kdpar=Nmpar", 70).SetAllowRefresh(false).SetEnable(enable).SetEditable(false).SetGroup(GROUP_3));
+        list, "Kdpar=Nmpar", 70).SetAllowRefresh(false).SetEnable(enable).SetEditable(false).SetGroup(GROUP_7));
 
       hpars.Add(new ParameterRowNumeric(this, ConstantDict.GetColumnTitle("Nilai"), true, 50).SetEnable(enable).SetEditable(false)
-        .SetAllowEmpty(false).SetGroup(GROUP_3));
+        .SetAllowEmpty(false).SetGroup(GROUP_7));
       if (Entrysa == "Y")
       {
         hpars.Add(new ParameterRowUploadFile(this, true));
@@ -415,6 +505,6 @@ namespace Usadi.Valid49.BO
 
     #endregion Methods 
   }
-  #endregion Kiba
+  #endregion Kibj
 }
 

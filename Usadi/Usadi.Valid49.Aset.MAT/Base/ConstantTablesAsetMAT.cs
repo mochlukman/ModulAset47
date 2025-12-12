@@ -25,6 +25,7 @@ namespace Usadi.Valid49.BO
         public const string KDKIBG = "07";
         public const string KDKIBKEMITRAAN = "08";
         public const string KDKIBLAINNYA = "09";
+        public const string KDKIBJ = "10";
 
         public const string XMLATRIBUSI = "Atribusi";
         public const string XMLATRIBUSIDET = "Atribusidet";
@@ -67,6 +68,8 @@ namespace Usadi.Valid49.BO
         public const string XMLKIBGDET = "Kibgdet";
         public const string XMLKIBH = "Kibh";
         public const string XMLKIBHDET = "Kibhdet";
+        public const string XMLKIBJ = "Kibj";
+        public const string XMLKIBJDET = "Kibjdet";
         public const string XMLKIBKEMITRAANDET = "Kibkemitraandet";
         public const string XMLKIBLAINNYADET = "Kiblainnyadet";
         public const string XMLKIBMUTASI = "Kibmutasi";
@@ -74,6 +77,7 @@ namespace Usadi.Valid49.BO
         public const string XMLKONTRAK = "Kontrak";
         public const string XMLKOREKSI = "Koreksi";
         public const string XMLKOREKSIDET = "Koreksidet";
+        public const string XMLKOREKSIDETSPEK = "Koreksidetspek";
         public const string XMLPENGGUNA = "Pengguna";
         public const string XMLPENGGUNADET = "Penggunadet";
         public const string XMLPENILAIAN = "Penilaian";

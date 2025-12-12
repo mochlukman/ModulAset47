@@ -78,6 +78,17 @@
         order by D.KDUNIT
         END
       </select>
+      <select id="QueryBySubunitallDaftunit" parameterClass="Daftunit" resultMap="return-result">
+        select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT, D.AKROUNIT, D.ALAMAT, D.TELEPON,
+        (CASE WHEN D.KDLEVEL>3 THEN CAST((CAST(D.KDLEVEL AS INT) - 3) AS CHAR(1)) ELSE '1' END) as KDLEVEL,
+        (CASE WHEN D.KDLEVEL=3 THEN 'D' ELSE rtrim(D.TYPE) END) as TYPE
+        , ltrim(rtrim(D.KDUNIT))+' - '+ltrim(rtrim(D.NMUNIT)) KDNMUNIT
+        from DAFTUNIT D
+        where 1=1
+        AND LEFT(D.KDUNIT,18) = (SELECT LEFT(RTRIM(KDUNIT),18) FROM DAFTUNIT WHERE UNITKEY=#Unitkey#)
+        AND D.UNITKEY != #Unitkey#
+        order by D.KDUNIT
+      </select>
       <select id="QueryByUnitPbDaftunit" parameterClass="Daftunit" resultMap="return-result">
         select D.ID, D.UNITKEY, D.KDUNIT, D.NMUNIT,D.UNITKEY as UNITKEY2, 
         D.AKROUNIT, D.ALAMAT, D.TELEPON, D.KDLEVEL, rtrim(D.TYPE) as TYPE

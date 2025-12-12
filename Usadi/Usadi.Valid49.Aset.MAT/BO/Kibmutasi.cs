@@ -467,7 +467,7 @@ namespace Usadi.Valid49.BO
             }
             else
             {
-                cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT;
+                cViewListProperties.ModeEditable = ViewListProperties.MODE_EDITABLE_EDIT_DEL;
             }
 
             return cViewListProperties;

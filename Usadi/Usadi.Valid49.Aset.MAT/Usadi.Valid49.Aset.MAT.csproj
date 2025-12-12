@@ -59,9 +59,13 @@
     <Compile Include="BO\Atribusidetbrg.cs" />
     <Compile Include="BO\Bapkirdet.cs" />
     <Compile Include="BO\Bapkir.cs" />
+    <Compile Include="BO\Kibjdet.cs" />
+    <Compile Include="BO\Kibj.cs" />
+    <Compile Include="BO\SkpenggunaLookup.cs" />
     <Compile Include="BO\InvbastLookup.cs" />
     <Compile Include="BO\InvpenyaluranLookup.cs" />
     <Compile Include="BO\InvspbLookup.cs" />
+    <Compile Include="BO\Koreksidetspek.cs" />
     <Compile Include="BO\SpbLookup.cs" />
     <Compile Include="BO\Berita\Berita125Lainnya.cs" />
     <Compile Include="BO\Berita\Berita124Pembatalan.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="BO\Usulanhapus.cs" />
     <Compile Include="BO\Usulanhapusdet.cs" />
     <Compile Include="BO\Viewaset.cs" />
+    <Compile Include="BO\ViewasetSpesifikasi.cs" />
     <Compile Include="BO\ViewasetKdp.cs" />
     <Compile Include="BO\ViewasetLookup.cs" />
     <Compile Include="BO\ViewasetRkbmdPemeliharaan.cs" />
@@ -158,18 +163,24 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Kiba.xml" />
+    <EmbeddedResource Include="XML\Kiba.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Kibb.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Kibc.xml" />
+    <EmbeddedResource Include="XML\Kibc.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Kibd.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Kibe.xml" />
-    <EmbeddedResource Include="XML\Kibf.xml" />
+    <EmbeddedResource Include="XML\Kibf.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Kibfdet.xml" />
     <EmbeddedResource Include="XML\Kibg.xml" />
   </ItemGroup>
@@ -180,11 +191,17 @@
     <EmbeddedResource Include="XML\Kibmutasidet.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Reklas.xml" />
-    <EmbeddedResource Include="XML\Reklasdet.xml" />
+    <EmbeddedResource Include="XML\Reklas.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Reklasdet.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Penilaian.xml" />
+    <EmbeddedResource Include="XML\Penilaian.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Penilaiandet.xml" />
@@ -212,7 +229,9 @@
     <EmbeddedResource Include="XML\Bapkir.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Penyusutan.xml" />
+    <EmbeddedResource Include="XML\Penyusutan.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Penyusutandet.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -233,19 +252,31 @@
     <EmbeddedResource Include="XML\RkbmdPengadaan.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Koreksi.xml" />
-    <EmbeddedResource Include="XML\Koreksidet.xml" />
-    <EmbeddedResource Include="XML\Pengguna.xml" />
+    <EmbeddedResource Include="XML\Koreksi.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Koreksidet.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Pengguna.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Penggunadet.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\Reklasdetbrg.xml" />
-    <EmbeddedResource Include="XML\Skpengguna.xml" />
-    <EmbeddedResource Include="XML\Skpenggunadet.xml" />
+    <EmbeddedResource Include="XML\Skpengguna.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Skpenggunadet.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Skpenggunadetbrg.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\Kibadet.xml" />
+    <EmbeddedResource Include="XML\Kibadet.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Kibbdet.xml" />
     <EmbeddedResource Include="XML\Kibcdet.xml" />
     <EmbeddedResource Include="XML\Kibddet.xml" />
@@ -352,13 +383,24 @@
     <Content Include="bin\Release\Usadi.Valid49.Aset.DM.pdb" />
     <Content Include="bin\Release\Usadi.Valid49.Aset.Sys.dll" />
     <Content Include="bin\Release\Usadi.Valid49.Aset.Sys.pdb" />
+    <EmbeddedResource Include="XML\Kibjdet.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Kibj.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XML\Koreksidetspek.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Invbast.xml" />
     <EmbeddedResource Include="XML\Invnota.xml" />
     <EmbeddedResource Include="XML\Invpenyaluran.xml" />
     <EmbeddedResource Include="XML\Invpenyalurandet.xml" />
     <EmbeddedResource Include="XML\Invreal.xml" />
     <EmbeddedResource Include="XML\Invrealdet.xml" />
-    <EmbeddedResource Include="XML\Invretur.xml" />
+    <EmbeddedResource Include="XML\Invretur.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="XML\Invreturdet.xml" />
     <EmbeddedResource Include="XML\Invspb.xml">
       <SubType>Designer</SubType>

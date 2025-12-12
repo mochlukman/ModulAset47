@@ -44,6 +44,7 @@ namespace Usadi.Valid49.BO
         public string Kdklas { get; set; }
         public string Uraiklas { get; set; }
         public string Kdstatusaset { get; set; }
+        public string Nmstatusaset { get; set; }
         public string Kdkib { get; set; }
         public string Nmkib { get; set; }
         public string Kdtans { get; set; }
@@ -56,7 +57,7 @@ namespace Usadi.Valid49.BO
         public string Kdobjekaset { get; set; }
         public string Nmobjekaset { get; set; }
         public string Idkey { get { return Idbrg + Asetkey + Unitkey; } }
-
+        
         #endregion Properties 
 
         #region Methods 
@@ -92,6 +93,7 @@ namespace Usadi.Valid49.BO
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Bahan"), typeof(string), 15, HorizontalAlign.Left));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Alamat"), typeof(string), 50, HorizontalAlign.Left));
             columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Ket=Keterangan"), typeof(string), 100, HorizontalAlign.Left));
+            columns.Add(Fields.Create(ConstantDict.GetColumnTitle("Nmstatusaset=Status"), typeof(string), 20, HorizontalAlign.Left));
 
             return columns;
         }
@@ -305,7 +307,7 @@ namespace Usadi.Valid49.BO
             string[] fields = new string[] { "Idbrg", "Unitkey", "Asetkey", "Kdaset", "Nmaset", "Tahun", "Noreg"
         , "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul"
         , "Pengguna", "Kdsatuan", "Nmsatuan","Spesifikasi", "Ukuran", "Bahan", "Nosertifikat", "Alamat", "Ket"
-        , "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib" };
+        , "Kdklas", "Uraiklas", "Kdstatusaset","Nmstatusaset", "Kdkib", "Nmkib" };
             List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
             List<ViewasetPenilaianControl> ListData = new List<ViewasetPenilaianControl>();
 
@@ -471,6 +473,10 @@ namespace Usadi.Valid49.BO
             {
                 hpars.Add(DaftasetObjekPersediaanLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
             }
+            else if (Kdtans == "140" || Kdtans == "241")
+            {
+              hpars.Add(DaftasetObjekInvestasiLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
+            }
             else
             {
                 hpars.Add(DaftasetObjekLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
@@ -549,54 +555,130 @@ namespace Usadi.Valid49.BO
         }
         #endregion Methods 
     }
-    #endregion ViewasetKoreksi
+  #endregion ViewasetKoreksi
 
-    #region ViewasetPengguna
+    #region ViewasetKoreksispek
     [Serializable]
-    public class ViewasetPenggunaControl : ViewasetControl, IDataControlUIEntry, IHasJSScript
+    public class ViewasetKoreksispekControl : ViewasetControl, IDataControlUIEntry, IHasJSScript
     {
-        #region Methods 
-        public new void SetFilterKey(BaseBO bo)
+      #region Methods 
+      public new void SetFilterKey(BaseBO bo)
+      {
+        if (bo.GetProperty("Unitkey") != null)
         {
-            if (bo.GetProperty("Unitkey") != null)
-            {
-                Unitkey = bo.GetValue("Unitkey").ToString();
-            }
+          Unitkey = bo.GetValue("Unitkey").ToString();
         }
-        public new HashTableofParameterRow GetFilters()
-        {
-            HashTableofParameterRow hpars = new HashTableofParameterRow();
-            //hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkib=Jenis KIB"),
-            //GetList(new JnskibTransLookupControl()), "Kdkib=Nmkib", 48).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
-            //hpars.Add(DaftasetKibLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
-            hpars.Add(DaftasetObjekLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
-            return hpars;
-        }
-        public new IList View()
-        {
-            string sql = @"
-        exec [dbo].[WSPV_PENGGUNADET]
+      }
+      public new HashTableofParameterRow GetFilters()
+      {
+        HashTableofParameterRow hpars = new HashTableofParameterRow();
+        //hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkib=Jenis KIB"),
+        //GetList(new JnskibTransLookupControl()), "Kdkib=Nmkib", 48).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
+        //hpars.Add(DaftasetKibLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
+        hpars.Add(DaftasetObjekLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
+        return hpars;
+      }
+    //public new IList View()
+    //{
+    //  string sql = @"
+    //    exec [dbo].[WSPV_KOREKSIDETSPEK]
+    //  @UNITKEY = N'{0}',
+    //  @KDASET = N'{1}'
+    //  ";
+
+    //  sql = string.Format(sql, Unitkey, Kdobjekaset);
+    //  string[] fields = new string[] { "Idbrg", "Unitkey", "Asetkey", "Kdaset", "Nmaset", "Tahun", "Noreg"
+    //    , "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul"
+    //    , "Pengguna", "Kdhak","Nmhak","Kdsatuan", "Nmsatuan", "Merktype","Ukuran", "Bahan"
+    //    , "Luastnh","Alamat", "Nofikat","Tgfikat"
+    //    , "Kdwarna", "Nopabrik","Norangka","Nopolisi","Nobpkb","Nomesin"
+    //    , "Bertingkat","Beton" ,"Luaslt", "Nodokgdg","Tgdokgdg","Konstruksi","Panjang","Lebar","Luas","Nodokjij","Tgdokjij"
+    //    , "Jdlpenerbit" ,"Bkpencipta","Spesifikasi","Asaldaerah","Pencipta","Judul"
+    //    , "Jenis","Kdfisik","Nmfisik"
+    //    , "Nodokkdp","Tgdokkdp","Tgmulai","Nokdtanah"
+    //    , "Utara","Timur","Selatan","Barat"
+    //    , "Ket", "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib" };
+    //  List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
+    //  List<ViewasetKoreksispekControl> ListData = new List<ViewasetKoreksispekControl>();
+
+    //  foreach (ViewasetKoreksispekControl dc in list)
+    //  {
+    //    ListData.Add(dc);
+    //  }
+    //  return ListData;
+    //}
+    public new IList View()
+    {
+      string sql = @"
+        exec [dbo].[WSPV_KOREKSIDET]
 		    @UNITKEY = N'{0}',
 		    @KDASET = N'{1}'
       ";
 
-            sql = string.Format(sql, Unitkey, Kdobjekaset);
-            string[] fields = new string[] { "Idbrg", "Unitkey", "Asetkey", "Kdaset", "Nmaset", "Tahun", "Noreg"
+      sql = string.Format(sql, Unitkey, Kdobjekaset);
+      string[] fields = new string[] { "Idbrg", "Unitkey", "Asetkey", "Kdaset", "Nmaset", "Tahun", "Noreg"
         , "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul"
         , "Pengguna", "Kdsatuan", "Nmsatuan","Spesifikasi", "Ukuran", "Bahan", "Nosertifikat", "Alamat", "Ket"
         , "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib" };
-            List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
-            List<ViewasetPenggunaControl> ListData = new List<ViewasetPenggunaControl>();
+      List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
+      List<ViewasetKoreksispekControl> ListData = new List<ViewasetKoreksispekControl>();
 
-            foreach (ViewasetPenggunaControl dc in list)
-            {
-                ListData.Add(dc);
-            }
-            return ListData;
-        }
-        #endregion Methods 
+      foreach (ViewasetKoreksispekControl dc in list)
+      {
+        ListData.Add(dc);
+      }
+      return ListData;
     }
-    #endregion ViewasetPengguna
+    #endregion Methods 
+  }
+    #endregion ViewasetKoreksispek
+
+    #region ViewasetPengguna
+    [Serializable]
+      public class ViewasetPenggunaControl : ViewasetControl, IDataControlUIEntry, IHasJSScript
+      {
+          #region Methods 
+          public new void SetFilterKey(BaseBO bo)
+          {
+              if (bo.GetProperty("Unitkey") != null)
+              {
+                  Unitkey = bo.GetValue("Unitkey").ToString();
+              }
+          }
+          public new HashTableofParameterRow GetFilters()
+          {
+              HashTableofParameterRow hpars = new HashTableofParameterRow();
+              //hpars.Add(new ParameterRowSelect(ConstantDict.GetColumnTitle("Kdkib=Jenis KIB"),
+              //GetList(new JnskibTransLookupControl()), "Kdkib=Nmkib", 48).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
+              //hpars.Add(DaftasetKibLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(true).SetAllowEmpty(false));
+              hpars.Add(DaftasetObjekLookupControl.Instance.GetLookupParameterRow(this, false).SetEnable(true).SetAllowRefresh(true).SetAllowEmpty(false));
+              return hpars;
+          }
+          public new IList View()
+          {
+              string sql = @"
+          exec [dbo].[WSPV_PENGGUNADET]
+		      @UNITKEY = N'{0}',
+		      @KDASET = N'{1}'
+        ";
+
+              sql = string.Format(sql, Unitkey, Kdobjekaset);
+              string[] fields = new string[] { "Idbrg", "Unitkey", "Asetkey", "Kdaset", "Nmaset", "Tahun", "Noreg"
+          , "Nilai", "Umeko", "Kdpemilik", "Nmpemilik", "Kdkon", "Nmkon", "Asalusul"
+          , "Pengguna", "Kdsatuan", "Nmsatuan","Spesifikasi", "Ukuran", "Bahan", "Nosertifikat", "Alamat", "Ket"
+          , "Kdklas", "Uraiklas", "Kdstatusaset", "Kdkib", "Nmkib" };
+              List<IDataControl> list = BaseDataAdapter.GetListDC(this, sql, fields);
+              List<ViewasetPenggunaControl> ListData = new List<ViewasetPenggunaControl>();
+
+              foreach (ViewasetPenggunaControl dc in list)
+              {
+                  ListData.Add(dc);
+              }
+              return ListData;
+          }
+          #endregion Methods 
+      }
+      #endregion ViewasetPengguna
 
     #region ViewasetHapussksebagian
     [Serializable]

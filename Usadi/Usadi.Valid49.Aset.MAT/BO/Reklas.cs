@@ -321,6 +321,30 @@ namespace Usadi.Valid49.BO
                               sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
                               BaseDataAdapter.ExecuteCmd(this, sql);
                             }
+                            else if (Kdtans == "240") // Reklas Investasi nya (Keluar)
+              {
+                string sql = @"
+                exec [dbo].[WSPX_REKLASINVESTOUT]
+                @UNITKEY = N'{0}',
+                @NOREKLAS = N'{1}',
+                @TGLREKLAS = N'{2}',
+                @KDTANS = N'{3}'
+                ";
+                sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
+                BaseDataAdapter.ExecuteCmd(this, sql);
+              }
+                            else if (Kdtans == "241") // Reklas Investasi to aset tetap (Masuk)
+              {
+                string sql = @"
+                exec [dbo].[WSPX_REKLASINVEST]
+                @UNITKEY = N'{0}',
+                @NOREKLAS = N'{1}',
+                @TGLREKLAS = N'{2}',
+                @KDTANS = N'{3}'
+                ";
+                sql = string.Format(sql, Unitkey, Noreklas, Tglreklas.ToString("yyyy-MM-dd"), Kdtans);
+                BaseDataAdapter.ExecuteCmd(this, sql);
+              }
               else
                             {
                                 string sql = @"
@@ -531,5 +555,27 @@ namespace Usadi.Valid49.BO
         }
     }
     #endregion ReklasKDP
+
+    #region ReklasInvestasi
+    [Serializable]
+    public class ReklasInvestasiControl : ReklasControl, IDataControlUIEntry
+    {
+      public new void SetPageKey()
+      {
+        Kdtans = "240";
+      }
+    }
+    #endregion ReklasInvestasi
+
+    #region ReklasInvestasiToTetap
+    [Serializable]
+    public class ReklasInvestasiToTetapControl : ReklasControl, IDataControlUIEntry
+    {
+      public new void SetPageKey()
+      {
+        Kdtans = "241";
+      }
+    }
+    #endregion ReklasInvestasiToTetap
 }
 

@@ -230,6 +230,10 @@ namespace Usadi.Valid49.BO
             {
                 hpars.Add(DaftasetAsetlainnyaLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(enable).SetEditable(enable));
             }
+            else if (Kdtans == "240") //Investasi
+            {
+              hpars.Add(DaftasetInvestasiLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(enable).SetEditable(enable));
+            }
             else // aset tetap dan kdp
             {
                 hpars.Add(DaftasetReklasLookupControl.Instance.GetLookupParameterRow(this, false).SetAllowRefresh(true).SetEnable(enable).SetEditable(enable));
@@ -361,10 +365,10 @@ namespace Usadi.Valid49.BO
     }
     #endregion Methods 
   }
-    #endregion ReklasdetPersediaan
+  #endregion ReklasdetKdp
 
-    #region ReklasdetRusakberat
-    [Serializable]
+  #region ReklasdetRusakberat
+  [Serializable]
     public class ReklasdetRusakberatControl : ReklasdetControl, IDataControlUIEntry, IHasJSScript
     {
         public ImageCommand[] Cmds
