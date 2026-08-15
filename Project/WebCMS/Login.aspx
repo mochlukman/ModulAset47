@@ -23,11 +23,15 @@
 
     <nav class="navbar">
       <ul>
-         <li class="big"><a href="https://quantum.intermatika.id/"><img class="medium" src="Res/img/Quantum.png" alt="Quantum"/> </a>Selamat Datang !</li>
+         <%--<li class="big"><a href="https://quantum.intermatika.id/"><img class="medium" src="Res/img/Quantum.png" alt="Quantum"/> </a>Selamat Datang !</li>--%>
+      <li class="big">
+          <marquee behavior="scroll" direction="left">Selamat Datang !</marquee>
+      </li>
+
       </ul>
       <ul>
         <li >
-            <a href="https://api.whatsapp.com/send?phone=6285175366682&text=Hallo%2C%20Boleh%20Saya%20Minta%20Informasi%20Detil%20Tentang%20SIPKD%20BMD%3F" target="_blank"  class="image-link">
+            <a href="https://api.whatsapp.com/send?phone=6281234567&text=Hallo%2C%20Boleh%20Saya%20Minta%20Informasi%20Detil%20Tentang%20SIPKD%20BMD%3F" target="_blank"  class="image-link">
             <img class="medium" src="Res/img/whatsapp.png" alt="phone_icon"/> 
             <img class="small" src="Res/img/butuhbantuan.png" alt="butuh bantuan"/>
             </a>
@@ -38,11 +42,16 @@
     <div class="row">
       <div id="infoDiv" class="column">
              <div class="caption">
-              <img id="rafiki" src="Res/img/bg_sipkdbmd.png"" alt="SiGawai"  />
+              <img id="rafiki" src="Res/img/bg_sipkdbmd.png"" alt="SIPKDBMD"  />
                  <br />
-              <img id="sigawai" src="Res/img/sipkd_bmd.png" alt="SiGawai"/>
-              <h2>Sistem Informasi Pengelolaan Barang Milik Daerah</h2>
-              <p>Version 1.0523</p>
+              <%--<img id="sigawai" src="Res/img/sipkd_bmd.png" alt="SIPKDBMD"/>--%>
+               <p style="display:inline-block; margin-left:10px; vertical-align:middle;">
+                  V. <asp:Literal ID="litVersi" runat="server" />
+               </p>
+
+              <%--<h2>Sistem Informasi Pengelolaan Barang Milik Daerah</h2>--%>
+              <%--<p>Version 2.1125</p>--%>
+               <%--<p>V. <asp:Literal ID="litVersi" runat="server" /></p>--%>
             </div>
         </div>
 
@@ -118,8 +127,9 @@
       </div>
     </div>
 
-   <div class="footer">
-    <p> Quantum Sistem Intermatika - 2023</p>
+   <div class="caption"> 
+    <%--<p>Quantum</p>--%>
+     <%--<p style="text-align:center"> V. <asp:Literal ID="litVersi" runat="server" />    </p>--%>
   </div>
 
 </body>
